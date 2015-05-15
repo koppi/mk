@@ -394,7 +394,7 @@ $ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.deskt
 
 AXIS icons:
 
-Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/icons/): siehe #3.
+Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/icons/): siehe [#3](https://github.com/koppi/mk/issues/3).
 
 TODO - ```cnc-info.sh```:
 
