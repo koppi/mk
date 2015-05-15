@@ -25,7 +25,9 @@ call(["halcmd", "setp", "halui.machine.on", "1"])
 #c.wait_complete()
 #commands.home_all_axes()
 
-# start AXIS in full screen mode
-maxgeo   = root_window.tk.call("wm","maxsize",".")
-fullsize = maxgeo.split(' ')[0] + 'x' + maxgeo.split(' ')[1]
-root_window.tk.call("wm","geometry",".", fullsize)
+# window fullscreen
+# root_window.tk.call ("wm", "attributes", ".", "-fullscreen", "True")
+# window maximized
+root_window.tk.call ("wm", "attributes", ".", "-zoomed", "True")
+# windows always top
+#root_window.tk.call ("wm", "attributes", ".", "-topmost", "True")
