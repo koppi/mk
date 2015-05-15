@@ -355,6 +355,7 @@ $ sudo dpkg -i linuxcnc-ethercat*deb
 ```
 alternativ: manuelle Installation
 ```bash
+$ sudo apt-get -y install machinekit-dev
 $ git clone https://github.com/sittner/linuxcnc-ethercat
 $ make -C linuxcnc-ethercat all
 $ sudo make -C linuxcnc-ethercat install
