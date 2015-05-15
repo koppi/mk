@@ -392,6 +392,10 @@ Desktop-Shortcut einrichten:
 $ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop 
 ```
 
+AXIS icons:
+
+Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/icons/): siehe #3.
+
 TODO - ```cnc-info.sh```:
 
 ![cnc-info.sh](pics/20150514-002.gif)
