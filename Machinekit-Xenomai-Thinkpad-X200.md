@@ -353,7 +353,7 @@ $ debuild -uc -us
 $ cd ..
 $ sudo dpkg -i linuxcnc-ethercat*deb
 ```
-alternativ: manuelle Installation
+alternativ: manuelle Installation:
 ```bash
 $ sudo apt-get -y install machinekit-dev
 $ git clone https://github.com/sittner/linuxcnc-ethercat
