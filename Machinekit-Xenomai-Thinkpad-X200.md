@@ -347,6 +347,7 @@ index 8a627be..83d36e8 100644
 ```
 Debian-Paket bauen und installieren:
 ```bash
+$ sudo apt-get -y install machinekit-dev
 $ dpkg-checkbuilddeps
 $ debuild -uc -us
 $ cd ..
