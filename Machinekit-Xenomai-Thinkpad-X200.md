@@ -102,11 +102,11 @@ in
 %sudo   ALL=(ALL:ALL) NOPASSWD: ALL
 ```
 
-Benutzer "machinekit" in Gruppe "sudo" aufnehmen:
+Benutzer koppi" in Gruppe "sudo" aufnehmen:
 
 ```bash
 $ su -
-# usermod -aG sudo machinekit
+# usermod -aG sudo koppi
 ```
 
 Danach Aus- und wieder Einloggen, damit Eintragung wirksam wird.
@@ -250,13 +250,13 @@ $ sudo update-rc.d xenomai-latency defaults
 Benutzer in die Gruppen "xenomai" und "kmem" aufnehmen:
 
 ```bash
-$ sudo usermod -aG xenomai,kmem machinekit
+$ sudo usermod -aG xenomai,kmem koppi
 ```
 
 Bei Verwendung von EtherCAT Benutzer in die Gruppe "ethercat" aufnehmen:
 
 ```bash
-$ sudo usermod -aG ethercat machinekit
+$ sudo usermod -aG ethercat koppi
 ```
 
 Machinekit Latenzzeit Test:
