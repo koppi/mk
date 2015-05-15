@@ -160,10 +160,6 @@ Anpassung der Kernel-Parameter in ```/etc/default/grub```
 GRUB_CMDLINE_LINUX_DEFAULT="quiet xeno_hal.smi=1 lapic=notscdeadline hpet=disable i915.i915_enable_rc6=0 i915.powersave=0 intel_idle.max_cstate=1 processor.max_cstate=1 isolcpus=1 idle=poll"
 ```
 
-Option```noapic``` hinzufügen, wenn der Kernel beim Booten hängt:
-
-![Kernel panic – not syncing: timer doesn't work through Interrupt-remapped IO-APIC](pics/2015-05-05 22.06.13.jpg)
-
 Bootloader neu konfigurieren und neustarten:
 
 ```bash
