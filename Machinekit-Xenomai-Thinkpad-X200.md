@@ -253,12 +253,6 @@ Benutzer in die Gruppen "xenomai" und "kmem" aufnehmen:
 $ sudo usermod -aG xenomai,kmem koppi
 ```
 
-Bei Verwendung von EtherCAT Benutzer in die Gruppe "ethercat" aufnehmen:
-
-```bash
-$ sudo usermod -aG ethercat koppi
-```
-
 Machinekit Latenzzeit Test:
 
 ```bash
@@ -288,7 +282,13 @@ Installation ntp:
 $ sudo apt-get -y install ntp
 ```
 
-Test:
+Benutzer in die Gruppe "ethercat" aufnehmen:
+
+```bash
+$ sudo usermod -aG ethercat koppi
+```
+
+Ausloggen, wieder Einloggen, Test:
 
 ```bash
 $ sudo /etc/init.d/ethercat start
