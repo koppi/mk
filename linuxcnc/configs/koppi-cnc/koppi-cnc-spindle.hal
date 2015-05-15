@@ -1,0 +1,21 @@
+###########################################################
+#
+# Spindle HAL file for koppi's CNC
+#
+# Created 2015/05/09 by Jakob Flierl <jakob.flierl@gmail.com>
+#
+# Spindle Interface
+#
+###########################################################
+
+###########################################################
+# motion interface
+###########################################################
+
+net spindle-on <= motion.spindle-on
+net spindle-cw <= motion.spindle-forward
+net spindle-ccw <= motion.spindle-reverse
+
+# coolant
+net coolant-on <= iocontrol.0.coolant-flood
+

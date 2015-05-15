@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pyvcp>
+<vbox>
+<bd>3</bd>
+<labelframe text="Touch Probe">
+ <hbox>
+  <rectled>
+   <width>"120"</width>
+   <height>"25"</height>
+   <halpin>"probe-status"</halpin>
+   <on_color>"green"</on_color>
+   <off_color>"grey"</off_color>
+  </rectled>
+ </hbox>
+</labelframe>
+ <button>
+  <halpin>"rapid-to-home"</halpin>
+  <text>"Rapid Home"</text>
+  <bd>2</bd>
+ </button>
+ <button>
+  <halpin>"touchoff-probe-x"</halpin>
+  <text>"Touch Off X"</text>
+  <bd>2</bd>
+ </button>
+ <button>
+  <halpin>"touchoff-probe-y"</halpin>
+  <text>"Touch Off Y"</text>
+  <bd>2</bd>
+ </button>
+ <button>
+  <halpin>"touchoff-probe-z"</halpin>
+  <text>"Touch Off Z"</text>
+  <bd>2</bd>
+ </button>
+ <button>
+  <halpin>"probe-corner"</halpin>
+  <text>"Probe Corner"</text>
+  <bd>2</bd>
+ </button>
+ <button>
+  <halpin>"touchoff-xyz-0"</halpin>
+  <text>"Touch Off XYZ 0"</text>
+  <bd>2</bd>
+ </button>
+</vbox>
+</pyvcp>

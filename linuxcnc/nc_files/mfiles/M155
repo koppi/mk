@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Touch-off XYZ axis and refresh AXIS display
+#
+# http://linuxcnc.org/index.php/english/forum/38-general-linuxcnc-questions/27266-g92-vs-keyboard-end-key
+
+axis-remote -m G10L20P0X0Y0Z0
+axis-remote --reload &
+
+exit 0

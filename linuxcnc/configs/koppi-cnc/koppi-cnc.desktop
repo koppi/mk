@@ -1,0 +1,9 @@
+[Desktop Entry]                                                                                                                                  
+Version=1.0                                                                                                                                      
+Terminal=false                                                                                                                                   
+Name=launch koppi-cnc                                                                                                                            
+Exec=linuxcnc /home/koppi/linuxcnc/configs/koppi-cnc/koppi-cnc.ini                                                                               
+Type=Application                                                                                                                                 
+Comment=Desktop Launcher for koppi-cnc                                                                                                           
+Icon=/usr/share/linuxcnc/machinekiticon.png                                                                                                      
+Name[en_US]=koppi-cnc                                                                                                                            

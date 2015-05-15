@@ -1,0 +1,277 @@
+; probe_corner
+; Rick G May 15, 2011 
+; Edit Feb 18, 2012
+; Edit 7xCNC June 2014 - Fixed Z probing plus annotation and documentation
+; 
+; UNTESTED CONCEPT edit for your use before trying
+; for using probe to find corner and top of work and set this position as X0 Y0 Z0
+; the idea is to make new set ups on a mill faster and more accurate with the use of a probe
+; long version with many comments, MSGs, pauses, etc most moves with G38.n to protect probe and alert operator
+; use to set X0Y0 as rear left corner of vise or lower left corner of workpiece
+; set Z0 as top of vise or work at X Y location specified
+; many moves are done with G91 Incremental mode, but on error or completion set back to G90 Absolute mode
+ 
+; EXPLANATION
+; This Subroutine finds a corner - lower left- and sets it to X0 Y0
+; 
+; Fast probe Y+, retract, then slow probe Y+ to find Y0
+; Retracts, then moves along in X- direction by <Yinc>
+; At each increment it does a fast probe in Y+ until encounters material, then retracts and moves along next increment
+; If no material is encountered when moving Y+ within <Probedist> it begans to probe in X+ direction
+; When it encounters material, it retracts in X-, then does a slow probe X+ to find X0
+; <Ymax> sets a maximum distance it will try to probe along X- to find the corner, if the corner is not found within this distance it will stop and error
+; Uses G92 to set X and Y axis at probe position minus radius of probe plus correction
+; 
+; Once X0Y0 is set, retracts Z up to <Zsafe>
+; it travels to <Xcord><Ycord> to perform a Z probe to set Z0
+; 
+; finally moves to final coordinates <ZSafe> first, then <Xfin><Yfin>, then <Zfin>
+;
+; uses G92 to set Z at probe position plus correction
+;
+; 
+;
+; o<probe_corner> call [50] [1] [5] [0.5] [10] [.25] [.25] [0] [0] [0] [25] [5] [0] [0] [10] [20] [0.05] [1]
+
+o<probe_corner> sub
+#<Fastprobe> =  #1 (=50 Fast probe speed)
+#<Slowprobe> =  #2 (=1 Slow probe speed)
+#<Probedist> =  #3 (=5 Dist to Probe) ;distance to probe in Y+ direction before assuming we are at corner and then probing in X+
+#<Retract>   =  #4 (=0.5 Probe return) ;probe retract distance between moves
+#<Diam>      =  #5 (=10 Probe Diam)
+#<Xcord>     =  #6 (=.25 X Coord) ;X coordinate where Z will be probed for
+#<Ycord>     =  #7 (=.25 Y Coord) ;Y coordinate where Z will be probed for
+#<Xcorr>     =  #8 (=0.00 X correction)
+#<Ycorr>     =  #9 (=0.00 Y correction)
+#<Zcorr>     =  #10 (=0.00 Z correction)
+#<Ymax>      =  #11 (=25 Y Search Max)
+#<Yinc>      =  #12 (=5 Y Search increment)
+#<Xfin>      =  #13 (=0.00 X Final Pos)
+#<Yfin>      =  #14 (=0.00 Y Final Pos)
+#<Zfin>      =  #15 (=10 Z Final Pos)
+#<Zsafe>     =  #16 (=20 Z Safe)
+#<Probepause> = #17 (=.05 pause) ;Dwell time before probing
+#<ProbeT>     =  #18 (=1 Probe Tool)
+ 
+G40 (Cancel cutter radius compensation) 
+G49 (Cancel tool length offset)
+G91 (Incremental mode)
+ 
+; M6 T#18 G43 (set tool to probe in my case the probe is #1 in the tool table and load offset from tool table)
+ 
+G38.3 F#1 Y#3 (Fast Probe in Y+ up to probedist)
+G4 P#17 (pause)
+O102 IF [#5070 gt 0] (first Y move OK)
+G38.5 F#1 Y-.010 (retract till probe clears)
+G4 P#17
+G38.3 F#1 Y[0 - #4] (retract to set up for slow probe)
+G4 P#17 
+ O103 IF [#5070 gt 0]
+ (MSG, Probe not complete unexpected Y hit on retract)
+ G90
+ M2  
+ O103 ENDIF 
+ 
+G38.3 F#2 Y[#4 +.020] (slow final Y probe)
+G4 P#17
+ O105 IF [#5070 lt 1] 
+ (MSG, Probe not complete Y missed slow probe)
+ G90
+ M2  
+ O105 ENDIF 
+ 
+G92 Y[0-[[#5 / 2] + #9]] (set Y to 0 - 1/2 of probe diameter plus correction)
+(MSG, Probe Y complete and set)
+G38.5 F10 Y-.010 (move Y off target)
+G4 P#17
+G38.3 F#1 Y[0 - #4] (retract Y)
+G4 P#17
+ O104 IF [#5070 gt 0]
+ (MSG, Probe not complete unexpected Y hit on retract)
+ G90
+ M2  
+ O104 ENDIF 
+ 
+( Y WORKED OK)
+( MOVE X UP TO LOOK FOR END OF VISE or Stock)
+G38.3 F#1 X[0 - #12] (we are in incremental mode, so moves from current position by search increment in X- direction)
+G4 P#17
+ O108  IF [#5070 gt 0]
+ (MSG, Probe not complete unexpected X hit)
+ G90
+ M2   
+ O108 ENDIF 
+ 
+ O110 WHILE [#11 gt 0] (repeat until YMax reached)
+ G38.3 F#1 Y[#4 + #5]
+ G4 P#17
+ 
+   O112 IF [#5070 gt 0]
+   ( Y hit )
+   G38.5 F#1 Y-.010
+   G4 P#17
+   G38.3 F#1 Y[0 - #4]
+   ( back off Y )
+   G4 P#17
+ 
+   O114 IF [#5070 gt 0]
+   (MSG, Probe not complete unexpected Y hit on retract2)
+   G90
+   M2   
+   O114 ENDIF 
+ 
+#11 = [#11 - #12]
+      O115 If [#11 lt 0]
+      (MSG, Probe not complete X search limit reached)
+      G90
+      M2  
+      O115   ENDIF
+ 
+ G38.3 F#1 X[0 - #12]
+( move X up)
+ G4 P#17
+ 
+    O116  IF [#5070 gt 0]
+    ( IF X hits )
+    (MSG, Probe not complete unexpected X hit)
+    G90
+    M2  
+    O116   ENDIF
+ 
+      O112 ELSE
+      #11 = -1
+ 
+  O112 ENDIF 
+ 
+(found end of target)
+O110 ENDWHILE
+ 
+(ready to probe X)
+ 
+G38.3 F#1 X#12 (fast probe X+)
+G4 P#17
+ O120 IF [#5070 gt 0]
+ G38.5 F#1 X-.010
+G4 P#17
+G38.3 F#1 X[0 - #4]
+ G4 P#17
+   O119 IF [#5070 gt 0]
+   (MSG, Probe not complete unexpected X hit on retract)
+   G90
+   M2   
+   O119  ENDIF 
+ 
+ G38.3 F#2 X[#4 + .020] (slow final X probe)
+ G4 P#17
+   O121 IF [#5070 lt 1]
+   (MSG, Probe not complete X missed)
+   G90
+   M2   
+   O121  ENDIF 
+ 
+(set X )
+G92 X[0-[[#5 / 2] + #8]] (set X to 0 - 1/2 of probe diameter plus correction)
+(MSG, Probe X complete and set)
+G38.5 F#1 X-.010 (move X off target)
+G4 P#17
+G38.3 F#1 X[0 - #4] (retract X)
+G4 P#17
+   O123 IF [#5070 gt 0]
+   (MSG, Probe not complete unexpected X hit on retract 2)
+   G90
+   M2   
+   O123  ENDIF 
+ 
+    O120 ELSE
+    (MSG, Probe not complete X failed)
+    G90
+    M2 
+ 
+ O120 ENDIF (X PROBE)
+ 
+(now go to the X Y position to set Z)
+G38.3 F#1 Z#16 (probe toward workpiece, stop on contact at Fast probe feed)
+G4 P#17
+  O124 IF [#5070 gt 0]
+ (MSG, Probe not complete unexpected Z hit on retract)
+  G90
+  M2   
+  O124 ENDIF 
+ 
+(go to x position)
+G90
+G38.3 F#1 X#6
+G91
+G4 P#17
+  O122 IF [#5070 gt 0]
+ (MSG, Probe not complete unexpected X hit before Z)
+  G90
+  M2   
+  O122 ENDIF 
+ 
+(go to y position )
+G90  
+G38.3 F#1 Y#7
+G91
+G4 P#17 
+  O125  IF [#5070 gt 0]
+ (MSG, Probe not complete unexpected Y hit before Z)
+  G90
+  M2   
+  O125  ENDIF
+ 
+(set z)
+G38.3 F#1 Z[0 - #16] 
+G4 P#17 
+  O126  IF [#5070 lt 1]
+  (MSG, Probe not complete Z missed)
+  G90
+  M2   
+  O126 ENDIF
+ 
+G38.5 F#1 Z.010 (move Z off target)
+G4 P#17
+G38.3 F#1 Z#4
+G4 P#17
+O129 IF [#5070 gt 0]
+  (IF z hits on retract)
+  (MSG, Probe not complete Z hit on retract)
+  G90
+  M2 
+  O129 ENDIF
+ 
+G38.3 F#2 Z[0-[#4 +.020]] (slow final Z probe)
+G4 P#17
+ O128 IF [#5070 lt 1]
+ (MSG, Probe not complete Z missed slow pass)
+ G90
+ M2
+ O128 ENDIF
+ 
+G92 Z[0 + #10] (set Z to 0 plus correction)
+(MSG, Probe Z complete and set)
+G4 P#17
+G38.5 F#1 Z.010
+G4 P#17  
+G38.3 F#1 Z#4
+  O130 IF [#5070 gt 0]
+  (IF z hits on retract)
+  (MSG, Probe not complete Z failed to clear target)
+  G90
+  M2 
+  O130 ENDIF
+ 
+ O102 ELSE
+ (MSG, Probe not complete Y failed)
+ G90
+ M2
+O102 ENDIF (Y PROBE)
+G90 (Absolute mode)
+G0 Z#16
+G0 X#13Y#14 
+G38.3 F#1 Z#15
+(MSG, Probe sequence complete)
+;M30
+o<probe_corner> endsub
+
+M2

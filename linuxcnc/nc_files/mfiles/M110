@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Clear AXIS notifications
+#
+# use in gcode subroutines and/or connect to pushbutton
+
+# M1nn files must exist _before_ starting emc
+# in the [DISPLAY]PROGRAM_PREFIX
+# or in a dir specified by [RS274NGC]USER_M_PATH
+
+# the pin for axisui.notifications-clear is in emc-2.4pre
+# using an earlier version will print error to stdout
+
+halcmd setp axisui.notifications-clear 1
+sleep .100 ;# requires a sleep that does <1
+halcmd setp axisui.notifications-clear 0
+
+# if a M1nn command fails and its script exits with nonzero status,
+# the gcode program exits.  So always exit 0, and make sure
+# the M1nn command prints a message in order to keep on going.
+exit 0

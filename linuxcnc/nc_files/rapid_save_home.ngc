@@ -1,0 +1,6 @@
+o<rapid_save_home> sub
+ g53 g0 z70
+ g53 g0 x220 y250
+o<rapid_save_home> endsub
+
+M2

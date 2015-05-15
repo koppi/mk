@@ -1,0 +1,64 @@
+######################################################################
+#
+# postgui HAL file for koppi's CNC
+#
+# Created 2015/05/14 by Jakob Flierl <jakob.flierl@gmail.com>
+#
+# This file connects hardware E-Stop button and software E-Stop button
+# as well as the EtherCAT bus link status to the classicladder.
+#
+# See: file "koppi-cnc-estop.clp" for more details.
+#
+
+######################################################################
+# E-Stop Inputs
+######################################################################
+
+# link EtherCAT link up signal to classicladder input pin 0
+linkps classicladder.0.in-00 => ec-link-up
+
+# link estop-hw-button signal  to classicladder input pin 1
+linkps classicladder.0.in-01 => estop-hw-button
+
+# link software E-Stop button  to classicladder input pin 2
+net emc-estop iocontrol.0.user-enable-out => classicladder.0.in-02
+
+######################################################################
+# E-Stop Output
+######################################################################
+
+# Request E-Stop Enable from EMC
+net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
+
+######################################################################
+# Probe Pin Inputs
+######################################################################
+
+# link probe-pin-in signal to motion.probe-input pin
+
+# G38.x uses the value on this pin to determine when the probe has
+# made contact: TRUE  for probe contact closed (touching),
+#               FALSE for probe contact open.
+
+linksp probe-pin-in => motion.probe-input
+
+# link probe-pin-in signal to pyvcp ui element
+linksp probe-pin-in => pyvcp.probe-status
+
+######################################################################
+# HALUI MDI Commands
+######################################################################
+
+net remote-rapid-to-home halui.mdi-command-00 <= pyvcp.rapid-to-home
+net touchoff-probe-x     halui.mdi-command-01 <= pyvcp.touchoff-probe-x
+net touchoff-probe-y     halui.mdi-command-02 <= pyvcp.touchoff-probe-y
+net touchoff-probe-z     halui.mdi-command-03 <= pyvcp.touchoff-probe-z
+net probe-corner         halui.mdi-command-04 <= pyvcp.probe-corner
+net touchoff-mat-xyz-0   halui.mdi-command-05 <= pyvcp.touchoff-xyz-0
+
+######################################################################
+# Start with estop disabled
+######################################################################
+
+setp halui.estop.reset 1
+setp halui.estop.reset 0

@@ -1,0 +1,13 @@
+o<touch_off_x> sub
+( see: http://7xcnc.com/software/probing/z-touch-plate/ )
+( Set current X position to 0 so that we will always be moving backward )
+G10 L20 P0 X0
+( Probe to X10 at F25 [Uses machine units, I work in mm, this is meant to be slow!] )
+G38.2 X10 f25
+( Set X0 at point where probe triggers with offset of +1.47 [this is the thickness of my PCB plate.] )
+G10 L20 P0 X1.47
+( Rapid move left to X-5 of the material )
+G0 X-5
+o<touch_off_x> endsub
+
+M2
