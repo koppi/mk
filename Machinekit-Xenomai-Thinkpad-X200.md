@@ -216,7 +216,7 @@ $ cat /etc/init.d/xenomai-latency
 
 INITNAME=/etc/init.d/xenomai-latency
 FILENAME=/proc/xenomai/latency
-LATENCY=830
+LATENCY=825
 
 test -e $FILENAME || exit 0
 
