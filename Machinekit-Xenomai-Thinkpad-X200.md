@@ -564,6 +564,10 @@ libbacktrace
 TODO
 ```
 
+### QtQuickVcp
+
+https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
+
 ### Installation Xenomai (2.6.4)
 
 * Neueres Xenomai bauen, siehe
