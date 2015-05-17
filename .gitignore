@@ -2,3 +2,5 @@ linuxcnc/configs/koppi-cnc/core
 linuxcnc/configs/koppi-cnc/koppi-cnc-pos.txt
 linuxcnc/configs/koppi-cnc/koppi-cnc.var
 linuxcnc/configs/koppi-cnc/koppi-cnc.var.bak
+linuxcnc/configs/koppi-cnc/koppi-cnc-history.txt
+linuxcnc/configs/koppi-cnc/koppi-cnc-tool.txt.bak
