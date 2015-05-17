@@ -573,3 +573,17 @@ TODO
 * Tool length probe switch
 
   http://softsolder.com/2010/04/17/ugliest-tool-length-probe-switch-repeatability/
+
+### Syntax Highlighting
+
+* emacs
+
+  http://pixpopuli.blogspot.de/2011/01/syntax-highlighting-for-cnc-g-code.html
+
+* vim
+
+  http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Highlighting_In_Vim
+
+* gedit
+
+  http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Highlighting_In_Gedit
