@@ -38,7 +38,9 @@ BIOS auf Werkseinstellungen zurücksetzen:
 
 ## Installation Debian Wheezy
 
+
 ```bash
+$ wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/7.8.0-live+nonfree/i386/iso-hybrid/debian-live-7.8.0-i386-gnome-desktop+nonfree.iso
 $ md5sum debian-live-7.8.0-i386-gnome-desktop+nonfree.iso
 0e9a2b9561d7380ff3015c8f81d9f1e2  debian-live-7.8.0-i386-gnome-desktop+nonfree.iso
 ```
@@ -216,7 +218,7 @@ $ cat /etc/init.d/xenomai-latency
 
 INITNAME=/etc/init.d/xenomai-latency
 FILENAME=/proc/xenomai/latency
-LATENCY=830
+LATENCY=825
 
 test -e $FILENAME || exit 0
 
@@ -561,6 +563,10 @@ libbacktrace
 ```bash
 TODO
 ```
+
+### QtQuickVcp
+
+https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
 
 ### Installation Xenomai (2.6.4)
 
