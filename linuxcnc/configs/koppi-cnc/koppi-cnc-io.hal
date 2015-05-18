@@ -38,7 +38,7 @@ net probe-pin-in <= lcec.0.3.din-1
 ###########################################################
 
 #net coolant-on => lcec.0.2.dout-0
-net spindle-cw <= lcec.0.1.dout-0
+net spindle-cw <= lcec.0.7.dout-0
 #net spindle-ccw <= lcec.0.2.dout-2
 #net z-brake => lcec.0.2.dout-3
 
