@@ -580,6 +580,10 @@ https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
 
   http://softsolder.com/2010/04/17/ugliest-tool-length-probe-switch-repeatability/
 
+* Component for engraving non flat surfaces using LinuxCNC
+
+  https://github.com/cnc-club/linuxcnc-engraving-comp
+
 ### Syntax Highlighting
 
 * emacs
