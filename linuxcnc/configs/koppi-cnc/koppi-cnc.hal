@@ -28,7 +28,9 @@ loadusr -W lcec_conf [LCEC]CONFIG
 loadrt lcec
 
 # load position controller PID instances
-loadrt pid names=x-pid,y-pid,z-pid 
+loadrt pid names=x-pid,y-pid,z-pid
+
+loadusr -W hal_input -KRAL Logitech
 
 ###########################################################
 # Functions

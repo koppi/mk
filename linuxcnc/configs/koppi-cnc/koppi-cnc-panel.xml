@@ -5,8 +5,8 @@
 <labelframe text="Touch Probe">
  <hbox>
   <rectled>
-   <width>"120"</width>
-   <height>"25"</height>
+   <width>"145"</width>
+   <height>"28"</height>
    <halpin>"probe-status"</halpin>
    <on_color>"green"</on_color>
    <off_color>"grey"</off_color>
@@ -44,4 +44,57 @@
   <bd>2</bd>
  </button>
 </vbox>
+<labelframe text="Compensation">
+  <vbox>
+    <number>
+      <halpin>"current-comp"</halpin>
+      <font>("Helvetica",24)</font>
+      <format>"4.4f"</format>
+    </number>
+<!--
+    <number>
+      <halpin>"current-z"</halpin>
+      <font>("Helvetica",24)</font>
+      <format>"4.4f"</format>
+    </number>
+-->
+    <hbox>
+      <rectled>
+        <halpin>"enable-led"</halpin>
+        <width>"28"</width>
+        <height>"28"</height>
+        <on_color>"green"</on_color>
+        <off_color>"grey"</off_color>
+      </rectled>
+      <button>
+        <halpin>"enable"</halpin>
+        <width>"11"</width>
+        <text>"Enable"</text>
+      </button>
+    </hbox>
+    <hbox>
+      <rectled>
+        <halpin>"reset-led"</halpin>
+        <width>"28"</width>
+        <height>"28"</height>
+        <on_color>"green"</on_color>
+        <off_color>"gray"</off_color>
+      </rectled>
+      <button>
+        <halpin>"reset"</halpin>
+        <width>"11"</width>
+        <text>"Reset"</text>
+      </button>
+    </hbox>
+    <labelframe text="Error">
+      <rectled>
+        <halpin>"error-led"</halpin>
+        <width>"145"</width>
+        <height>"28"</height>
+        <on_color>"gray"</on_color>
+        <off_color>"red"</off_color>
+      </rectled>
+    </labelframe>
+  </vbox>
+</labelframe>
 </pyvcp>

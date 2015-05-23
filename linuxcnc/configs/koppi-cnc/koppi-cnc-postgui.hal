@@ -62,3 +62,69 @@ net touchoff-mat-xyz-0   halui.mdi-command-05 <= pyvcp.touchoff-xyz-0
 
 setp halui.estop.reset 1
 setp halui.estop.reset 0
+
+######################################################################
+# Jogging with Joypad
+######################################################################
+
+setp halui.jog-speed 900
+
+net joy-x-jog halui.jog.0.analog <= input.0.abs-x-position
+net joy-y-jog halui.jog.1.analog <= input.0.abs-y-position
+net joy-z-jog halui.jog.2.analog <= input.0.abs-rz-position
+
+# I needed to reverse the direction of Y and Z axes.
+setp input.0.abs-y-scale -127.5
+setp input.0.abs-rz-scale -127.5
+
+# TODO http://www.microcopters.de/artikel/emc2-game-controller-zur-manuellen-cnc-steuerung
+
+######################################################################
+# Add compensation to Z axis to eliminate surface inflattness
+#
+# See https://github.com/cnc-club/linuxcnc-engraving-comp
+#
+######################################################################
+loadrt or2 count=2
+loadrt sum2 count=1
+
+loadusr -Wn compensation python koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
+
+addf or2.0 servo-thread
+addf or2.1 servo-thread
+addf sum2.0 servo-thread
+
+net xpos-cmd => compensation.x-map
+net ypos-cmd => compensation.y-map
+
+unlinkp z-pid.command
+unlinkp axis.2.motor-pos-cmd
+unlinkp axis.2.motor-pos-fb
+
+net zpos-cmd <= axis.2.motor-pos-cmd
+net zpos-cmd => axis.2.motor-pos-fb
+
+net zpos-cmd => sum2.0.in0
+net comp compensation.out => sum2.0.in1
+net zpos-cmd-comp sum2.0.out => z-pid.command
+
+net dout-00 <= motion.digital-out-00
+net dout-00 => or2.0.in0
+net comp-enable or2.0.out compensation.enable
+
+loadrt toggle count=1
+addf toggle.0 servo-thread
+net pyvcp-enable  toggle.0.in  <= pyvcp.enable
+net toggle-enable toggle.0.out => or2.0.in1
+
+net dout-01 <= motion.digital-out-01
+net dout-01 => or2.1.in0
+net pyvcp-reset pyvcp.reset => or2.1.in1
+net comp-reset or2.1.out compensation.reset
+
+net comp-enable => pyvcp.enable-led
+net comp-reset => pyvcp.reset-led
+net comp-error compensation.error => pyvcp.error-led
+
+#net zpos-cmd-comp => pyvcp.current-z
+net comp => pyvcp.current-comp
