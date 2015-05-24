@@ -4,10 +4,12 @@ o<touch_off_z> sub
 G10 L20 P0 Z0
 ( Probe to Z-10 at F25 [Uses machine units, I work in mm, this is meant to be slow!] )
 G38.2 Z-10 f25
-( Set Z0 at point where probe triggers with offset of +1.47 [this is the thickness of my PCB plate. You must adjust this for your plate / setup] )
-G10 L20 P0 Z1.47
-( Rapid up to Z10 above the material )
-G0 Z10
+( Set Z0 at point where probe triggers with offset of 0)
+G10 L20 P0 Z0
+( Rapid up to Z5 above the material )
+G0 Z5
+( Reload Axis GUI )
+M156
 o<touch_off_z> endsub
 
 M2

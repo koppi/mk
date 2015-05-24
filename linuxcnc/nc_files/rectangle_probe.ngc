@@ -38,8 +38,7 @@ G#<in_or_mm>
 
 (debug, Probing #<xsteps> * #<ysteps> = #<points> points)
 (LOGOPEN,rectangle_probe_result.txt)
-(LOG,# xmin = #<xmin> xmax = #<xmax> xinterval = #<xinterval> xsteps = #<xsteps>)
-(LOG,# ymin = #<ymin> ymax = #<ymax> yinterval = #<yinterval> ysteps = #<ysteps>)
+(LOG,# X Y Z)
 
 #<yct> = 0
 #<xct> = 0
@@ -73,14 +72,13 @@ O6     endif
        #<probex> = #5061
        #<probey> = #5062
        #<probez> = #5063
-       (LOG,X#<probex> Y#<probey> Z#<probex>)
+       (LOG,#<probex> #<probey> #<probez>)
        #<xct> = [#<xct> + 1]
 O3    endwhile
       G0Z#<zsafe>
       #<yct> = [#<yct> + 1]
 O2 endwhile
 
-(LOG,# Finished: total points = #<points>)
 (LOGCLOSE)
 (debug, Finished: see rectangle_probe_result.txt)
 
