@@ -94,12 +94,12 @@ addf or2.0 servo-thread
 addf or2.1 servo-thread
 addf sum2.0 servo-thread
 
-net xpos-cmd => compensation.x-map
-net ypos-cmd => compensation.y-map
-
 unlinkp z-pid.command
 unlinkp axis.2.motor-pos-cmd
 unlinkp axis.2.motor-pos-fb
+
+net x-pos-cmd => compensation.x-map
+net y-pos-cmd => compensation.y-map
 
 net zpos-cmd <= axis.2.motor-pos-cmd
 net zpos-cmd => axis.2.motor-pos-fb
