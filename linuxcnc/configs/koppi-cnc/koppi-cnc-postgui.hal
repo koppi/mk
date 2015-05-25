@@ -98,8 +98,13 @@ unlinkp z-pid.command
 unlinkp axis.2.motor-pos-cmd
 unlinkp axis.2.motor-pos-fb
 
-net x-pos-cmd => compensation.x-map
-net y-pos-cmd => compensation.y-map
+# for machine coordinate compensation values
+net x-pos-cmd-comp axis.0.joint-pos-cmd compensation.x-map
+net y-pos-cmd-comp axis.1.joint-pos-cmd compensation.y-map
+
+# for relative coordinate compensation values
+#net x-pos-cmd => compensation.x-map
+#net y-pos-cmd => compensation.y-map
 
 net zpos-cmd <= axis.2.motor-pos-cmd
 net zpos-cmd => axis.2.motor-pos-fb
@@ -128,3 +133,9 @@ net comp-error compensation.error => pyvcp.error-led
 
 #net zpos-cmd-comp => pyvcp.current-z
 net comp => pyvcp.current-comp
+
+######################################################################
+# Show current program line number
+######################################################################
+
+net motion-line motion.program-line => pyvcp.program-line

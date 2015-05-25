@@ -418,16 +418,22 @@ $ ./koppi-cnc-engraving-comp-plot.sh
 ### Desktop-Shortcut einrichten
 
 ```bash
-$ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop 
+$ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop
 ```
 
 ### AXIS icons
 
 Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/icons/): siehe [#3](https://github.com/koppi/mk/issues/3).
 
-### cnc-info.sh
+### koppi-cnc-info.sh
 
-![cnc-info.sh](pics/20150514-002.gi
+Ein Schell-Script, um schnell an die Infos über die Schrittmotorkarten zu kommen:
+```bash
+$ watch -t.1 koppi-cnc-info.sh
+```
+
+![koppi-cnc-info.sh](pics/20150514-002.gif)
+
 ## Links / Sonstiges
 
 Machinekit

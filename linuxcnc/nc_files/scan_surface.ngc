@@ -3,8 +3,8 @@
 ;
 
 o<scan_surface> sub
-  M64 P0  (turn off compensation)
-;  T1 M6 (Install probe)
+  M65 P0  (turn off Z axis compensation)
+  T1 M6   (Install probe)
 
   #<x0>          = #1 (0)
   #<y0>          = #2 (0)

@@ -97,4 +97,13 @@
     </labelframe>
   </vbox>
 </labelframe>
+<labelframe text="Current Program Line">
+  <vbox>
+    <s32>
+      <halpin>"program-line"</halpin>
+      <font>("Helvetica",24)</font>
+      <format>"10d"</format>
+    </s32>
+  </vbox>
+</labelframe>
 </pyvcp>
