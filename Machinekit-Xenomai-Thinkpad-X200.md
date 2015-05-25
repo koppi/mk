@@ -403,19 +403,18 @@ LinuxCNC / Machinekit AXIS:
 ### Kalibrierung der Z-Achsen Korrektur
 
 In AXIS unter MDI folgenden O-Code ausführen:
-
 ```
 o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
 ```
 
+Neue Messwerte aktivieren und Plot erstellen:
 ```bash
 $ cp engrcomp.txt koppi-cnc-engraving-comp.txt
 $ sudo apt-get -y install gnuplot-x11
 $ ./koppi-cnc-engraving-comp-plot.sh
 ```
 
-Visualisierung der Z-Achsen Korrektur
-
+Visualisierung der Z-Achsen Korrektur:
 ![Visualisierung der Z-Achsen Korrektur](linuxcnc/configs/koppi-cnc/koppi-cnc-engraving-comp.png)
 
 ### Desktop-Shortcut einrichten
