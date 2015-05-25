@@ -382,7 +382,18 @@ $ sudo cp linuxcnc/configs/koppi-cnc/50-joypad.rules /etc/udev/rules.d/50-joypad
 $ sudo udevadm trigger
 ```
 
-## AXIS starten
+### Z-Achsen Kalibrierung
+
+```
+o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
+```
+
+```bash
+$ cp engrcomp.txt koppi-cnc-engraving-comp.txt
+$ ./koppi-cnc-engraving-comp-plot.sh
+```
+
+### AXIS starten
 
 ```bash
 $ linuxcnc ~/linuxcnc/configs/koppi-cnc/koppi-cnc.ini
@@ -398,7 +409,7 @@ emcTaskInit: using builtin interpreter
 
 LinuxCNC / Machinekit AXIS:
 
-![LinuxCNC / Machinekit AXIS](pics/20150515-002.png)
+![LinuxCNC / Machinekit AXIS](pics/20150525-001.png)
 
 Desktop-Shortcut einrichten:
 
@@ -412,8 +423,7 @@ Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/ic
 
 TODO - ```cnc-info.sh```:
 
-![cnc-info.sh](pics/20150514-002.gif)
-
+![cnc-info.sh](pics/20150514-002.gi
 ## Links / Sonstiges
 
 Machinekit
