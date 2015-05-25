@@ -131,7 +131,7 @@ class Compensation :
 				z1 = ((y2-y)*z1 + (y-y1)*z2)/(y2-y1)
 
 			#print x2,y2,z1
-                        print "%4.2f,%4.2f %4.2f,%4.2f %4.2f" % (mx,my,x,y,z1)
+                        #print "%4.2f,%4.2f %4.2f,%4.2f %4.2f" % (mx,my,x,y,z1)
 			return z1
 
 
