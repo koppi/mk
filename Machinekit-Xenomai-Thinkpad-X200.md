@@ -402,6 +402,9 @@ LinuxCNC / Machinekit AXIS:
 
 ### Kalibrierung der Z-Achsen Korrektur
 
+Taster einspannen:
+![Taster](pics/20150525-002.jpg)
+
 In AXIS unter MDI den O-Code [scan_surface](linuxcnc/nc_files/scan_surface.ngc) ausführen:
 ```
 o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
