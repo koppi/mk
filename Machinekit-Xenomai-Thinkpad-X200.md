@@ -5,7 +5,7 @@
  1. IBM Thinkpad X200 mit Debian Wheezy / Linux 3.8.1 / Machinekit 0.1 / Xenomai 2.6.3
  2. 24VDC 50W Netzteil
  3. Beckhoff EtherCAT Komponenten
- 4. 24V-380V 40A 250V SSR-40 DA Solid State Relay Modul 3-32V
+ 4. SSR-40 DA Solid State Relay Modul (– wird momentan nicht verwendet, stattdessen die EL2622-Klemme)
  5. Stromversorgung Kress / Staubsauger
 
 Übersicht Steuerungselektronik:
@@ -205,7 +205,7 @@ $ timeout 6000 xeno latency
 Nach 10 Minuten "lat min" notieren und folgendes Init-Script anlegen, Variable LATENCY unten anpassen ("lat min" * 1000):
 
 ```bash
-$ cat /etc/init.d/xenomai-latency 
+$ cat /etc/init.d/xenomai-latency
 #!/bin/sh -e
 ### BEGIN INIT INFO
 # Provides:          xenomai-latency
