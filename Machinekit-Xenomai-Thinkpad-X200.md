@@ -402,7 +402,10 @@ LinuxCNC / Machinekit AXIS:
 
 ### Kalibrierung der Z-Achsen Korrektur
 
-In AXIS unter MDI folgenden O-Code ausführen:
+Taster einspannen:
+![Taster](pics/20150525-002.jpg)
+
+In AXIS unter MDI den O-Code [scan_surface](linuxcnc/nc_files/scan_surface.ngc) ausführen:
 ```
 o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
 ```
@@ -413,8 +416,6 @@ $ cp engrcomp.txt koppi-cnc-engraving-comp.txt
 $ sudo apt-get -y install gnuplot-x11
 $ ./koppi-cnc-engraving-comp-plot.sh
 ```
-
-Visualisierung der Z-Achsen Korrektur:
 ![Visualisierung der Z-Achsen Korrektur](linuxcnc/configs/koppi-cnc/koppi-cnc-engraving-comp.png)
 
 ### Desktop-Shortcut einrichten
@@ -429,7 +430,7 @@ Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/ic
 
 ### koppi-cnc-info.sh
 
-Ein Schell-Script, um schnell an die Infos über die Schrittmotorkarten zu kommen:
+Anzeige der Parameter der Schittmotorklemmen mittels [koppi-cnc-info.sh](linuxcnc/configs/koppi-cnc/koppi-cnc-info.sh):
 ```bash
 $ watch -t.1 koppi-cnc-info.sh
 ```
