@@ -427,7 +427,7 @@ Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/ic
 
 ### koppi-cnc-info.sh
 
-Ein Schell-Script, um schnell an die Infos über die Schrittmotorkarten zu kommen:
+Anzeige der Parameter der Schittmotorklemmen mittels [koppi-cnc-info.sh](linuxcnc/configs/koppi-cnc/koppi-cnc-info.sh):
 ```bash
 $ watch -t.1 koppi-cnc-info.sh
 ```
