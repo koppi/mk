@@ -1,0 +1,2 @@
+KERNEL=="js[0-9]*", SUBSYSTEM=="input", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="input", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c219", ACTION=="add", RUN+="/usr/local/bin/jscal.sh"

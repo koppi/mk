@@ -8,6 +8,8 @@ G38.2 X10 f25
 G10 L20 P0 X1.47
 ( Rapid move left to X-5 of the material )
 G0 X-5
+( Reload Axis GUI )
+M156
 o<touch_off_x> endsub
 
 M2

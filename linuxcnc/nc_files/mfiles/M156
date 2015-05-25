@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# refesh AXIS display
+
+axis-remote --reload &
+
+exit 0

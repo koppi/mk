@@ -1,52 +1,44 @@
-; Scan surface sub for compensation component
-; Usage o<scan-surface> call [#<x0>] [#<y0>] [#<h>] [#<w>] [#<step>] [#<search_feed>] [#<latch_feed>] [#<safe_z>] [#<search_z>]
-; All parameters are needed!
 ;
-; Example:
-; #<h> = 90 
-; #<w> = 90 
-; #<x0> = 110
-; #<y0> = 90
-; #<step> = 20
-; #<search_feed> = 100
-; #<latch_feed> = 1
-; #<safe_z> = 3
-; #<search_z> = -3
-;
-; o<scan-surface> call [#<x0>] [#<y0>] [#<h>] [#<w>] [#<step>] [#<search_feed>] [#<latch_feed>] [#<safe_z>] [#<search_z>]
+; o<scan_surface> call [#<x0>] [#<y0>] [#<h>] [#<w>] [#<step>] [#<search_feed>] [#<latch_feed>] [#<safe_z>] [#<search_z>]
 ;
 
+o<scan_surface> sub
+  M64 P0  (turn off compensation)
+;  T1 M6 (Install probe)
 
-o<scan-surface> sub
-	M64 P0  (turn off compensation)
-	T1 M6 (Install probe)
-	#<x0> = #1
-	#<y0> = #2
-	#<h> = #3
-	#<w> = #4 
-	#<step> = #5
-	#<search_feed> = #6
-	#<latch_feed> = #7
-	#<safe_z> = #8
-	#<search_z> = #9
+  #<x0>          = #1 (0)
+  #<y0>          = #2 (0)
+  #<h>           = #3 (150)
+  #<w>           = #4 (150)
+  #<step>        = #5 (20)
+  #<search_feed> = #6 (100)
+  #<latch_feed>  = #7 (25)
+  #<safe_z>      = #8 (5)
+  #<search_z>    = #9 (-10)
 
-	(PROBEOPEN koppi-cnc-engraving-comp.txt)
+  (PROBEOPEN engrcomp.txt)
 
-	G0 #<safe_z>
-	#<y> = #<y0>
-	o101 while [#<y> LT #<h>+#<y0>]
-	  #<x> = #<x0>
-	  o102 while [#<x> LT #<w>+#<x0>]
-		G0 X#<x> Y#<y> 
-		F[#<search_feed>]
-		G38.3 [Z#<search_z>]
-		F[#<latch_feed>]
-		G38.5 [Z#<safe_z>]
-	   G0 #<safe_z> 
-		#<x> = [#<x>+#<step>]
-	  o102 endwhile
-	  #<y> = [#<y>+#<step>]
-	o101 endwhile
+  G0 Z#<safe_z>
+  #<y> = [#<y0>]
+  o101 while [#<y> LT #<h>+#<y0>]
+    #<x> = [#<x0>]
+    o102 while [#<x> LT #<w>+#<x0>]
+    G0 X#<x> Y#<y>
+    F#<search_feed>
+    G38.3 Z#<search_z>
+    F#<latch_feed>
+    G38.5 Z#<safe_z>
+     G0 Z#<safe_z>
+    #<x> = [#<x>+#<step>]
+    o102 endwhile
+    #<y> = [#<y>+#<step>]
+  o101 endwhile
 
-	(PROBECLOSE)
-o<scan-surface> endsub
+  (PROBECLOSE)
+  (debug, Finished: see engrcomp.txt)
+
+  G0Z#<safe_z>
+  G0X#<x0>Y#<y0>
+o<scan_surface> endsub
+
+M2

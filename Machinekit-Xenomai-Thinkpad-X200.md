@@ -371,6 +371,17 @@ $ sudo make -C linuxcnc-ethercat install
 
 Konfigurationsdateien: [linuxcnc/configs/koppi-cnc](linuxcnc/configs/koppi-cnc)
 
+### JoyPad einrichten
+
+```bash
+$ sudo apt-get -y install jstest-gtk joystick
+$ jscal -p /dev/input/jsX > jscal.sh # replace X with your joypad's number
+$ sudo mv jscal.sh /usr/local/bin
+$ sudo chmod +x /usr/local/bin/jscal.sh
+$ sudo cp linuxcnc/configs/koppi-cnc/50-joypad.rules /etc/udev/rules.d/50-joypad.rules
+$ sudo udevadm trigger
+```
+
 ## AXIS starten
 
 ```bash

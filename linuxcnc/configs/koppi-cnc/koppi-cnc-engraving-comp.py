@@ -18,6 +18,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 """
 work_thread = 0.05 # work_thread means how often pins will be updated (sec)
 
+# koppi-cnc:
+# probe "o<scan_surface> call [0] [0] [220] [220] [10] [100] [10] [1.5] [-3]"
+#
 
 import sys
 
@@ -53,13 +56,18 @@ class Compensation :
 		for line in probe_lines :
 			coords = [float(i) for i in line.split()]
 			x,y,z = coords[0:3]
-			x,y = round(x,4), round(y,4)
+			x,y = int(round(x,0)), int(round(y,0))
+                        print "x,y = %d,%d" % (x,y)
 			if x not in self.comp :  self.comp[x] = {}
 			self.comp[x][y] = z
 			if not x in self.x_coords : self.x_coords.append(x)
 			if not y in self.y_coords : self.y_coords.append(y)
+
 		self.x_coords.sort()
 		self.y_coords.sort()
+
+                print "x_coords: %s" % (self.x_coords)
+                print "y_coords: %s" % (self.y_coords)
 
 		# check map integrity, map should be rectangular!
 		for x in self.x_coords :
@@ -67,17 +75,20 @@ class Compensation :
 				if not x in self.comp or not y in self.comp[x] :
 					print "ERROR! Map should be rectangular. Can't find point %s,%s"%(x,y)
 					sys.exit()
+                                else:
+                                        print "%d,%d in self.comp" % (x,y)
 		self.len_x = len(self.x_coords)
 		self.range_x = range(self.len_x)
 		self.len_y = len(self.y_coords)
 		self.range_y = range(self.len_y)
-		print self.x_coords
+		#print self.x_coords
 		for x in self.comp :
 			print x, "     ",self.comp[x]
 		print self.len_x, self.len_y
 		self.error = True
 
 	def get_comp(self,x,y) :
+                        #print x,y
 			x = max(self.x_coords[0],min(self.x_coords[-1],x))
 			y = max(self.y_coords[0],min(self.y_coords[-1],y))
 			i = 0
