@@ -434,7 +434,7 @@ Ein Schell-Script, um schnell an die Infos über die Schrittmotorkarten zu komme
 $ watch -t.1 koppi-cnc-info.sh
 ```
 
-![koppi-cnc-info.sh](pics/20150514-002.png)
+![koppi-cnc-info.sh](pics/20150514-002.gif)
 
 ## Links / Sonstiges
 
