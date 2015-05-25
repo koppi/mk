@@ -1,0 +1,80 @@
+/*
+ * G-code meta compiler
+ *
+ * Copyright (C) 2014  B. Stultiens
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * tracepath() - Trace a path
+ * Operation:
+ * - Goto last path entry
+ * - Move to cutting depth z
+ * - Move to all path entries
+ * - Return to orginal Z position
+ * Optional dwells for dw seconds at each path entry.
+ *
+ * Input:
+ * path - vectorlist containing XY points
+ * z    - cutting depth
+ * dw   - dwell at each point if >= 0
+ *
+ * Return value: none
+ */
+function tracepath(path, z = undef(), dw = -1)
+{
+	local oldz;
+	if(!isvectorlist(path)) {
+		error("tracepath(): Argument 1 'path' must be a vectorlist");
+		return;
+	}
+	if(count(path) <= 0) {
+		error("tracepath(): Argument 1 'path' vectorlist must contain at least one vector");
+		return;
+	}
+	if(!isundef(z) && !isscalar(z)) {
+		error("tracepath(): Argument 2 'z' must be a scalar");
+		return;
+	}
+	if(!isscalar(dw)) {
+		error("tracepath(): Argument 3 'dw' must be a scalar");
+		return;
+	}
+	if(!isnone(dw)) {
+		warning("tracepath(): Argument 3 'dw' has units associated, ignored");
+		dw = to_none(dw);
+	}
+	comment("-- tracepath at Z=", z, " --");
+	path = tail(path, -1) + head(path, 1);	/* Rotate list by one */
+	oldz = position()[2];
+	goto(path[-1]);
+	if(!isundef(z)) {
+		move([-, -, z]);
+	}
+	if(dw >= 0) {
+		dwell(dw);
+	}
+	foreach(path; vp) {
+		move(vp);
+		if(dw >= 0) {
+			dwell(dw);
+		}
+	}
+	if(!isundef(z)) {
+		move([-, -, oldz]);
+	}
+	comment("-- tracepath end --");
+	return;		/* return an undef */
+}

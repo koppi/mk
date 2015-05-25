@@ -1,0 +1,39 @@
+/*
+ * vlistrotate() - Vectorlist rotate
+ * Operation:
+ * Rotate all vector list entries to the left or right.
+ *
+ * Input:
+ * vlist - vectorlist containing points
+ * n    - Number of places to rotate: <0 left, >0 right.
+ *
+ * Return value: new vlist
+ */
+function vlistrotate(vlist, n)
+{
+	local pn, i, res;
+	if(!isvectorlist(vlist)) {
+		error("vlistrotate(): Argument 1 'vlist' must be a vectorlist");
+		return;
+	}
+	if(!isscalar(n)) {
+		error("vlistrotate(): Argument 2 'n' must be a scalar");
+		return;
+	}
+	if(!isnone(n) || !isint(n)) {
+		warning("vlistrotate(): Argument 2 'n' must be integer and no unit associated");
+		n = to_int(to_none(n));
+	}
+
+	message("vlistrotate(): Decrecated function. Please instead use: tail(vlist, n) + head(vlist, -n)");
+
+	pn = count(vlist);
+	if(pn <= 0) {
+		return {};	/* Path is empty */
+	}
+	n = n % pn;		/* Real shifts needed */
+	if(n == 0) {
+		return vlist;	/* Zero or multiples of count(vlist) result in vlist */
+	}
+	return tail(vlist, n) + head(vlist, -n);
+}

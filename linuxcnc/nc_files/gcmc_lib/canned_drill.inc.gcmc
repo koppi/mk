@@ -1,0 +1,245 @@
+/*
+ * G-code meta compiler
+ *
+ * Copyright (C) 2014  B. Stultiens
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+const __CANNED_DRILL_PECK_CLEARANCE = 0.1mm;	/* Clearance in Z above hole bottom for each peck-cycle before moving at feedrate */
+
+/*
+ * Canned drilling cycle with/without dwell at bottom.
+ *
+ * Input:
+ * - holelist: vectorlist
+ *	List of coordinates to drill. Must include at least one entry and the
+ *	first vector in the list must include a Z-coordinate to define the
+ *	drilling depth. Each subsequent vector must include at least one X or Y
+ *	coordinate or possibly both. Each vector may include a Z-coordinate to
+ *	define a new drilling depth.
+ * - retractz: scalar
+ *	Defines the Z-coordinate to retract to (R-plane).
+ * - dw: scalar
+ *	Time to dewll at the bottom of the hole. If negative, no dwelling is
+ *	performed.
+ * - oldz: scalar
+ *	True (non-zero) assures that each cycle returns to the original
+ *	Z-position. False (zero) indicates to remain at the R-plane.
+ *
+ * Output: none
+ */
+function canned_drill(holelist, retractz, dw, oldz)
+{
+	local zdrill, prevz;
+	local mkunitsum = ismodemm() ? 0.0mm : 0.0in;
+	local pfx;
+	pfx = "canned_drill(): ";
+	if(!isvectorlist(holelist)) {
+		error(pfx, "Argument 1 'holelist' must be of type vectorlist");
+		return;
+	}
+	if(count(holelist) <= 0) {
+		warning(pfx, "Argument 1 'holelist' has no entries, canned cycle not performed");
+		return;
+	}
+	if(count(holelist[0]) <= 2 || isundef(holelist[0][2])) {
+		error(pfx, "Argument 1 'holelist[0]' has no Z-coordinate");
+		return;
+	}
+	if(!isscalar(retractz)) {
+		error(pfx, "Argument 2 'retractz' must be scalar");
+		return;
+	}
+	if(!isscalar(dw)) {
+		error(pfx, "Argument 3 'dw' must be scalar");
+		return;
+	}
+	if(!isnone(dw)) {
+		warning(pfx, "Argument 3 'dw' should not have units, ignored");
+		dw = to_none(dw);
+	}
+	if(!isscalar(oldz)) {
+		error(pfx, "Argument 4 'oldz' must be scalar");
+		return;
+	}
+	if(!isnone(oldz) || !isint(oldz)) {
+		warning(pfx, "Argument 4 'oldz' should not be integer and not have units associated");
+		oldz = !!to_none(oldz);
+	}
+
+	retractz += mkunitsum;		/* Make sure to have units attached */
+	prevz = position()[2];
+
+	comment("-- canned_drill R-plane=", retractz, " dewlling=", dw, " return-to-old-Z=", oldz, " --");
+
+	pathmode(1);			/* Set exact pathmode to reach each point */
+
+	/* Retract if below the R-plane */
+	if(prevz < retractz) {
+		prevz = retractz;
+		goto([-, -, retractz]);
+	}
+
+	/* Loop through all vectors to drill */
+	foreach(holelist; v) {
+		if(count(v) > 2 && !isundef(v[2])) {
+			zdrill = v[2] + mkunitsum;	/* The depth of drilling */
+		}
+		goto(head(v, 2));			/* Rapid to point over XY */
+		if(zdrill >= retractz) {
+			warning(pfx, "drilling at ", head(v, 2), " to depth ", zdrill, " is higher than retract-plane (", retractz, "), skipping");
+			continue;
+		}
+		goto([-, -, retractz]);			/* Rapid parallel to Z-axis to retract position */
+		move([-, -, zdrill]);			/* Drill the hole */
+		if(dw >= 0.0) {
+			dwell(dw);
+		}
+		goto([-, -, oldz ? prevz : retractz]);	/* Rapid parallel to Z-axis to retract position */
+	}
+	if(oldz) {
+		if(prevz > retractz) {
+			goto([-, -, prevz]);
+		} elif(prevz < retractz) {
+			warning(pfx, "oldz return requested, but oldz (", prevz,") is below retract-plane (", retractz,"), staying at retract-plane");
+		}
+	}
+	comment("-- end canned_drill --");
+	return;		/* Return an undef */
+}
+
+/*
+ * Canned drilling cycle with peck.
+ *
+ * Input:
+ * - holelist: vectorlist
+ *	List of coordinates to drill. Must include at least one entry and the
+ *	first vector in the list must include a Z-coordinate to define the
+ *	drilling depth. Each subsequent vector must include at least one X or Y
+ *	coordinate or possibly both. Each vector may include a Z-coordinate to
+ *	define a new drilling depth.
+ * - retractz: scalar
+ *	Defines the Z-coordinate to retract to (R-plane).
+ * - delta: scalar
+ *	Incremental drill depth for each peck cycle. The value of delta must be
+ *	larger than 0.0.
+ * - oldz: scalar
+ *	True (non-zero) assures that each cycle returns to the original
+ *	Z-position. False (zero) indicates to remain at the R-plane.
+ *
+ * Output: none
+ */
+function canned_drill_peck(holelist, retractz, delta, oldz)
+{
+	local zdrill, prevz, zpos, clearance;
+	local mkunitsum = ismodemm() ? 0.0mm : 0.0in;
+	local pfx = "canned_drill_peck(): ";
+	if(!isvectorlist(holelist)) {
+		error(pfx, "Argument 1 'holelist' must be of type vectorlist");
+		return;
+	}
+	if(count(holelist) <= 0) {
+		warning(pfx, "Argument 1 'holelist' has no entries, canned cycle not performed");
+		return;
+	}
+	if(count(holelist[0]) <= 2 || isundef(holelist[0][2])) {
+		error(pfx, "Argument 1 'holelist[0]' has no Z-coordinate");
+		return;
+	}
+	if(!isscalar(retractz)) {
+		error(pfx, "Argument 2 'retractz' must be scalar");
+		return;
+	}
+	if(!isscalar(delta)) {
+		error(pfx, "Argument 3 'delta' must be scalar");
+		return;
+	}
+	delta += mkunitsum;		/* Make sure to have units attached */
+	if(delta < 0.0mm) {
+		error(pfx, "Argument 3 'delta' must > 0.0");
+		return;
+	}
+	if(!isscalar(oldz)) {
+		error(pfx, "Argument 4 'oldz' must be scalar");
+		return;
+	}
+	if(!isnone(oldz) || !isint(oldz)) {
+		warning(pfx, "Argument 4 'oldz' should not be integer and not have units associated");
+		oldz = !!to_none(oldz);
+	}
+
+	clearance = 0.1 * delta;
+	if(clearance > 2.0*__CANNED_DRILL_PECK_CLEARANCE) {
+		clearance = 2.0*__CANNED_DRILL_PECK_CLEARANCE;
+	} elif(clearance < __CANNED_DRILL_PECK_CLEARANCE) {
+		clearance = __CANNED_DRILL_PECK_CLEARANCE;
+	}
+	retractz += mkunitsum;		/* Make sure to have units attached */
+	prevz = position()[2];
+
+	comment("-- canned_drill_peck R-plane=", retractz, " peck-increment=", delta, " return-to-old-Z=", oldz, " --");
+
+	pathmode(1);			/* Set exact pathmode to reach each point */
+
+	/* Retract if below the R-plane */
+	if(prevz < retractz) {
+		prevz = retractz;
+		goto([-, -, retractz]);
+	}
+	/* Loop through all vectors to drill */
+	foreach(holelist; v) {
+		if(count(v) > 2 && !isundef(v[2])) {
+			zdrill = v[2] + mkunitsum;	/* The depth of drilling */
+		}
+		goto(head(v, 2));			/* Rapid to point over XY */
+		if(zdrill >= retractz) {
+			warning(pfx, "drilling at ", head(v, 2), " to depth ", zdrill, " is higher than retract-plane (", retractz, "), skipping");
+			continue;
+		}
+		goto([-, -, retractz]);			/* Rapid parallel to Z-axis to retract position */
+		if(retractz - delta >= zdrill) {
+			move([-, -, retractz - delta]);	/* Initial drill */
+			goto([-, -, retractz]);
+		} else {
+			move([-, -, zdrill]);		/* Initial drill is also final */
+			goto([-, -, oldz ? prevz : retractz]);	/* Rapid parallel to Z-axis to retract position */
+			continue;
+		}
+		for(zpos = retractz - 2.0*delta; zpos > zdrill; zpos -= delta) {
+			goto([-, -, zpos + delta + clearance]);	/* Rapid back into the hole just above previous depth */
+			move([-, -, zpos]);			/* Drill the hole incrementally */
+			goto([-, -, retractz]);			/* Rapid parallel to Z-axis to retract position */
+		}
+		zpos += delta;
+		if(zpos > zdrill) {				/* Check to see if depth was reached exactly */
+			goto([-, -, zpos + clearance]);		/* If not, drill to final depth */
+			move([-, -, zdrill]);
+			goto([-, -, retractz]);
+		}
+		if(oldz) {
+			goto([-, -, prevz]);
+		}
+	}
+	if(oldz) {
+		if(prevz > retractz) {
+			goto([-, -, prevz]);
+		} elif(prevz < retractz) {
+			warning(pfx, "oldz return requested, but oldz (", prevz,") is below retract-plane (", retractz,"), staying at retract-plane");
+		}
+	}
+	comment("-- end canned_drill_peck --");
+	return;		/* Return an undef */
+}
+

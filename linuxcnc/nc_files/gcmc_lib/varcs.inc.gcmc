@@ -1,0 +1,359 @@
+/*
+ * G-code meta compiler
+ *
+ * Copyright (C) 2015  B. Stultiens
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* Default maximum intervals for arc vectorization */
+const VARCS_DEFAULT_MAXA = 1.0deg;
+const VARCS_DEFAULT_MAXL = 0.1mm;
+
+/*
+ * __varcs_all() - Calculate a vectorlist for all arcs CW and CCW in the XY
+ * plane.
+ * The arc runs from [0, 0] to endpoint (epin) with given radius. The shortest
+ * arc route is taken om positive radius and the longest route on negative
+ * radius. The turns parameter adds a number of full turns in the CW or CCW
+ * directions.
+ * The arc is vectorized with straight lines with intervals with a maximum
+ * angle of maxa or a maximum length of maxl. The value resulting in the
+ * maximum number of steps is used.
+ * Circles are denoted with the epin argument pointing to the center point of
+ * the circle. The rotation is always full in the desired direction.
+ */
+function __varcs_all(fname, ccw, circ, epin, radius, turns, maxl, maxa)
+{
+	local mkunitsum = ismodemm() ? 0.0mm : 0.0in;
+	if(!isstring(fname)) {
+		error(fname, ": (internal) __varcs_all: Argument 1 'fname' must be string");
+	}
+	if(!isint(ccw) || !isnone(ccw)) {
+		error(fname, ": (internal) __varcs_all: Argument 2 'ccw' must be boolean");
+	}
+	if(!isint(circ) || !isnone(circ)) {
+		error(fname, ": (internal) __varcs_all: Argument 3 'circ' must be boolean");
+	}
+	if(!isvector(epin)) {
+		if(circ) {
+			error(fname, ": Argument 'centerpoint' must be a vector");
+		} else {
+			error(fname, ": Argument 'endpoint' must be a vector");
+		}
+	}
+	if(count(epin) < 2 || isundef(epin.x) || isundef(epin.y)) {
+		if(circ) {
+			error(fname, ": Argument 'centerpoint' must at least have defined X and Y coordinates");
+		} else {
+			error(fname, ": Argument 'endpoint' must at least have defined X and Y coordinates");
+		}
+	}
+	if(!isscalar(radius)) {
+		error(fname, ": Argument 'radius' must be scalar");
+	}
+	if(isnone(radius)) {
+		radius += mkunitsum;	// Enforce default distance units on value
+	}
+	if(!isdistance(radius)) {
+		error(fname, ": Argument 'radius' must be distance");
+	}
+	radius = to_float(radius);	// Ensure fp calculation
+	if(radius == 0.0mm) {
+		error(fname, ": Argument 'radius' must not be zero");
+	}
+	if(!isscalar(turns)) {
+		error(fname, ": Argument 'turns' must be scalar");
+	}
+	if(!isnone(turns)) {
+		warning(fname, ": Argument 'turns' has units associated, ignored");
+		turns = to_none(turns);
+	}
+	if(turns < 0) {
+		error(fname, ": Argument 'turns' must be larger or equal zero");
+	}
+	if(!isint(turns) && to_float(to_int(turns)) != turns) {
+		warning(fname, ": Argument 'turns' must be integer, truncated");
+		turns = to_int(turns);
+	}
+	if(!isscalar(maxl)) {
+		error(fname, ": Argument 'maxl' must be scalar");
+	}
+	if(isnone(maxl)) {
+		maxl += mkunitsum;	// Enforce default distance units on value
+	}
+	if(!isdistance(maxl)) {
+		error(fname, ": Argument 'maxl' must be distance");
+	}
+	maxl = to_float(maxl);		// Ensure fp calculation
+	if(maxl <= 0.0mm) {
+		error(fname, ": Argument 'maxl' must be larger than zero");
+	}
+	if(!isscalar(maxa)) {
+		error(fname, ": Argument 'maxa' must be scalar");
+	}
+	if(isnone(maxa)) {
+		maxl += 0.0rad;		// Enforce default angular units on value
+	}
+	if(!isangle(maxa)) {
+		error(fname, ": Argument 'maxa' must be angular");
+	}
+	maxa = to_float(maxa);		// Ensure fp calculation
+	if(maxa <= 0.0rad) {
+		error(fname, ": Argument 'maxa' must be larger than zero");
+	}
+
+	local arcv = {};		// Vector list of the result
+	local orgradius = radius;	// for messages
+
+	if(ccw) {
+		// CCW is mathematically reversed for angular movement
+		radius *= -1.0;
+	}
+	local sp = [0.0mm, 0.0mm];	// Start point
+	local ep;
+	local cp;
+	if(!circ) {
+		// Arcs need to find the center point
+		ep = head(epin, 2);	// Get 2D endpoint
+		// The normal of the sp <-> ep vector pointing to the center
+		local normal = normalize([ep.y, -ep.x]);
+		if(radius < 0.0mm) {
+			normal *= -1.0;
+			radius *= -1.0;
+		}
+		/*local a = length(normal);*/	// Always 1.0
+		local b = 0.5 * (ep * normal);
+		local c = 0.25 * (ep * ep) - radius * radius;
+		local d = b * b - 4.0 /* * a*/ * c;
+		if(to_none(d) < 0.0) {
+			error(fname, "() radius (", orgradius, ") is less than two times distance from start to end (D=", d, ")");
+		}
+		cp = 0.5 * ep + (-b + sqrt(d) / (2.0 /* *a */)) * normal;
+	} else {
+		// Full circles have center point as argument and the end point
+		// is alsways the same as the start point
+		ep = sp;
+		cp = -head(epin, 2);
+	}
+
+	// Now having:
+	// sp = start point
+	// ep = end point
+	// cp = arc center
+	local astart = atan_xy(-cp);	// Starting angle
+	local aend;			// Ending angle
+	if(!circ) {
+		aend = atan_xy(ep - cp);
+	} else {
+		// Full circles are always 2pi
+		if(ccw) {
+			aend = astart + 2.0rad*pi();
+		} else {
+			aend = astart - 2.0rad*pi();
+		}
+	}
+
+	// The code is degenerate if angles are negative (mod 2pi problem)
+	if(astart < 0.0rad || aend < 0.0rad) {
+		astart += 2.0rad * pi();
+		aend += 2.0rad * pi();
+	}
+	// Ensure correct direction of angular movement
+	if(ccw && aend < astart) {
+		aend += 2.0rad * pi();
+	} elif(!ccw && astart < aend) {
+		astart += 2.0rad * pi();
+	}
+
+	// Correct the end-angle to the number of turns
+	if(ccw) {
+		aend += turns * 2.0rad * pi();
+	} else {
+		aend -= turns * 2.0rad * pi();
+	}
+
+	// Calculate the angle and distance of movement
+	local atot = aend - astart;	// Angle to traverse
+	local astep;			// Angular step
+	local nstep;			// Number of steps
+
+	// FIXME: the number of steps does not take an optional Z-axis movement
+	// into account. This is a slightly more involved problem because it is
+	// dependent on the actual number of steps...
+
+	// Calculate steps based on max length and max angle
+	local sa = to_int(ceil(abs(atot) / (2.0 * asin(0.5*maxl / length(cp)))));
+	local sl = to_int(ceil(abs(atot) / maxa));
+	// We should use at least two steps in the trace
+	if(sa <= 1) {
+		sa = 2;
+	}
+	if(sl <= 1) {
+		sl = 2;
+	}
+	// Choose number of steps which is largest
+	if(sa > sl) {
+		astep = atot / sa;
+		nstep = sa;
+	} else {
+		astep = atot / sl;
+		nstep = sl;
+	}
+
+	// Traverse the arc up to but not including the endpoint
+	local ang;
+	local offs;
+	local i;
+	if(count(epin) < 3 || isundef(epin.z)) {
+		// 2D arc
+		offs = [radius * cos(astart), radius * sin(astart)];
+		repeat(nstep-1; i) {
+			ang = i * astep + astart;
+			arcv += { [radius * cos(ang), radius * sin(ang)] - offs };
+		}
+	} else {
+		// 3D arc (spiral)
+		sp.z = epin.z;		// Circle's end position in z must be copied for return
+		offs = [radius * cos(astart), radius * sin(astart), 0.0mm];
+		repeat(nstep-1; i) {
+			ang = i * astep + astart;
+			arcv += { [radius * cos(ang), radius * sin(ang), i * epin.z / to_float(nstep)] - offs };
+		}
+	}
+	// And add the endpoint to be exact
+	if(circ) {
+		return arcv + { sp };
+	} else {
+		return arcv + { epin };
+	}
+}
+
+/*
+ * __varcs_plane_ep_cvt: Convert the endpoint to the active plane
+ */
+function __varcs_plane_ep_cvt(fname, ep, actplane)
+{
+	if(actplane == PLANE_XY) {
+		return ep;
+	} elif(actplane == PLANE_XZ) {
+		if(count(ep) < 3) {
+			error(fname, ": Argument 1 'endpoint' must have at least 3 coordinates");
+		} else {
+			return [ep.x, ep.z, ep.y];
+		}
+	} elif(actplane == PLANE_YZ) {
+		if(count(ep) < 3) {
+			error(fname, ": Argument 1 'endpoint' must have at least 3 coordinates");
+		} else {
+			return [ep.y, ep.z, ep.x];
+		}
+	} else {
+		error(fname, ": (internal) __varcs_plane_ep_cvt: Undefined plane value");
+	}
+	return [];
+}
+
+/*
+ * __varcs_plane_list_cvt: Convert the generated vectorlist back to the active
+ * plane
+ */
+function __varcs_plane_list_cvt(fname, &vl, actplane)
+{
+	local i, v;
+	if(actplane == PLANE_XY) {
+		return;
+	} elif(actplane == PLANE_XZ) {
+		if(count(vl[0]) < 3) {
+			repeat(count(vl); i) {
+				v = vl[i-1];
+				vl[i-1] = [v.x, -, v.y];
+			}
+		} else {
+			repeat(count(vl); i) {
+				v = vl[i-1];
+				vl[i-1] = [v.x, v.z, v.y];
+			}
+		}
+	} elif(actplane == PLANE_YZ) {
+		if(count(vl[0]) < 3) {
+			repeat(count(vl); i) {
+				v = vl[i-1];
+				vl[i-1] = [-, v.x, v.y];
+			}
+		} else {
+			repeat(count(vl); i) {
+				v = vl[i-1];
+				vl[i-1] = [v.z, v.x, v.y];
+			}
+		}
+	} else {
+		error(fname, ": (internal) __varcs_plane_list_cvt: Undefined plane value");
+	}
+}
+
+function __varcs_check_plane(fname, pl)
+{
+	if(!isint(pl) || !isnone(pl) || (pl != PLANE_XY && pl != PLANE_XZ && pl != PLANE_YZ)) {
+		error(fname, ": Invalid plane selected, must be one of PLANE_XY, PLANE_XZ or PLANE_YZ");
+	}
+}
+
+/*
+ * varc_cw: Clockwise arc
+ */
+function varc_cw(endpoint, radius, turns = 0, maxl = VARCS_DEFAULT_MAXL, maxa = VARCS_DEFAULT_MAXA, actplane = PLANE_XY)
+{
+	__varcs_check_plane("varc_cw", actplane);
+	endpoint = __varcs_plane_ep_cvt("varc_cw", endpoint, actplane);
+	local vl = __varcs_all("varc_cw", 0, 0, endpoint, radius, turns, maxl, maxa);
+	__varcs_plane_list_cvt("varc_cw", vl, actplane);
+	return vl;
+}
+
+/*
+ * varc_ccw: Counter clockwise arc
+ */
+function varc_ccw(endpoint, radius, turns = 0, maxl = VARCS_DEFAULT_MAXL, maxa = VARCS_DEFAULT_MAXA, actplane = PLANE_XY)
+{
+	__varcs_check_plane("varc_ccw", actplane);
+	endpoint = __varcs_plane_ep_cvt("varc_ccw", endpoint, actplane);
+	local vl = __varcs_all("varc_ccw", 1, 0, endpoint, radius, turns, maxl, maxa);
+	__varcs_plane_list_cvt("varc_ccw", vl, actplane);
+	return vl;
+}
+
+/*
+ * vcircle_cw: Clockwise circle
+ */
+function vcircle_cw(centerpoint, turns = 0, maxl = VARCS_DEFAULT_MAXL, maxa = VARCS_DEFAULT_MAXA, actplane = PLANE_XY)
+{
+	__varcs_check_plane("vcirc_cw", actplane);
+	centerpoint = __varcs_plane_ep_cvt("vcircle_cw", centerpoint, actplane);
+	local vl = __varcs_all("vcircle_cw", 0, 1, centerpoint, -length(head(centerpoint, 2)), turns, maxl, maxa);
+	__varcs_plane_list_cvt("vcircle_cw", vl, actplane);
+	return vl;
+}
+
+/*
+ * vcircle_ccw: Counter clockwise circle
+ */
+function vcircle_ccw(centerpoint, turns = 0, maxl = VARCS_DEFAULT_MAXL, maxa = VARCS_DEFAULT_MAXA, actplane = PLANE_XY)
+{
+	__varcs_check_plane("vcirc_ccw", actplane);
+	centerpoint = __varcs_plane_ep_cvt("vcircle_ccw", centerpoint, actplane);
+	local vl = __varcs_all("vcircle_ccw", 1, 1, centerpoint, length(head(centerpoint, 2)), turns, maxl, maxa);
+	__varcs_plane_list_cvt("vcircle_ccw", vl, actplane);
+	return vl;
+}
