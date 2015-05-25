@@ -588,6 +588,13 @@ https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
 
   http://linuxcnc.org/docs/html/examples/spindle.html
 
+  * Stufe 1 Regler Anschlag 10.000
+  * Stufe 2 Zahl an gleicher Position wie die 1 war. 13.000
+  * Stufe 3 17.000
+  * Stufe 4 21.000
+  * Stufe 5 25.000
+  * Stufe 6 29.300
+
 ### Syntax Highlighting
 
 * emacs
