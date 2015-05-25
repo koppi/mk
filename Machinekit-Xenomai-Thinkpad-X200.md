@@ -584,6 +584,10 @@ https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
 
   https://github.com/cnc-club/linuxcnc-engraving-comp
 
+* Spindle Feedback
+
+  http://linuxcnc.org/docs/html/examples/spindle.html
+
 ### Syntax Highlighting
 
 * emacs
