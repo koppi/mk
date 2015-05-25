@@ -18,6 +18,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 """
 work_thread = 0.05 # work_thread means how often pins will be updated (sec)
 
+# koppi-cnc:
+# probe "o<scan_surface> call [0] [0] [220] [220] [10] [100] [10] [1.5] [-3]"
+#
 
 import sys
 
