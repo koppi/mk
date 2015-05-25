@@ -40,7 +40,7 @@ class Compensation :
 		self.filename = sys.argv[1]
                 print "koppi-cnc-engraving-comp.py filename = %s" % (self.filename)
 
-		#self.reset()
+		self.reset()
 		#print self.get_comp(10,10)
 
 
@@ -57,7 +57,7 @@ class Compensation :
 			coords = [float(i) for i in line.split()]
 			x,y,z = coords[0:3]
 			x,y = int(round(x,0)), int(round(y,0))
-                        print "x,y = %d,%d" % (x,y)
+                        #print "x,y = %d,%d" % (x,y)
 			if x not in self.comp :  self.comp[x] = {}
 			self.comp[x][y] = z
 			if not x in self.x_coords : self.x_coords.append(x)
@@ -75,20 +75,22 @@ class Compensation :
 				if not x in self.comp or not y in self.comp[x] :
 					print "ERROR! Map should be rectangular. Can't find point %s,%s"%(x,y)
 					sys.exit()
-                                else:
-                                        print "%d,%d in self.comp" % (x,y)
+                #                else:
+                #                        print "%d,%d in self.comp" % (x,y)
 		self.len_x = len(self.x_coords)
 		self.range_x = range(self.len_x)
 		self.len_y = len(self.y_coords)
 		self.range_y = range(self.len_y)
 		#print self.x_coords
-		for x in self.comp :
-			print x, "     ",self.comp[x]
-		print self.len_x, self.len_y
+		#for x in self.comp :
+		#	print x, "     ",self.comp[x]
+		#print self.len_x, self.len_y
+                print "koppi-cnc-engraving-comp.py: ok"
 		self.error = True
 
 	def get_comp(self,x,y) :
-                        #print x,y
+                        mx = x
+                        my = y
 			x = max(self.x_coords[0],min(self.x_coords[-1],x))
 			y = max(self.y_coords[0],min(self.y_coords[-1],y))
 			i = 0
@@ -129,6 +131,7 @@ class Compensation :
 				z1 = ((y2-y)*z1 + (y-y1)*z2)/(y2-y1)
 
 			#print x2,y2,z1
+                        print "%4.2f,%4.2f %4.2f,%4.2f %4.2f" % (mx,my,x,y,z1)
 			return z1
 
 

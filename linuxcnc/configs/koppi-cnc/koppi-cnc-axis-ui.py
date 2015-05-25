@@ -31,3 +31,6 @@ call(["halcmd", "setp", "halui.machine.on", "1"])
 root_window.tk.call ("wm", "attributes", ".", "-zoomed", "True")
 # windows always top
 #root_window.tk.call ("wm", "attributes", ".", "-topmost", "True")
+
+# enable Z axis compensation at startup (not working at all)
+#call(["axis-remote" ,"-m", "M64 P0"])
