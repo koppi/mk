@@ -133,3 +133,9 @@ net comp-error compensation.error => pyvcp.error-led
 
 #net zpos-cmd-comp => pyvcp.current-z
 net comp => pyvcp.current-comp
+
+######################################################################
+# Show current program line number
+######################################################################
+
+net motion-line motion.program-line => pyvcp.program-line
