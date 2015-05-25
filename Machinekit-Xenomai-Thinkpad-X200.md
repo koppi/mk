@@ -382,17 +382,6 @@ $ sudo cp linuxcnc/configs/koppi-cnc/50-joypad.rules /etc/udev/rules.d/50-joypad
 $ sudo udevadm trigger
 ```
 
-### Z-Achsen Kalibrierung
-
-```
-o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
-```
-
-```bash
-$ cp engrcomp.txt koppi-cnc-engraving-comp.txt
-$ ./koppi-cnc-engraving-comp-plot.sh
-```
-
 ### AXIS starten
 
 ```bash
@@ -411,17 +400,35 @@ LinuxCNC / Machinekit AXIS:
 
 ![LinuxCNC / Machinekit AXIS](pics/20150525-001.png)
 
-Desktop-Shortcut einrichten:
+### Kalibrierung der Z-Achsen Korrektur
+
+In AXIS unter MDI folgenden O-Code ausführen:
+
+```
+o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
+```
+
+```bash
+$ cp engrcomp.txt koppi-cnc-engraving-comp.txt
+$ sudo apt-get -y install gnuplot-x11
+$ ./koppi-cnc-engraving-comp-plot.sh
+```
+
+Visualisierung der Z-Achsen Korrektur
+
+![Visualisierung der Z-Achsen Korrektur](linuxcnc/configs/koppi-cnc/koppi-cnc-engraving-comp.png)
+
+### Desktop-Shortcut einrichten
 
 ```bash
 $ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop 
 ```
 
-AXIS icons:
+### AXIS icons
 
 Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/icons/): siehe [#3](https://github.com/koppi/mk/issues/3).
 
-TODO - ```cnc-info.sh```:
+### cnc-info.sh
 
 ![cnc-info.sh](pics/20150514-002.gi
 ## Links / Sonstiges
