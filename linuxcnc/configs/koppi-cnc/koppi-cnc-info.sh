@@ -12,7 +12,7 @@ function drive_info() {
 
   echo "  Internal Temp.:   $(ethercat -p $P upload --type int8   0xF900 0x02) deg"
   echo "  Motor Supply:     $(ethercat -p $P upload --type uint16 0xF900 0x05) mV"
-  echo "  Maxium Current:   $(ethercat -p $P upload --type uint16 0x8010 0x01) mV"
+  echo "  Maximum Current:  $(ethercat -p $P upload --type uint16 0x8010 0x01) mV"
   echo "  Cycle time:       $(ethercat -p $P upload --type uint16 0xF900 0x06)"
 
   echo "  Actual op. mode:  $(ethercat -p $P upload --type uint8 0xA010 0x11)"
