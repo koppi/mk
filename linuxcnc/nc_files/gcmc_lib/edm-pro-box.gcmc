@@ -1,0 +1,271 @@
+/*
+ * Box design for the Executive Decision Maker Pro
+ *
+ * (c) 2013 B. Stultiens
+ * License: CC-BY-SA-3.0
+ *
+ * See: http://www.vagrearg.org/content/edm-pro
+ *
+ * Run this script with:
+ *   $ gcmc --svg --svg-toolwidth=.1 --svg-opacity=1 -o edm-pro-box.svg edm-pro-box.gcmc
+ * and you can view the generated SVG file "sdm-pro-box.svg" in an SVG viewer
+ * or in f.x. Inkscape.
+ * You can also generate DXF or G-code output from gcmc and use it on your
+ * favorite tool. See gcmc documentation for more details.
+ *
+ * Cmd-line option marker for example generation script:
+ * @@@--svg-toolwidth=.1 --svg-opacity=1@@@
+ */
+
+/*******************************************************
+The following //comment lines identify ngcgui inputs:
+
+//ngcgui: info: circle
+//ngcgui: T=2,d tool
+//ngcgui: wall=3,
+//ngcgui: case_w=40,
+//ngcgui: case_l=60,
+//ngcgui: case_h=30,
+//ngcgui: angle=10,
+//ngcgui: cuts=2,
+//ngcgui: SAFEZ=5,
+
+*******************************************************/
+include("ensure_units.inc.gcmc");
+include("cc_hole.inc.gcmc");
+
+wall = 3.0mm;			/* Plexiglas thickness */
+case_w = 0.0mm + case_w + 2*wall;	/* Case size */
+case_l = 0.0mm + case_l + 2*wall;
+case_h = 0.0mm + case_h;
+angle  = angle * 1deg;			/* Top angled by this */
+
+R = T / 2.0;
+
+pcbhole_w = 3545mil;		/* Mounting hole spacing on PCB */
+pcbhole_l = 5515mil;
+pcbhole_rad = 1.55mm;		/* PCB mounting hole radius */
+pcbsw_rad = 4.75mm;		/* Switch hole radius */
+pcbsw_ofs_w = 985mil;		/* Offset for switch hole from top mounting holes */
+pcbsw_ofs_l = 515mil;
+
+screwhole_rad = 1.55mm;		/* Screw mount through the plate */
+screw_retract = wall/2.0 + R;	/* Hole's center from the edge */
+foothole_rad = 2.125mm;		/* Rubber foot mounting hole */
+foot_retract = 20.0mm;		/* Rubber foot movement from the edges */
+
+/* Special path to cut a nut-spacing and screw mount into the plate */
+screwcut = {
+	[-1.50mm + R, 0.0mm - R],
+	[-1.50mm + R, 4.0mm + R],
+	[-2.75mm + R, 4.0mm + R],
+	[-2.75mm + R, 6.5mm - R],
+	[-1.50mm + R, 6.5mm - R],
+	[-1.50mm + R, 8.5mm - R],
+	[ 1.50mm - R, 8.5mm - R],
+	[ 1.50mm - R, 6.5mm - R],
+	[ 2.75mm - R, 6.5mm - R],
+	[ 2.75mm - R, 4.0mm + R],
+	[ 1.50mm - R, 4.0mm + R],
+	[ 1.50mm - R, 0.0mm - R]
+};
+
+/* Make a hole at 'center' of size 'radius' */
+function hole(center, radius)
+{
+  goto(center - [radius, -]);	/* Move to the left of the hole */
+  //	circle_cw_r(radius, 0deg);	/* Cut clockwise */
+
+  goto ([center.x, center.y, SAFEZ]);
+  move ([center.x, center.y, SAFEZ]);
+
+  for (i = 1.0 / cuts; i <= 1; i += 1.0 / cuts) {
+    //          Center        D_hole  R_tool  Step   Cutting-Z
+    cc_hole(center, radius * 2.0,  R,  T/4.0, -wall * i);
+  }
+}
+
+function trace(vl)
+{
+	local v0, v;
+	v0 = vl[0];
+	vl <<= 1;
+	goto([v0.x, v0.y, SAFEZ]);
+  for (i = 1.0 / cuts; i <= 1; i += 1.0 / cuts) {
+    move([-, -, -wall * i]);
+  	move(vl);
+  	if(issvg()) {
+  		svg_closepath();
+  	} else {
+  		move(v0);
+  	}
+  }
+  goto([-,-, SAFEZ]);
+}
+
+/* Bottom of the case */
+function bottomplate(offset)
+{
+	local bp, bp_s, corners;
+
+	bp = {
+		[0mm - R, 0mm - R],
+		[case_w + R, 0mm - R],
+		[case_w + R, case_l + R],
+		[0mm - R, case_l + R]
+	};
+	bp_s = {
+		[screw_retract, case_l/2.0],
+		[case_w/2.0, screw_retract],
+		[case_w-screw_retract, case_l/2.0],
+		[case_w/2.0, case_l-screw_retract]
+	};
+
+	/* Corner retraction vectors for holes at corners */
+	corners = { [1, 1], [-1, 1], [-1, -1], [1, -1] };
+
+	for(i = 0; i < count(bp); i++) {
+		hole(bp_s[i] + offset, screwhole_rad - T/2.0);
+		//hole(bp[i] + corners[i] * foot_retract + offset, foothole_rad - T/2.0);
+	}
+	trace(bp + offset);
+}
+
+/* Front */
+function frontplate(offset)
+{
+	local tp;
+
+	tp = {
+		[0mm - R, 0mm - R],
+		[case_w/2.0 + screwcut[0][0], 0mm - R]
+	} + (screwcut + [case_w/2.0, 0mm]) + {
+		[case_w/2.0, 0mm] + screwcut[-1],
+		[case_w + R, 0mm - R],
+		[case_w + R, case_h-wall*sin(angle) + R],
+		[0mm - R, case_h-wall*sin(angle) + R]
+	};
+
+	hole([case_w-screw_retract, case_h/2.0] + offset, screwhole_rad - T/2.0);
+	hole([0mm+screw_retract, case_h/2.0] + offset, screwhole_rad - T/2.0);
+
+	trace(tp + offset);
+}
+
+/* Hole for DC power plug */
+function powerhole(offset)
+{
+	goto(  [-5.9mm, -2.48mm] + offset);
+	move(  [-5.9mm,  2.48mm] + offset);
+	arc_cw([ 5.9mm,  2.48mm] + offset, 6.4mm);
+	move(  [ 5.9mm, -2.48mm] + offset);
+	arc_cw([-5.9mm, -2.48mm] + offset, 6.4mm);
+}
+
+/* Backside with power plug hole */
+function backplate(offset)
+{
+	local tp, h;
+
+	h = case_h + (case_l-2*wall) * tan(angle);
+	tp = {
+		[0mm - R, 0mm - R],
+		[case_w/2.0, 0mm] + screwcut[0]
+	} + (screwcut + [case_w/2.0, 0mm]) + {
+		[case_w + R, 0mm - R],
+		[case_w + R, h + R],
+		[0mm - R, h + R]
+	};
+
+	hole([case_w-screw_retract, h/2.0] + offset, screwhole_rad - T/2.0);
+	// powerhole([0.75*case_w, 0.4*h] + offset);
+	hole([0mm+screw_retract, h/2.0] + offset, screwhole_rad - T/2.0);
+
+	trace(tp + offset);
+}
+
+/* Angled sides path generation */
+function sideplate_path()
+{
+	local s, sp, h, shr, shl, sht, l, tl, tv;
+	l = case_l - 2.0*wall;
+	h = case_h + l * tan(angle);
+	tl = l / cos(angle);
+	tv = [-cos(angle), -sin(angle)];
+	shr = rotate_xy(screwcut, 90deg);
+	shl = rotate_xy(screwcut, -90deg);
+	sht = rotate_xy(screwcut, 180deg + angle);
+	return {
+		[0mm - R, 0mm - R],
+		[l/2.0, 0mm] + screwcut[0]
+		} + (screwcut + [l/2.0, 0mm]) + {
+		[l + R, 0mm - R],
+		[l, h/2] + shr[0]
+		} + (shr + [l, h/2]) + {
+		[l + R, h + R],
+		tv*tl*0.25 + [l, h] + sht[0]
+		} + (sht + tv*tl*0.25 + [l, h]) + {
+		tv*tl*0.75 + [l, h] + sht[0]
+		} + (sht + tv*tl*0.75 + [l, h]) + {
+		[0mm - R, case_h + R],
+		[0mm, case_h/2] + shl[0]
+		} + (shl + [0mm, case_h/2]) + {
+	};
+}
+
+/* Left/right side plates */
+function sideplate(offset, m)
+{
+	local sp;
+
+	if(m) {
+		sp = scale(rotate_xy(sideplate_path(), 90deg-angle), [-1, 1]);
+	} else {
+		sp = rotate_xy(sideplate_path(), -90deg);
+	}
+
+	trace(sp + offset);
+}
+
+/* Top of the box with switch and PCB mounting holes */
+function topplate(offset)
+{
+	local tp, l, l2, pbw, pbl;
+
+	l = case_l / cos(angle);
+	l2 = (case_l - 2*wall) / cos(angle);
+
+	tp = {
+		[0mm - R, 0mm - R],
+		[case_w + R, 0mm - R],
+		[case_w + R, l + R],
+		[0mm - R, l + R]
+	};
+
+	pbw = (case_w - pcbhole_w)/2.0;
+	pbl = (case_l - pcbhole_l)/2.0;
+//	hole([         pbw,          pbl] + offset, pcbhole_rad);
+//	hole([case_w - pbw,          pbl] + offset, pcbhole_rad);
+	hole([case_w - screw_retract, l2*0.25+wall] + offset, screwhole_rad - T/2.0);
+	hole([case_w - screw_retract, l2*0.75+wall] + offset, screwhole_rad - T/2.0);
+//	hole([case_w - pbw, case_l - pbl] + offset, pcbhole_rad);
+//	hole([         pbw, case_l - pbl] + offset, pcbhole_rad);
+	hole([screw_retract, l2*0.75+wall] + offset, screwhole_rad - T/2.0);
+	hole([screw_retract, l2*0.25+wall] + offset, screwhole_rad - T/2.0);
+//	hole([pbw, pbl] + [pcbsw_ofs_w, pcbsw_ofs_l] + offset, pcbsw_rad);
+//	hole([case_w - pbw, pbl] + [-pcbsw_ofs_w, pcbsw_ofs_l] + offset, pcbsw_rad);
+
+	trace(tp + offset);
+}
+
+/******************** Main program ********************/
+feedrate(500);	/* Only here to test as g-code in LinuxCNC */
+
+h = 1.0 * (case_h + (case_l-2*wall) * tan(angle)) + T*2;
+
+sideplate([case_w + T*2,              case_l], 0);
+sideplate([case_w + T*3 + h, 0],   1);
+bottomplate([0,0]);
+topplate([case_w + h * 1.75 + T*3, 0]);
+frontplate([case_w + h * 1.75 + T*3, case_l + T*3]);
+backplate([0, case_l + T*2]);
