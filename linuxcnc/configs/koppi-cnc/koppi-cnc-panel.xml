@@ -1,7 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <pyvcp>
 <vbox>
-<bd>3</bd>
+<bd>0</bd>
+<labelframe text="Current Program Line">
+  <vbox>
+    <s32>
+      <halpin>"program-line"</halpin>
+      <font>("Helvetica",24)</font>
+      <format>"10d"</format>
+    </s32>
+  </vbox>
+</labelframe>
 <labelframe text="Touch Probe">
  <hbox>
   <rectled>
@@ -102,13 +111,44 @@
     </labelframe>
   </vbox>
 </labelframe>
-<labelframe text="Current Program Line">
+<labelframe text="Motor Info">
   <vbox>
-    <s32>
-      <halpin>"program-line"</halpin>
-      <font>("Helvetica",24)</font>
-      <format>"10d"</format>
-    </s32>
+    <hbox>
+      <s32>
+        <halpin>"temp-0"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d°C"</format>
+      </s32>
+      <s32>
+        <halpin>"motor-supply-0"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d mA"</format>
+      </s32>
+    </hbox>
+    <hbox>
+      <s32>
+        <halpin>"temp-1"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d°C"</format>
+      </s32>
+      <s32>
+        <halpin>"motor-supply-1"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d mA"</format>
+      </s32>
+    </hbox>
+    <hbox>
+      <s32>
+        <halpin>"temp-2"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d°C"</format>
+      </s32>
+      <s32>
+        <halpin>"motor-supply-2"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d mA"</format>
+      </s32>
+    </hbox>
   </vbox>
 </labelframe>
 <labelframe text="Data Logger">
