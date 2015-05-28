@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sleep .2
+sleep 1
 halcmd setp halui.machine.on 0
 sleep .2
 halcmd setp halui.estop.reset 1
