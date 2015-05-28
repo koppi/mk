@@ -1,7 +1,7 @@
-o<touch_off_xyz_0> sub
+o<touch_off_xy_0> sub
 ( see: http://www.linuxcnc.org/emc2/index.php/german/forum/38-general-linuxcnc-questions/27266-g92-vs-keyboard-end-key#45150 )
-G10L20P0X0Y0Z0
+G10L20P0X0Y0
 M156
-o<touch_off_xyz_0> endsub
+o<touch_off_xy_0> endsub
 
 M2

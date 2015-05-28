@@ -54,7 +54,8 @@ net touchoff-probe-x     halui.mdi-command-01 <= pyvcp.touchoff-probe-x
 net touchoff-probe-y     halui.mdi-command-02 <= pyvcp.touchoff-probe-y
 net touchoff-probe-z     halui.mdi-command-03 <= pyvcp.touchoff-probe-z
 net probe-corner         halui.mdi-command-04 <= pyvcp.probe-corner
-net touchoff-mat-xyz-0   halui.mdi-command-05 <= pyvcp.touchoff-xyz-0
+net touchoff-mat-xy-0    halui.mdi-command-05 <= pyvcp.touchoff-xy-0
+net touchoff-mat-xyz-0   halui.mdi-command-06 <= pyvcp.touchoff-xyz-0
 
 ######################################################################
 # Start with estop disabled
@@ -139,3 +140,41 @@ net comp => pyvcp.current-comp
 ######################################################################
 
 net motion-line motion.program-line => pyvcp.program-line
+
+######################################################################
+# Data logger
+######################################################################
+
+loadusr -W data_logger.py
+
+loadrt ownanalytics count=3
+#newinst  ownanalytics ownanalytics-0
+#newinst  ownanalytics ownanalytics-1
+#newinst  ownanalytics ownanalytics-2
+
+addf ownanalytics.0 servo-thread
+addf ownanalytics.1 servo-thread
+addf ownanalytics.2 servo-thread
+
+net rt2log data_logger.beat => ownanalytics.0.beat
+net rt2log_0_min ownanalytics.0.min => data_logger.i11
+net rt2log_0_max ownanalytics.0.max => data_logger.i12
+net rt2log_0_avg ownanalytics.0.avg => data_logger.i13
+
+net rt2log data_logger.beat => ownanalytics.1.beat
+net rt2log_1_min ownanalytics.1.min => data_logger.i21
+net rt2log_1_max ownanalytics.1.max => data_logger.i22
+net rt2log_1_avg ownanalytics.1.avg => data_logger.i23
+
+net rt2log data_logger.beat => ownanalytics.2.beat
+net rt2log_2_min ownanalytics.2.min => data_logger.i31
+net rt2log_2_max ownanalytics.2.max => data_logger.i32
+net rt2log_2_avg ownanalytics.2.avg => data_logger.i33
+
+net rt2log data_logger.beat => pyvcp.datalogger-beat
+
+linksp motion-line data_logger.line
+
+linksp x-pos-cmd-comp ownanalytics.0.in
+linksp y-pos-cmd-comp ownanalytics.1.in
+linksp zpos-cmd       ownanalytics.2.in

@@ -11,6 +11,7 @@
 ###########################################################
 # Setup
 ###########################################################
+loadusr -W haltalk
 
 # load kinematiks and motion controller (realtime)
 loadrt trivkins
@@ -29,6 +30,9 @@ loadrt lcec
 
 # load position controller PID instances
 loadrt pid names=x-pid,y-pid,z-pid
+#newinst pid x-pid
+#newinst pid y-pid
+#newinst pid z-pid
 
 loadusr -W hal_input -KRAL Logitech
 
@@ -53,6 +57,9 @@ addf lcec.read-all servo-thread
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
 
+#addf x-pid servo-thread
+#addf y-pid servo-thread
+#addf z-pid servo-thread
 addf x-pid.do-pid-calcs servo-thread
 addf y-pid.do-pid-calcs servo-thread
 addf z-pid.do-pid-calcs servo-thread
