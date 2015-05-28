@@ -1,75 +1,83 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <pyvcp>
 <vbox>
-<bd>0</bd>
-<labelframe text="Current Program Line">
-  <vbox>
-    <s32>
-      <halpin>"program-line"</halpin>
-      <font>("Helvetica",24)</font>
-      <format>"10d"</format>
-    </s32>
-  </vbox>
-</labelframe>
-<labelframe text="Touch Probe">
- <hbox>
-  <rectled>
-   <width>"145"</width>
-   <height>"28"</height>
-   <halpin>"probe-status"</halpin>
-   <on_color>"green"</on_color>
-   <off_color>"grey"</off_color>
-  </rectled>
- </hbox>
-</labelframe>
+<bd>2</bd>
  <button>
   <halpin>"rapid-to-home"</halpin>
   <text>"Rapid Home"</text>
   <bd>2</bd>
  </button>
- <button>
-  <halpin>"touchoff-probe-x"</halpin>
-  <text>"Touch Off X"</text>
-  <bd>2</bd>
- </button>
- <button>
-  <halpin>"touchoff-probe-y"</halpin>
-  <text>"Touch Off Y"</text>
-  <bd>2</bd>
- </button>
- <button>
-  <halpin>"touchoff-probe-z"</halpin>
-  <text>"Touch Off Z"</text>
-  <bd>2</bd>
- </button>
- <button>
-  <halpin>"probe-corner"</halpin>
-  <text>"Probe Corner"</text>
-  <bd>2</bd>
- </button>
- <button>
-  <halpin>"touchoff-xy-0"</halpin>
-  <text>"Touch Off XY 0"</text>
-  <bd>2</bd>
- </button>
- <button>
-  <halpin>"touchoff-xyz-0"</halpin>
-  <text>"Touch Off XYZ 0"</text>
-  <bd>2</bd>
- </button>
+<labelframe text="Program Line">
+  <vbox>
+    <s32>
+      <halpin>"program-line"</halpin>
+      <font>("Helvetica",14)</font>
+      <format>"14d"</format>
+    </s32>
+  </vbox>
+</labelframe>
+<labelframe text="Touch Probe">
+ <vbox>
+  <hbox>
+   <rectled>
+    <width>"145"</width>
+    <height>"28"</height>
+    <halpin>"probe-status"</halpin>
+    <on_color>"green"</on_color>
+    <off_color>"grey"</off_color>
+   </rectled>
+  </hbox>
+  <hbox>
+   <button>
+    <bd>2</bd>
+    <halpin>"touchoff-probe-x"</halpin>
+    <text>"X"</text>
+   </button>
+   <button>
+    <bd>2</bd>
+    <halpin>"touchoff-probe-y"</halpin>
+    <text>"Y"</text>
+   </button>
+   <button>
+    <bd>2</bd>
+    <halpin>"touchoff-probe-z"</halpin>
+    <text>"Z"</text>
+   </button>
+   <button>
+    <bd>2</bd>
+    <halpin>"probe-corner"</halpin>
+    <text>"C"</text>
+   </button>
+  </hbox>
+ </vbox>
+</labelframe>
+<labelframe text="Touch Off 0">
+ <hbox>
+  <button>
+   <halpin>"touchoff-xy-0"</halpin>
+   <text>" XY"</text>
+   <bd>2</bd>
+  </button>
+  <button>
+   <halpin>"touchoff-xyz-0"</halpin>
+   <text>"XYZ"</text>
+   <bd>2</bd>
+  </button>
+ </hbox>
+</labelframe>
 </vbox>
 <labelframe text="Compensation">
   <vbox>
     <number>
       <halpin>"current-comp"</halpin>
-      <font>("Helvetica",24)</font>
-      <format>"4.4f"</format>
+      <font>("Helvetica",14)</font>
+      <format>"8.4f"</format>
     </number>
 <!--
     <number>
       <halpin>"current-z"</halpin>
-      <font>("Helvetica",24)</font>
-      <format>"4.4f"</format>
+      <font>("Helvetica",14)</font>
+      <format>"8.4f"</format>
     </number>
 -->
     <hbox>
@@ -119,11 +127,11 @@
         <font>("Helvetica",14)</font>
         <format>"6d°C"</format>
       </s32>
-      <s32>
+      <number>
         <halpin>"motor-supply-0"</halpin>
         <font>("Helvetica",14)</font>
-        <format>"6d mA"</format>
-      </s32>
+        <format>"6.2f V"</format>
+      </number>
     </hbox>
     <hbox>
       <s32>
@@ -131,11 +139,11 @@
         <font>("Helvetica",14)</font>
         <format>"6d°C"</format>
       </s32>
-      <s32>
+      <number>
         <halpin>"motor-supply-1"</halpin>
         <font>("Helvetica",14)</font>
-        <format>"6d mA"</format>
-      </s32>
+        <format>"6.2f V"</format>
+      </number>
     </hbox>
     <hbox>
       <s32>
@@ -143,11 +151,11 @@
         <font>("Helvetica",14)</font>
         <format>"6d°C"</format>
       </s32>
-      <s32>
+      <number>
         <halpin>"motor-supply-2"</halpin>
         <font>("Helvetica",14)</font>
-        <format>"6d mA"</format>
-      </s32>
+        <format>"6.2f V"</format>
+      </number>
     </hbox>
   </vbox>
 </labelframe>

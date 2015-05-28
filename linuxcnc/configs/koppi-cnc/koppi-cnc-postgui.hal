@@ -58,13 +58,6 @@ net touchoff-mat-xy-0    halui.mdi-command-05 <= pyvcp.touchoff-xy-0
 net touchoff-mat-xyz-0   halui.mdi-command-06 <= pyvcp.touchoff-xyz-0
 
 ######################################################################
-# Start with estop disabled
-######################################################################
-
-setp halui.estop.reset 1
-setp halui.estop.reset 0
-
-######################################################################
 # Jogging with Joypad
 ######################################################################
 
@@ -86,13 +79,14 @@ setp input.0.abs-rz-scale -127.5
 # See https://github.com/cnc-club/linuxcnc-engraving-comp
 #
 ######################################################################
-loadrt or2 count=2
+loadrt or2 count=3
 loadrt sum2 count=1
 
 loadusr -Wn compensation python koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
 
 addf or2.0 servo-thread
 addf or2.1 servo-thread
+addf or2.2 servo-thread
 addf sum2.0 servo-thread
 
 unlinkp z-pid.command
@@ -120,8 +114,12 @@ net comp-enable or2.0.out compensation.enable
 
 loadrt toggle count=1
 addf toggle.0 servo-thread
-net pyvcp-enable  toggle.0.in  <= pyvcp.enable
 net toggle-enable toggle.0.out => or2.0.in1
+#net pyvcp-enable  toggle.0.in  <= pyvcp.enable
+
+net comp-toggle    => or2.2.in0
+net pyvcp-enable      or2.2.in1 <= pyvcp.enable
+net toggle-or-out   toggle.0.in <= or2.2.out
 
 net dout-01 <= motion.digital-out-01
 net dout-01 => or2.1.in0

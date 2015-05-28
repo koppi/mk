@@ -33,8 +33,8 @@ class Info :
                 logging.info("koppi-cnc-info.py ok")
 
                 for i in range(0,3):
-                        self.h.newpin("motor-supply-%d" % (i), hal.HAL_S32, hal.HAL_OUT)
-                        self.h.newpin("max-current-%d"  % (i), hal.HAL_S32, hal.HAL_OUT)
+                        self.h.newpin("motor-supply-%d" % (i), hal.HAL_FLOAT, hal.HAL_OUT)
+                        self.h.newpin("max-current-%d"  % (i), hal.HAL_FLOAT, hal.HAL_OUT)
                         self.h.newpin("temp-%i" % (i), hal.HAL_S32, hal.HAL_OUT)
                 self.h.ready()
 
@@ -44,8 +44,8 @@ class Info :
                 while 1:
                         try:
                                 for i in range(0,3):
-                                        self.h['motor-supply-%d' % (i)] = ec_upload(i+offset, "uint16", 0xF900, 0x05)
-                                        self.h['max-current-%d'  % (i)] = ec_upload(i+offset, "uint16", 0x8010, 0x01)
+                                        self.h['motor-supply-%d' % (i)] = ec_upload(i+offset, "uint16", 0xF900, 0x05) / 1000.0
+                                        self.h['max-current-%d'  % (i)] = ec_upload(i+offset, "uint16", 0x8010, 0x01) / 1000.0
                                         self.h['temp-%d' % (i)]         = ec_upload(i+offset, "int8",   0xF900, 0x02)
                                 time.sleep(work_thread)
                         except KeyboardInterrupt :
