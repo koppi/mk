@@ -119,7 +119,7 @@
     </labelframe>
   </vbox>
 </labelframe>
-<labelframe text="Motor Info">
+<labelframe text="Info">
   <vbox>
     <hbox>
       <s32>
@@ -156,6 +156,18 @@
         <font>("Helvetica",14)</font>
         <format>"6.2f V"</format>
       </number>
+    </hbox>
+    <hbox>
+      <number>
+        <halpin>"temp1"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6.0f°C"</format>
+      </number>
+      <s32>
+        <halpin>"fan1-rpm"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"6d RPM"</format>
+      </s32>
     </hbox>
   </vbox>
 </labelframe>
