@@ -14,3 +14,8 @@ sleep .2
 halcmd sets comp-toggle 1
 sleep .2
 halcmd sets comp-toggle 0
+
+# clear notifications
+halcmd setp axisui.notifications-clear 1
+sleep .100 ;# requires a sleep that does <1
+halcmd setp axisui.notifications-clear 0
