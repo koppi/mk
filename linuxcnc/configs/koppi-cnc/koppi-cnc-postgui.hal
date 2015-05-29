@@ -134,10 +134,42 @@ net comp-error compensation.error => pyvcp.error-led
 net comp => pyvcp.current-comp
 
 ######################################################################
+# EtherCAT Infos
+######################################################################
+
+loadusr -W koppi-cnc-info.py
+
+net info-temp-0 koppi-cnc-info.temp-0 => pyvcp.temp-0
+net info-temp-1 koppi-cnc-info.temp-1 => pyvcp.temp-1
+net info-temp-2 koppi-cnc-info.temp-2 => pyvcp.temp-2
+
+net info-motor-supply-0 koppi-cnc-info.motor-supply-0 => pyvcp.motor-supply-0
+net info-motor-supply-1 koppi-cnc-info.motor-supply-1 => pyvcp.motor-supply-1
+net info-motor-supply-2 koppi-cnc-info.motor-supply-2 => pyvcp.motor-supply-2
+
+net info-temp1    koppi-cnc-info.temp1    => pyvcp.temp1
+net info-fan1-rpm koppi-cnc-info.fan1-rpm => pyvcp.fan1-rpm
+
+######################################################################
 # Show current program line number
 ######################################################################
 
 net motion-line motion.program-line => pyvcp.program-line
+
+######################################################################
+# Show elapsed time
+######################################################################
+
+loadrt time
+
+addf time.0 servo-thread
+
+net prog-is-running <= halui.program.is-running
+net prog-is-running => time.0.start
+
+net cycle-seconds time.0.seconds => pyvcp.elaps-sec
+net cycle-minutes time.0.minutes => pyvcp.elaps-min
+net cycle-hours   time.0.hours   => pyvcp.elaps-hour
 
 ######################################################################
 # Data logger
@@ -176,20 +208,3 @@ linksp motion-line data_logger.line
 linksp x-pos-cmd-comp ownanalytics.0.in
 linksp y-pos-cmd-comp ownanalytics.1.in
 linksp zpos-cmd       ownanalytics.2.in
-
-######################################################################
-# EtherCAT Infos
-######################################################################
-
-loadusr -W koppi-cnc-info.py
-
-net info-temp-0 koppi-cnc-info.temp-0 => pyvcp.temp-0
-net info-temp-1 koppi-cnc-info.temp-1 => pyvcp.temp-1
-net info-temp-2 koppi-cnc-info.temp-2 => pyvcp.temp-2
-
-net info-motor-supply-0 koppi-cnc-info.motor-supply-0 => pyvcp.motor-supply-0
-net info-motor-supply-1 koppi-cnc-info.motor-supply-1 => pyvcp.motor-supply-1
-net info-motor-supply-2 koppi-cnc-info.motor-supply-2 => pyvcp.motor-supply-2
-
-net info-temp1    koppi-cnc-info.temp1    => pyvcp.temp1
-net info-fan1-rpm koppi-cnc-info.fan1-rpm => pyvcp.fan1-rpm

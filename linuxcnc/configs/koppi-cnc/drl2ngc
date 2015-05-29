@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+
+# from http://linuxcnc.hu/drl2ngc-excellon-szuro-linuxcnc-hez/
+
+import sys, os
+import linuxcnc
+
+fname   = sys.argv[1]
+ininame = os.path.join(os.getcwd(),"drl2ngc.ini")
+print ";file:    %s" % (fname)
+print ";inifile: %s" % (ininame)
+inifile = linuxcnc.ini(ininame)
+
+FEED                    = inifile.find('EXCELON', 'FEED') or 200
+SPINDLE                 = inifile.find('EXCELON', 'SPINDLE') or 8000
+Z_LEVEL                 = inifile.find('EXCELON', 'Z_LEVEL') or 0
+SAFE_Z                  = inifile.find('EXCELON', 'SAFE_Z') or 10
+RETRACT_LEVEL           = inifile.find('EXCELON', 'RETRACT_LEVEL') or 0
+WAIT_FOR_SPINDLE        = float(inifile.find('EXCELON', 'WAIT_FOR_SPINDLE') or 3.0)
+DISABLE_TOOLCHANGE      = int(inifile.find('EXCELON', 'DISABLE_TOOLCHANGE') or 0)
+SPINDLE_MANUAL          = int(inifile.find('EXCELON', 'SPINDLE_MANUAL') or 0)
+
+START   = 0
+TOOL    = 1
+DRILL   = 2
+
+def getxy(cmd):
+        x,y = cmd[1:].split('Y')
+        x,y = float(x)/1000,float(y)/1000
+        return x,y
+
+s = START
+for l in open(fname).readlines():
+        l = l.strip()
+        if l.startswith(';'):   continue
+        if l == "M30":
+                print "G0 Z%s" % (SAFE_Z)
+                print l
+                break
+        if s == START:
+                if l == 'METRIC':
+                        print "G21"
+                        continue
+                if l == '%':
+                        s = TOOL
+                        print "S%s F%s" % (SPINDLE, FEED)
+                        print "G0 Z%s" % (SAFE_Z)
+                        if not SPINDLE_MANUAL:
+                                print "M3"
+                                if WAIT_FOR_SPINDLE:
+                                        print "G4 P%s" % (WAIT_FOR_SPINDLE)
+                        continue
+        elif s == TOOL:
+                if l.startswith('T'):
+                        if not DISABLE_TOOLCHANGE:
+                                print "M6%s" % l
+                                print "G0 Z%s" % (SAFE_Z)
+                elif l.startswith('X'):
+                        s = DRILL
+                        x,y = getxy(l)
+                        print "G0 X%s Y%s" % (x,y)
+                        print "G90 G98 G81 X%s Y%s Z%s R%s" % (x, y, Z_LEVEL, RETRACT_LEVEL)
+        elif s == DRILL:
+                if l.startswith('T'):
+                        if not DISABLE_TOOLCHANGE:
+                                print "M6%s" % l
+                                print "G0 Z%s" % (SAFE_Z)
+                        s = TOOL
+                elif l.startswith('X'):
+                        x,y = getxy(l)
+                        print "X%s Y%s" % (x,y)
+
+
+
+

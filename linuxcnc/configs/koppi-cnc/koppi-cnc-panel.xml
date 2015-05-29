@@ -7,13 +7,42 @@
   <text>"Rapid Home"</text>
   <bd>2</bd>
  </button>
-<labelframe text="Program Line">
+<labelframe text="Program">
   <vbox>
-    <s32>
-      <halpin>"program-line"</halpin>
-      <font>("Helvetica",14)</font>
-      <format>"14d"</format>
-    </s32>
+    <hbox>
+      <bd>3</bd>
+      <label>
+         <text>"Line"</text>
+         <font>("Helvetica",14)</font>
+      </label>
+      <s32>
+        <halpin>"program-line"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"14d"</format>
+      </s32>
+    </hbox>
+    <hbox>
+      <bd>3</bd>
+      <label>
+         <text>"Time"</text>
+         <font>("Helvetica",14)</font>
+      </label>
+      <u32>
+        <halpin>"elaps-hour"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"02d:"</format>
+      </u32>
+      <u32>
+        <halpin>"elaps-min"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"02d:"</format>
+      </u32>
+      <u32>
+        <halpin>"elaps-sec"</halpin>
+        <font>("Helvetica",14)</font>
+        <format>"02d"</format>
+      </u32>
+    </hbox>
   </vbox>
 </labelframe>
 <labelframe text="Touch Probe">
