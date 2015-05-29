@@ -398,7 +398,28 @@ emcTaskInit: using builtin interpreter
 
 LinuxCNC / Machinekit AXIS:
 
-![LinuxCNC / Machinekit AXIS](pics/20150525-001.png)
+![LinuxCNC / Machinekit AXIS](pics/20150529-001.png)
+
+Panel rechts:
+* "Rapid Home" Button
+* "Touch Probe"
+  * LED - Touch Probe offen / geschlossen
+  * X - Referenzfahrt Werkstück X-Achse
+  * Y - Referenzfahrt Werkstück Y-Achse
+  * Z - Referenzfahrt Werkstück Z-Achse
+  * C - Referenzfahrt Werkstück XYZ-Achse
+* "Touch Off 0"
+  * XY  - G53 Offset XY 0
+  * XYZ - G53 Offset XYZ 0
+* "Compensation"
+  * Wert Z-Achsenkorrektur
+  * Enable - Z-Achsenkorrektur An-/Ausschalten
+  * Reset  - Z-Achsenkorrekturdaten neu laden
+* "Info"
+  * Temperatur und Motorspannung der Schrittomtorkarten
+  * Temperatur und Lüfterdrehzahl X200
+* "Data Logger"
+  * LED PostgreSQL logger aktiv
 
 ### Kalibrierung der Z-Achsen Korrektur
 
