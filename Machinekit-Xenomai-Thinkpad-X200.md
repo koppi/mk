@@ -402,6 +402,8 @@ LinuxCNC / Machinekit AXIS:
 
 Panel rechts:
 * "Rapid Home" Button
+* "Program Line"
+  * Aktuelle Programmzeile
 * "Touch Probe"
   * LED - Touch Probe offen / geschlossen
   * X - Referenzfahrt Werkstück X-Achse
