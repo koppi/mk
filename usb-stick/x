@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+RELEASE=jessie
+        
+sudo http_proxy=http://localhost:3142/ grml-debootstrap --release $RELEASE --hostname machinekit --bootappend "xeno_hal.smi=1 lapic=notscdeadline hpet=disable i915.i915_enable_rc6=0 i915.powersave=0 intel_idle.max_cstate=1 processor.max_cstate=1 isolcpus=1 idle=poll" --mirror http://ftp.de.debian.org/debian --vmfile --target machinekit-$RELEASE.img --vmsize 4G --scripts $RELESE/scripts --chroot-scripts $RELEASE/chroot-scripts --force --password mk --nokernel --defaultinterfaces
