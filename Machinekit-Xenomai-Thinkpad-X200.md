@@ -435,7 +435,6 @@ $ sudo su - postgres -c "createuser koppi"
 $ sudo su - postgres -c "createdb -O koppi koppi"
 $ psql -c "create table log(id SERIAL PRIMARY KEY, time timestamp, task_mode int, file varchar(1024), line int, x_min float, x_max float, x_avg float, y_min float, y_max float, y_avg float, z_min float, z_max float, z_avg float);"
 $ psql -c "CREATE INDEX log_idx_time ON log (id, time, time DESC);"
-$
 ```
 
 ```bash
