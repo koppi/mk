@@ -1,0 +1,391 @@
+/*
+ * G-code meta compiler
+ *
+ * Copyright (C) 2014  B. Stultiens
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * tracepath_comp(): Trace path with tool compensation
+ *
+ * function tracepath_comp(path, width, flags)
+ *
+ * Input:
+ * - path	Path to trace. The first coordinate should include a cutting
+ *		Z-level which is moved to before entering the path. Changing
+ *		the Z-level is allowed at any point as long as each XY position
+ *		is unique.
+ * - width	Distance from path to trace at
+ * - flags	Binary flags or'ed together:
+ *	* TPC_CLOSED	 Interpret path as being closed (path[0] and path[-1] are connected)
+ *	* TPC_KEEPZ	 Don't move on Z-axis
+ *	* TPC_OLDZ	 Return to entry Z-coordinate
+ *	* TPC_LEFT	 Trace at left side of path
+ *	* TPC_RIGHT	 Trace at right side of path (default)
+ *	* TPC_ARCIN	 Arc in to the path
+ *	* TPC_ARCOUT	 Arc out of the path
+ *	* TPC_QUIET	 Don't warn on unreachable inside corners
+ *
+ * Return value: none
+ */
+
+/*
+ * Flag definitions
+ */
+const TPC_CLOSED	= 0x0001;	// Interpret path as being closed
+const TPC_KEEPZ		= 0x0002;	// Don't move on Z-axis
+const TPC_OLDZ		= 0x0004;	// Return to entry Z-coordinate
+const TPC_LEFT		= 0x0008;	// Trace at left side of path
+const TPC_RIGHT		= 0x0010;	// Trace at right side of path (default)
+const TPC_ARCIN		= 0x0020;	// Arc in to the path
+const TPC_ARCOUT	= 0x0040;	// Arc out of the path
+const TPC_QUIET		= 0x0080;	// Don't warn on unreachable inside corners
+
+/*
+ * Cross product divided by length returning sin(angle)
+ */
+function __tpc_crossprod(v1, v2)
+{
+	local crossp = to_none(to_native(v1[0]*v2[1] - v1[1]*v2[0]));
+	local l = to_none(to_native(length(v1) * length(v2)));
+	return l != 0.0 ? crossp/l : 0.0;
+}
+
+/*
+ * Calculate all direction vectors and normals of the segments
+ */
+function __tpc_calcdirs(side, &path, &dir, &normal)
+{
+	local npath = count(path);
+	local i, pc, pp;
+	dir = {};
+	normal = {};
+	for(i = 0; i < npath; i++) {
+		pp = path[i];
+		pc = path[(i+1)%npath];
+		if(pp == pc) {
+			// Two equal points, delete one
+			path = delete(path, i);
+			i--;
+			npath--;
+			continue;
+		}
+		pc = head(pc, 2);	// Strip Z
+		pp = head(pp, 2);
+		if(pp == pc) {
+			warning("tracepath_comp(): Points ", i, " and ", (i+1)%npath, " have same XY but different Z, deleting point ", i);
+			path = delete(path, i);
+			i--;
+			npath--;
+			continue;
+		}
+		dir[i] = normalize(pc - pp);
+		normal[i] = [ dir[i][1], -dir[i][0] ] * side;
+	}
+	return npath;
+}
+
+/*
+ * Recalculate the direction and normal of a specific segment
+ */
+function __tpc_recalcdir(side, &path, &dir, &normal, idx)
+{
+	local pc, pp;
+	pp = head(path[idx], 2);
+	pc = head(path[(idx+1)%count(path)], 2);
+	dir[idx] = normalize(pc - pp);
+	normal[idx] = [ dir[idx][1], -dir[idx][0] ] * side;
+}
+
+function tracepath_comp(path, width, flags)
+{
+	local pfx = "tracepath_comp(): ";
+	local mkunitsum = ismodemm() ? 0.0mm : 0.0in;
+	local prevz = position()[2];
+
+	if(!isvectorlist(path)) {
+		error(pfx, "Argument 1 'path' must be a vectorlist");
+		return;
+	}
+	if(count(path) < 2) {
+		error(pfx, "Argument 1 'path' has fewer than 2 points");
+		return;
+	}
+	if(!isscalar(width)) {
+		error(pfx, "Argument 2 'width' must be scalar");
+		return;
+	}
+	if(!isnone(width) && !isdistance(width)) {
+		error(pfx, "Argument 2 'width' should have distance units");
+		return;
+	}
+	width += mkunitsum;	// Ensure distance units if it was none
+	if(width <= 0.0mm) {
+		error(pfx, "Argument 2 'width' must be positive and larger than zero");
+		return;
+	}
+	if(!isscalar(flags)) {
+		error(pfx, "Argument 3 'flags' must be scalar");
+		return;
+	}
+	if(!isint(flags)) {
+		error(pfx, "Argument 3 'flags' is not integer");
+		return;
+	}
+	if(!isnone(flags)) {
+		warning(pfx, "Argument 3 'flags' has units associated, ignored");
+		flags = to_none(flags);
+	}
+	if(!(flags & TPC_QUIET) && !(flags & (TPC_LEFT|TPC_RIGHT))) {
+		warning(pfx, "No side selected, defaulting to TPC_RIGHT");
+		flags |= TPC_RIGHT;
+	}
+
+	local side = (flags & TPC_LEFT) ? -1.0 : 1.0;	// Convert to +/-1 multiplier
+
+	local normal = {};		// List of normals for each segment
+	local dir = {};			// List of directions of each segment
+
+	local npath = count(path);
+	local pp, pc, pn;
+	local crossp, dotp;
+	local i, j, n;
+
+	if(flags & TPC_KEEPZ) {
+		// If we are supposed to stay at current Z, strip all Z-coordinates
+		// And propagate all XY coordinates
+		j = head(position(), 2);
+		for(i = 0; i < npath; i++) {
+			j = path[i] = head(path[i], 2) | j;
+		}
+	} else {
+		// Propagate all XYZ positions on the entire path so we have no undefs
+		j = head(position(), 3);
+		for(i = 0; i < npath; i++) {
+			j = path[i] |= j;
+		}
+	}
+
+	if(path[0] != path[-1] && head(path[0], 2) == head(path[-1], 2)) {
+		// A manually closed path but start and end are at different Z
+		warning(pfx, "First and last point only differ by Z coordinate, deleting last point and closing path");
+		path = delete(path, -1);
+		npath--;
+		flags |= TPC_CLOSED;
+	}
+
+	// Calculate the direction of each segment and the normal at the correct side
+	npath = __tpc_calcdirs(side, path, dir, normal);
+
+	local li, lo, lm;
+	local tag;
+	local warnremove = 0;
+	// Find all sharp inside corners and remove them is we cannot enter them
+	// This may still leave a "reversible", but that we can handle in the mail loop.
+	for(i = 1; i < npath; i++) {
+		crossp = __tpc_crossprod(dir[i-1], dir[i]);
+		dotp = dir[i-1] * dir[i];
+		if(crossp == 0.0 && dotp == -1.0) {
+			// Reversal of the path
+			if(__tpc_crossprod(dir[i-2], dir[i-1]) * side > 0.0) {
+				// Reversal on wrong side of path, delete point
+				// And ensure the any duplicate gets removed by recalculating the lot
+				path = delete(path, i);
+				npath = __tpc_calcdirs(side, path, dir, normal);
+				i--;
+				warnremove++;
+			}	// Else the reversal is on the correct side and we may walk around
+		} elif(crossp * side < 0.0 && dotp < 0.0) {
+			// An internal angle detected see if we can fit into it
+			crossp = side * __tpc_crossprod(normal[i], normal[i] + normal[i-1]);	// sin(angle/2)
+			dotp = normal[i] * normalize(normal[i] + normal[i-1]);		// cos(angle/2)
+			li = length(head(path[i] - path[i-1], 2));			// Entry segment into sharp internal edge
+			lo = length(head(path[(i+1)%npath] - path[i], 2));		// Exit segment into sharp internal edge
+			lm = width*crossp/dotp;						// Bisected calculated move distance
+			if(lm <= li && lm <= lo) {
+				// We can fit
+				continue;
+			}
+			warnremove++;
+			if(li > lo) {
+				// Entry segment is longer, project exit onto entry segment
+				if(normal[(i+1)%npath] != dir[i]) {
+					// Bottom of the pit has not a 90 degree turn to the top exit
+					// Tag lifts bottom to 90 degree
+					tag = lo * (dir[i] * normal[(i+1)%npath]);
+				} else {
+					// Bottom already exits at 90 degrees
+					tag = lo;
+				}
+				// Move the next point onto the entry segment
+				path[(i+1)%npath] = path[i] - tag * dir[i-1] / (normal[(i+1)%npath] * -dir[i-1]);
+				// and delete this point
+				path = delete(path, i);
+				dir = delete(dir, i);
+				normal = delete(normal, i);
+				npath--;
+				__tpc_recalcdir(side, path, dir, normal, i-1);
+				__tpc_recalcdir(side, path, dir, normal, i);
+				__tpc_recalcdir(side, path, dir, normal, (i+1)%npath);
+				i--;
+			} elif(li < lo) {
+				// Exit segment is longer, project entry onto exit segment
+				if(normal[i-2] != -dir[i-1]) {
+					// Bottom of the pit has not a 90 degree turn to the top entry
+					// Tag lifts bottom to 90 degree
+					tag = li * (-dir[i-1] * normal[i-2]);
+				} else {
+					// Bottom already entered at 90 degrees
+					tag = li;
+				}
+				// Move the bottom pit point up along the exit segment
+				dotp = normal[i-2] * dir[i];
+				if(dotp == 0.0) {
+					dotp = 1.0;
+				}
+				path[i] += tag * dir[i] / dotp;
+				// and delete the previous point
+				path = delete(path, i-1);
+				dir = delete(dir, i-1);
+				normal = delete(normal, i-1);
+				npath--;
+				__tpc_recalcdir(side, path, dir, normal, i-2);
+				__tpc_recalcdir(side, path, dir, normal, i-1);
+				__tpc_recalcdir(side, path, dir, normal, i);
+				i--;
+			} else {
+				// Both entry and exit are same length, remove the point
+				path = delete(path, i);
+				dir = delete(dir, i);
+				normal = delete(normal, i);
+				__tpc_recalcdir(side, path, dir, normal, i-1);
+				__tpc_recalcdir(side, path, dir, normal, i);
+				i--;
+			}
+		}
+	}
+	if(warnremove && !(flags & TPC_QUIET)) {
+		warning("Removed ", warnremove, " unreachable internal corner(s)");
+	}
+
+	// Start the trace of the path
+
+	comment("-- tracepath_comp at ", (flags & TPC_LEFT) ? "left" : "right", " side at width=", width, " --");
+
+	if(flags & TPC_CLOSED) {
+		// Check if the entry will collide with the exit
+		crossp = side * __tpc_crossprod(dir[-1], dir[0]);
+		dotp = dir[-1] * dir[0];
+		if(crossp < 0.0 && dotp > 0.0) {
+			warning(pfx, "Path entry and exit collides with exit and entry, use a >=180 degree entry angle point to prevent");
+		}
+	}
+
+	// Entry into first segment
+	if(flags & TPC_ARCIN) {
+		goto(head(path[0] + width * (2.0*normal[0] - dir[0]), 2));	// Rapid without Z
+		move(path[0] + width * (2.0*normal[0] - dir[0]));		// Move with Z
+		// Arc into the first segment's start point
+		if(side > 0.0) {
+			arc_cw(path[0] + width * normal[0], width);
+		} else {
+			arc_ccw(path[0] + width * normal[0], width);
+		}
+	} else {
+		goto(head(path[0] + width * 2.0*normal[0], 2));	// Rapid without Z
+		move(path[0] + width * normal[0]);		// Move with Z
+	}
+
+	// A closed path ends at the first point, loop once more
+	n = (flags & TPC_CLOSED) ? npath+1 : npath;
+
+	// Trace path at 'width' from the source path
+	for(i = 1; i < n; i++) {
+		j = i % npath;
+		crossp = __tpc_crossprod(dir[j-1], dir[j]);
+		dotp = dir[j-1] * dir[j];
+		if(crossp == 0.0) {
+			// Co-linear or 180 degree turn
+			if(dotp >= 0.0) {
+				if(i < npath - 1) {
+					// Co-linear, delete the point
+					path = delete(path, i);
+					dir = delete(dir, i);
+					normal = delete(normal, i);
+					i--;
+					n--;
+					npath--;
+				} else {
+					// Don't delete the last entry for closure
+					move(path[j] + width * normal[j]);
+				}
+			} else {
+				// 180 degree turn; wrong side 180'ies have already been deleted
+				// Move to end of segment
+				move(path[j] - width * normal[j]);
+				if(i < n - 1) {		// Only if not last
+					// Arc with 180 degrees
+					if(side > 0.0) {
+						arc_ccw_r(width*2.0*normal[j], width);
+					} else {
+						arc_cw_r(width*2.0*normal[j], width);
+					}
+				}
+			}
+			continue;
+		}
+
+		if(crossp * side < 0.0) {
+			// Inside angle move
+			crossp = __tpc_crossprod(normal[j], normal[j] + normal[j-1]);	// sin(angle/2)
+			dotp = normal[j] * normalize(normal[j] + normal[j-1]);		// cos(angle/2)
+			// End at the projected direction of the next segment
+			move(path[j] + width*(normal[j] + side * dir[j]*crossp/dotp));
+		} else {
+			// Outside angle move
+			move(path[j] + width * normal[j-1]);
+			if(i < n - 1) {		// Only is not last
+				// Arc around the angle
+				if(side > 0.0) {
+					arc_ccw(path[j] + width * normal[j], width);
+				} else {
+					arc_cw(path[j] + width * normal[j], width);
+				}
+			}
+		}
+	}
+
+	// Exit the path
+	i--;
+	i %= npath;
+	if(flags & TPC_ARCOUT) {
+		if(side > 0.0) {
+			arc_cw_r(width * (normal[i-1] + dir[i-1]), width);
+		} else {
+			arc_ccw_r(width * (normal[i-1] + dir[i-1]), width);
+		}
+	} else {
+		move_r(width * normal[i-1]);
+	}
+
+	// Return to old Z if requested
+	if(flags & TPC_OLDZ) {
+		goto([-, -, prevz]);
+	}
+	comment("-- tracepath_comp end --");
+	return;
+}
+
+

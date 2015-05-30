@@ -1,0 +1,46 @@
+/*******************************************************
+The following //comment lines identify ngcgui inputs:
+
+//ngcgui: info: circle
+//ngcgui: T=2,d tool
+//ngcgui: D=10,diameter inner
+//ngcgui: CUTZ=-10,
+//ngcgui: NR_CUTS=5,
+//ngcgui: SAFEZ=5,
+//ngcgui: FEEDRATE=600,
+
+*******************************************************/
+include("ensure_units.inc.gcmc");
+
+umode = 1;
+
+if (umode == 1) {
+  zero = 0.0mm;
+} else {
+  zero = 0.0in;
+}
+
+    SAFEZ = zero + SAFEZ;
+ FEEDRATE = zero + FEEDRATE;
+
+  SAFEZ   = zero + 5mm;
+
+feedrate(FEEDRATE);
+
+HOME  = [0.0mm, 0.0mm, SAFEZ];
+
+goto(HOME);
+move(HOME);        // So LinuxCNC will show the following rapids
+
+goto ([-, -, SAFEZ]);
+move ([-, -, SAFEZ]);
+
+for (i = 1.0 / NR_CUTS; i <= 1; i += 1.0 / NR_CUTS) {
+  goto([0.0mm + T/2.0 + D/2.0, 0.0mm]);
+  move([-,-, CUTZ * i]);
+  circle_cw([0.0mm, 0.0mm]);
+}
+
+goto ([-, -, SAFEZ]);
+
+goto(HOME);
