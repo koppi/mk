@@ -146,7 +146,7 @@ Keine Meldungen bei SSH-Login:
 $ touch .hushlogin
 ```
 
-## Installation Linux / Xenomai / Machinekit
+## Installation Machinekit
 
 Wir verwenden die Varianten Machinekit-Xenomai und -Posix.
 
