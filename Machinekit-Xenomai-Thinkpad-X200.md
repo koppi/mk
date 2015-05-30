@@ -1,8 +1,8 @@
-# Machinekit auf Thinkpad X200
+# Machinekit / Debian Jessie auf Thinkpad X200
 
 Übersicht Steuerung:
 ![Übersicht Steuerung](pics/IMG_20150515_172113.jpg)
- 1. IBM Thinkpad X200 mit Debian Wheezy / Linux 3.8.1 / Machinekit 0.1 / Xenomai 2.6.3
+ 1. IBM Thinkpad X200 mit Debian Jessie / Linux 3.8.1 / Machinekit 0.1 / Xenomai 2.6.4
  2. 24VDC 50W Netzteil
  3. Beckhoff EtherCAT Komponenten
  4. SSR-40 DA Solid State Relay Modul (– wird momentan nicht verwendet, stattdessen die EL2622-Klemme)
@@ -36,19 +36,24 @@ BIOS auf Werkseinstellungen zurücksetzen:
 
 ![Thinpad X200 BIOS reset](pics/2015-05-04 19.00.51.jpg)
 
-## Installation Debian Wheezy
+## Installation Debian Jessie
 
-
+ISO-Datei herunterladen:
 ```bash
-$ wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/7.8.0-live+nonfree/i386/iso-hybrid/debian-live-7.8.0-i386-gnome-desktop+nonfree.iso
-$ md5sum debian-live-7.8.0-i386-gnome-desktop+nonfree.iso
-0e9a2b9561d7380ff3015c8f81d9f1e2  debian-live-7.8.0-i386-gnome-desktop+nonfree.iso
+$ wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/8.0.0-live+nonfree/amd64/iso-hybrid/debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
 ```
-
-ISO auf USB-Stick kopieren:
-
+bzw.:
 ```bash
-$ sudo dd if=debian-live-7.8.0-i386-gnome-desktop+nonfree.iso of=/dev/sdX
+$ wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/8.0.0-live+nonfree/amd64/iso-hybrid/debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
+```
+Prüfsumme berechnen und vergleichen mit [MD5SUMS](http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/8.0.0-live+nonfree/amd64/iso-hybrid/MD5SUMS):
+```bash
+$ md5sum debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso 
+7a56cc2f78f8ea90d0c78fc462f95b95  debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
+```
+ISO-Datei auf USB-Stick kopieren:
+```bash
+$ sudo dd if=debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso of=/dev/sdX
 ```
 
 Debian installieren und Rechner neu starten.
@@ -56,6 +61,28 @@ Debian installieren und Rechner neu starten.
 Im Thinkpad BIOS "Legacy USB" deaktivieren:
 
 ![Thinpad X200 BIOS – Legacy USB](pics/2015-05-14 01.18.55.jpg)
+
+### GDM3 automatisches Einloggen
+
+```bash
+$ sudo -i
+# sed -i "s|^#\?.*AutomaticLoginEnable.*|AutomaticLoginEnable = true|" /etc/gdm3/daemon.conf
+# sed -i "s|^#\?.*AutomaticLogin .*=.*|AutomaticLogin = koppi\nTimedLoginEnable = true\nTimedLogin = koppi\nTimedLoginDelay = 0|" /etc/gdm3/daemon.conf
+```
+
+### Gnome Titlebar
+
+```bash
+$ sudo -i
+# sed -i "/title_vertical_pad/s/value=\"[0-9]\{1,2\}\"/value=\"0\"/g" \
+    /usr/share/themes/Adwaita/metacity-1/metacity-theme-3.xml
+```
+
+### Fonts
+
+```bash
+$ su - koppi -c "gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 8'"
+```
 
 ### Konfiguration WLAN
 
@@ -75,14 +102,6 @@ iface wlan0 inet static
 ```bash
 $ sudo ifup wlan0
 $ /sbin/ifconfig wlan0
-```
-
-### Gnome Classic ohne Effekte mit LightDM
-
-```bash
-$ sudo aptitude install gnome-desktop
-$ sudo apt-get -y install lightdm
-$ sudo /usr/lib/x86_64-linux-gnu/lightdm/lightdm-set-defaults -s gnome-fallback
 ```
 
 ### Konfiguration sudo
@@ -137,20 +156,18 @@ Paketmanager konfigurieren:
 
 ```bash
 $ sudo sh -c \
-    "echo 'deb http://deb.dovetail-automata.com wheezy main' > \
+    "echo 'deb http://deb.dovetail-automata.com jessie main' > \
 	    /etc/apt/sources.list.d/machinekit.list; \
 	    apt-get update ; \
-	    apt-get install dovetail-automata-keyring"
+	    apt-get -y --force-yes install dovetail-automata-keyring"
 $ sudo apt-get update
 ```
 
 Machinekit Pakete installieren:
 
 ```bash
-$ sudo apt-get install linux-image-xenomai.x86-amd64
-$ sudo apt-get install linux-headers-xenomai.x86-amd64
-$ sudo apt-get install machinekit-xenomai
-$ sudo apt-get install machinekit-posix # non-RT ('Simulator')
+$ sudo apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
+$ sudo apt-get -y install machinekit machinekit-xenomai machinekit-posix machinekit-dev
 ```
 
 ### Konfiguration Linux / Xenomai
@@ -169,28 +186,33 @@ $ sudo update-grub
 $ sudo reboot
 ```
 
-Nach Neustart:
+Bei Neustart im Grub-Menu den Xenomai-Kernel unter "Advanced Options" auswählen und booten:
 
 ```bash
 $ uname -a
-Linux x200 3.8-1-xenomai.x86-amd64 #1 SMP Debian 3.8.13-9 x86_64 GNU/Linux
+Linux x200 3.8-1-xenomai.x86-amd64 #1 SMP Debian 3.8.13-12~1jessie~1da x86_64 GNU/Linux
 ```
+
+Anderen Kernel entfernen:
+
+```bash
+$ sudo apt-get -y remove --purge linux-image-amd64 linux-headers-amd64 linux-image-3.16.*-amd64 linux-headers-3.16.*-common linux-headers-3.16.*-amd64 linux-kbuild-3.16
 
 Deaktivierung von SMI prüfen:
 
 ```bash
 $ dmesg|grep Xeno
- I-pipe: head domain Xenomai registered.
- Xenomai: hal/x86_64 started.
- Xenomai: scheduling class idle registered.
- Xenomai: scheduling class rt registered.
- Xenomai: real-time nucleus v2.6.3 (Lies and Truths) loaded.
- Xenomai: debug mode enabled.
- Xenomai: SMI-enabled chipset found
- Xenomai: SMI workaround enabled
- Xenomai: starting native API services.
- Xenomai: starting POSIX services.
- Xenomai: starting RTDM services.
+[    0.631318] I-pipe: head domain Xenomai registered.
+[    0.631346] Xenomai: hal/x86_64 started.
+[    0.631365] Xenomai: scheduling class idle registered.
+[    0.631367] Xenomai: scheduling class rt registered.
+[    0.632107] Xenomai: real-time nucleus v2.6.4 (Jumpin' Out) loaded.
+[    0.632109] Xenomai: debug mode enabled.
+[    0.632334] Xenomai: SMI-enabled chipset found
+[    0.632346] Xenomai: SMI workaround enabled
+[    0.632390] Xenomai: starting native API services.
+[    0.632392] Xenomai: starting POSIX services.
+[    0.632416] Xenomai: starting RTDM services.
 ```
 
 ### Konfiguration Xenomai
@@ -274,12 +296,35 @@ $ git clone https://github.com/sittner/ec-debianize
 $ cd ec-debianize
 $ debian/configure -r
 $ dpkg-checkbuilddeps
-$ sudo apt-get -y install debhelper gettext autoconf automake libtool dpatch
+$ sudo apt-get -y install debhelper gettext autoconf automake libtool dpatch libxenomai-dev
 $ dpkg-buildpackage
 $ cd ..
 $ sudo dpkg -i etherlabmaster*deb
-$ sudo /usr/sbin/update-ethercat-config
+$ sudo cp ec-debianize/debian/tmp/etc/init.d/ethercat /etc/init.d
 ```
+
+Anpassung in ```/etc/init.d/ethercat``` von:
+```
+/etc/sysconfig/ethercat
+```
+nach:
+```
+/etc/default/ethercat
+```
+
+```bash
+$ sudo update-rc.d ethercat defaults
+```
+
+Anpassung ```eth0``` und ```e1000e```:
+
+```bash
+$ /sbin/ifconfig
+$ sudo vi /etc/default/ethercat
+MASTER0_DEVICE="eth0"
+DEVICE_MODULES="e1000e"
+```
+
 
 Installation ntp:
 
@@ -374,20 +419,27 @@ $ sudo make -C linuxcnc-ethercat install
 
 Konfigurationsdateien: [linuxcnc/configs/koppi-cnc](linuxcnc/configs/koppi-cnc)
 
+```bash
+$ cd
+$ git clone https://github.com/koppi/mk
+$ ln -s mk/linuxcnc linuxcnc
+$ ln -s mk/linuxcnc machinekit
+```
+
 ### Logging via PostgreSQL
 
 ```bash
 $ sudo apt-get -y install postgresql
 $ sudo apt-get -y install python-psycopg2
-$ sudo su - postgres
-$ sudo su - postgres -c "createuser machinekit"
-$ sudo su - postgres -c "createdb -O machinekit machinekit"
+$ sudo su - postgres -c "createuser koppi"
+$ sudo su - postgres -c "createdb -O koppi koppi"
 $ psql -c "create table log(id SERIAL PRIMARY KEY, time timestamp, task_mode int, file varchar(1024), line int, x_min float, x_max float, x_avg float, y_min float, y_max float, y_avg float, z_min float, z_max float, z_avg float);"
 $ psql -c "CREATE INDEX log_idx_time ON log (id, time, time DESC);"
 $
 ```
 
 ```bash
+$ cd linuxcnc/configs/koppi-cnc
 $ sudo comp --install ownanalytics.comp
 ```
 
@@ -402,8 +454,9 @@ $ sudo apt-get -y install lm-sensors
 ```bash
 $ sudo apt-get -y install jstest-gtk joystick
 $ jscal -p /dev/input/jsX > jscal.sh # replace X with your joypad's number
+$ echo '#!/usr/bin/env bash' | cat - jscal.sh > /tmp/out && mv /tmp/out jscal.sh
+$ chmod +x jscal.sh
 $ sudo mv jscal.sh /usr/local/bin
-$ sudo chmod +x /usr/local/bin/jscal.sh
 $ sudo cp linuxcnc/configs/koppi-cnc/50-joypad.rules /etc/udev/rules.d/50-joypad.rules
 $ sudo udevadm trigger
 ```
@@ -424,7 +477,7 @@ emcTaskInit: using builtin interpreter
 
 LinuxCNC / Machinekit AXIS:
 
-![LinuxCNC / Machinekit AXIS](pics/20150529-001.png)
+![LinuxCNC / Machinekit AXIS](pics/20150530-001.png)
 
 Panel rechts:
 * "Rapid Home" Button
@@ -598,19 +651,11 @@ Mitmachen
 
   * http://www.machinekit.io/docs/contributing/
 
-Machinekit Debian/Wheezy: Pakete für die Entwicklungsumgebung installieren:
+Machinekit Debian/Jessie: Pakete für die Entwicklungsumgebung installieren:
 
 ```bash
 sudo apt-get install libczmq-dev python-zmq libjansson-dev \
-    libwebsockets-dev libxenomai-dev python-pyftpdlib
-```
-
-```bash
-sudo sh -c \
-    "echo 'deb http://ftp.de.debian.org/debian wheezy-backports main' > \
-	     /etc/apt/sources.list.d/wheezy-backports.list"
-		 sudo apt-get update
-		 sudo apt-get install -t wheezy-backports cython
+    libwebsockets-dev libxenomai-dev python-pyftpdlib cython
 ```
 
 ### Machinekit coding style (WIP)
