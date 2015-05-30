@@ -57,12 +57,12 @@ addf lcec.read-all servo-thread
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
 
-addf x-pid servo-thread
-addf y-pid servo-thread
-addf z-pid servo-thread
-#addf x-pid.do-pid-calcs servo-thread
-#addf y-pid.do-pid-calcs servo-thread
-#addf z-pid.do-pid-calcs servo-thread
+#addf x-pid servo-thread
+#addf y-pid servo-thread
+#addf z-pid servo-thread
+addf x-pid.do-pid-calcs servo-thread
+addf y-pid.do-pid-calcs servo-thread
+addf z-pid.do-pid-calcs servo-thread
 
 addf lcec.write-all servo-thread
 
