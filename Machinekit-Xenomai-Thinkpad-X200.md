@@ -70,18 +70,33 @@ $ sudo -i
 # sed -i "s|^#\?.*AutomaticLogin .*=.*|AutomaticLogin = koppi\nTimedLoginEnable = true\nTimedLogin = koppi\nTimedLoginDelay = 0|" /etc/gdm3/daemon.conf
 ```
 
-### Gnome Titlebar
+### Gnome Desktop
 
 ```bash
+$ gsettings set org.gnome.desktop.background primary-color 000000
+$ gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 8'
+$ gsettings set $gset_powr_path sleep-inactive-ac-timeout 0
+$ gsettings set org.gnome.desktop.lockdown disable-lock-screen true
+$ gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
+$ gsettings set org.gnome.SessionManager logout-prompt false
+$ gsettings set org.gnome.desktop.interface cursor-blink false
+$ gsettings set org.gnome.settings-daemon.peripherals.mouse middle-button-enabled true
+$ gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+$ gsettings set org.gnome.desktop.interface enable-animations false
+$ gsettings set org.gnome.settings-daemon.plugins.cursor active false
 $ sudo -i
 # sed -i "/title_vertical_pad/s/value=\"[0-9]\{1,2\}\"/value=\"0\"/g" \
     /usr/share/themes/Adwaita/metacity-1/metacity-theme-3.xml
 ```
 
-### Fonts
+```bash
+sudo vi /etc/systemd/logind.conf
+#HandleLidSwitch=suspend
+HandleLidSwitch=ignore
+```
 
 ```bash
-$ su - koppi -c "gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 8'"
+$ sudo systemctl restart systemd-logind
 ```
 
 ### Konfiguration WLAN
