@@ -11,27 +11,27 @@
   <vbox>
     <s32>
       <halpin>"program-line"</halpin>
-      <font>("Helvetica",14)</font>
+      <font>("Helvetica",12)</font>
       <format>"14d"</format>
     </s32>
     <hbox>
       <label>
         <text>"        "</text>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
       </label>
       <u32>
         <halpin>"elaps-hour"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"02d:"</format>
       </u32>
       <u32>
         <halpin>"elaps-min"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"02d:"</format>
       </u32>
       <u32>
         <halpin>"elaps-sec"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"02d"</format>
       </u32>
     </hbox>
@@ -91,13 +91,13 @@
   <vbox>
     <number>
       <halpin>"current-comp"</halpin>
-      <font>("Helvetica",14)</font>
+      <font>("Helvetica",12)</font>
       <format>"8.4f"</format>
     </number>
 <!--
     <number>
       <halpin>"current-z"</halpin>
-      <font>("Helvetica",14)</font>
+      <font>("Helvetica",12)</font>
       <format>"8.4f"</format>
     </number>
 -->
@@ -112,7 +112,7 @@
       <button>
         <halpin>"enable"</halpin>
         <width>"11"</width>
-        <text>"Enable"</text>
+        <text>"On / Off"</text>
       </button>
     </hbox>
     <hbox>
@@ -145,48 +145,48 @@
     <hbox>
       <s32>
         <halpin>"temp-0"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6d°C"</format>
       </s32>
       <number>
         <halpin>"motor-supply-0"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6.2f V"</format>
       </number>
     </hbox>
     <hbox>
       <s32>
         <halpin>"temp-1"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6d°C"</format>
       </s32>
       <number>
         <halpin>"motor-supply-1"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6.2f V"</format>
       </number>
     </hbox>
     <hbox>
       <s32>
         <halpin>"temp-2"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6d°C"</format>
       </s32>
       <number>
         <halpin>"motor-supply-2"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6.2f V"</format>
       </number>
     </hbox>
     <hbox>
       <number>
         <halpin>"temp1"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6.0f°C"</format>
       </number>
       <s32>
         <halpin>"fan1-rpm"</halpin>
-        <font>("Helvetica",14)</font>
+        <font>("Helvetica",12)</font>
         <format>"6d RPM"</format>
       </s32>
     </hbox>
