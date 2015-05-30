@@ -10,6 +10,10 @@ uncomment
 ```
 #allowed_hosts = *
 ```
+and restart apt-cacher
+```bash
+$ sudo /etc/init.d/apt-cacher restart
+```
 next, build and run machinekit-jessie.img:
 ```bash
 $ time sh x &> stick-jessie.log
