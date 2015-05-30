@@ -13,11 +13,12 @@ import getpass
 
 work_thread = 5.0 # work_thread means how often pins will be updated (sec)
 
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
+#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 class Logger :
         def __init__(self) :
-                logging.info("data_logger init")
+                logging.info("init")
                 self.linuxcnc = linuxcnc
                 self.stat     = self.linuxcnc.stat()
                 self.con = None
@@ -31,11 +32,11 @@ class Logger :
                         ver = self.cur.fetchone()
                         logging.debug(ver)
                 except psycopg2.DatabaseError, e:
-                        logging.info('Error %s' % e)
+                        logging.error('%s' % e)
                         sys.exit(1)
 
                 self.h = hal.component("data_logger")
-                logging.info("data_logger ok")
+                logging.info("ok")
 
         def run(self) :
                 self.h.newpin("beat", hal.HAL_BIT, hal.HAL_OUT)

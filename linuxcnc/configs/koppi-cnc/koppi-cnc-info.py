@@ -8,7 +8,7 @@ import hal
 import logging
 import subprocess
 
-work_thread = 2.0 # work_thread means how often pins will be updated (sec)
+work_thread = 1.0 # update pins severy [sec]
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -45,9 +45,9 @@ def sensors(value):
 
 class Info :
         def __init__(self) :
-                logging.info("koppi-cnc-info.py init")
+#                logging.info("koppi-cnc-info.py init")
                 self.h = hal.component("koppi-cnc-info")
-                logging.info("koppi-cnc-info.py ok")
+#                logging.info("koppi-cnc-info.py ok")
 
                 for i in range(0,3):
                         self.h.newpin("motor-supply-%d" % (i), hal.HAL_FLOAT, hal.HAL_OUT)
