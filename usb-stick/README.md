@@ -16,6 +16,6 @@ $ sudo /etc/init.d/apt-cacher restart
 ```
 next, build and run machinekit-jessie.img:
 ```bash
-$ time sh x &> stick-jessie.log
+$ time sh x &> machinekit-jessie.log
 $ sh y # run in qemu
 ```
