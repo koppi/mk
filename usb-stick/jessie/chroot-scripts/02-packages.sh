@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get -y install firmware-linux-nonfree
+apt-get -y install firmware-linux-nonfree firmware-iwlwifi console-setup
 apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
 apt-get -y install machinekit machinekit-dev machinekit-xenomai machinekit-posix
 

@@ -269,13 +269,16 @@ siehe https://github.com/sittner/ec-debianize
 Installation:
 
 ```bash
+$ sudo apt-get -y install git
 $ git clone https://github.com/sittner/ec-debianize
 $ cd ec-debianize
-$ debian/configure -a
+$ debian/configure -r
 $ dpkg-checkbuilddeps
+$ sudo apt-get -y install debhelper gettext autoconf automake libtool dpatch
 $ dpkg-buildpackage
 $ cd ..
 $ sudo dpkg -i etherlabmaster*deb
+$ sudo /usr/sbin/update-ethercat-config
 ```
 
 Installation ntp:
@@ -351,7 +354,7 @@ Debian-Paket bauen und installieren:
 ```bash
 $ sudo apt-get -y install machinekit-dev
 $ dpkg-checkbuilddeps
-$ debuild -uc -us
+$ dpkg-buildpackage
 $ cd ..
 $ sudo dpkg -i linuxcnc-ethercat*deb
 ```
