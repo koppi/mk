@@ -87,7 +87,6 @@ $ su - koppi -c "gsettings set org.gnome.desktop.wm.preferences titlebar-font 'C
 ### Konfiguration WLAN
 
 ```/etc/network/interfaces``` anpassen:
-
 ```ini
 auto wlan0
 allow-hotplug wlan0
@@ -107,14 +106,12 @@ $ /sbin/ifconfig wlan0
 ### Konfiguration sudo
 
 sudo ohne Passwort:
-
 ```bash
 $ su -
 # visudo
 ```
 
 Zeile anpassen:
-
 ```
 %sudo   ALL=(ALL:ALL) ALL
 ```
@@ -124,7 +121,6 @@ in
 ```
 
 Benutzer koppi" in Gruppe "sudo" aufnehmen:
-
 ```bash
 $ su -
 # usermod -aG sudo koppi
@@ -135,13 +131,11 @@ Danach Aus- und wieder Einloggen, damit Eintragung wirksam wird.
 ### Konfiguration SSHD
 
 SSH Logins beschleunigen:
-
 ```bash
 $ sudo su -c 'echo -e "UseDNS no" >> /etc/ssh/sshd_config
 ```
 
 Keine Meldungen bei SSH-Login:
-
 ```bash
 $ touch .hushlogin
 ```
@@ -153,7 +147,6 @@ Wir verwenden die Varianten Machinekit-Xenomai und -Posix.
 Wie in http://www.machinekit.io/docs/packages-debian/ vorgehen.
 
 Paketmanager konfigurieren:
-
 ```bash
 $ sudo sh -c \
     "echo 'deb http://deb.dovetail-automata.com jessie main' > \
@@ -164,7 +157,6 @@ $ sudo apt-get update
 ```
 
 Machinekit Pakete installieren:
-
 ```bash
 $ sudo apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
 $ sudo apt-get -y install machinekit machinekit-xenomai machinekit-posix machinekit-dev
@@ -172,34 +164,30 @@ $ sudo apt-get -y install machinekit machinekit-xenomai machinekit-posix machine
 
 ### Konfiguration Linux / Xenomai
 
-Anpassung der Kernel-Parameter in ```/etc/default/grub```
-
+Anpassung der Kernel-Parameter in ```/etc/default/grub```:
 ```ini
 #GRUB_CMDLINE_LINUX_DEFAULT="quiet"
 GRUB_CMDLINE_LINUX_DEFAULT="quiet xeno_hal.smi=1 lapic=notscdeadline hpet=disable i915.i915_enable_rc6=0 i915.powersave=0 intel_idle.max_cstate=1 processor.max_cstate=1 isolcpus=1 idle=poll"
 ```
 
 Bootloader neu konfigurieren und neustarten:
-
 ```bash
 $ sudo update-grub
 $ sudo reboot
 ```
 
 Bei Neustart im Grub-Menu den Xenomai-Kernel unter "Advanced Options" auswählen und booten:
-
 ```bash
 $ uname -a
 Linux x200 3.8-1-xenomai.x86-amd64 #1 SMP Debian 3.8.13-12~1jessie~1da x86_64 GNU/Linux
 ```
 
 Anderen Kernel entfernen:
-
 ```bash
 $ sudo apt-get -y remove --purge linux-image-amd64 linux-headers-amd64 linux-image-3.16.*-amd64 linux-headers-3.16.*-common linux-headers-3.16.*-amd64 linux-kbuild-3.16
+```
 
 Deaktivierung von SMI prüfen:
-
 ```bash
 $ dmesg|grep Xeno
 [    0.631318] I-pipe: head domain Xenomai registered.
