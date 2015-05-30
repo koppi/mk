@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "koppi-cnc-axis-startup.sh"
+
 sleep 1
 halcmd setp halui.machine.on 0
 sleep .2

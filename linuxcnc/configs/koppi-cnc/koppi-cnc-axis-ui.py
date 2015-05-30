@@ -1,5 +1,7 @@
+import os
 import subprocess
 
+print("os.getcwd() %s" % (os.getcwd()))
 
 root_window.tk.call(pane_bottom+".t.text","configure"
 ,"-foreground","white")
@@ -26,4 +28,4 @@ root_window.tk.call ("wm", "attributes", ".", "-zoomed", "True")
 # windows always top
 #root_window.tk.call ("wm", "attributes", ".", "-topmost", "True")
 
-subprocess.Popen(["koppi-cnc-axis-startup.sh"])
+subprocess.Popen(["./koppi-cnc-axis-startup.sh"])

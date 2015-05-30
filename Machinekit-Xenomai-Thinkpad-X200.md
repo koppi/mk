@@ -371,6 +371,29 @@ $ sudo make -C linuxcnc-ethercat install
 
 Konfigurationsdateien: [linuxcnc/configs/koppi-cnc](linuxcnc/configs/koppi-cnc)
 
+### Logging via PostgreSQL
+
+```bash
+$ sudo apt-get -y install postgresql
+$ sudo apt-get -y install python-psycopg2
+$ sudo su - postgres
+$ sudo su - postgres -c "createuser machinekit"
+$ sudo su - postgres -c "createdb -O machinekit machinekit"
+$ psql -c "create table log(id SERIAL PRIMARY KEY, time timestamp, task_mode int, file varchar(1024), line int, x_min float, x_max float, x_avg float, y_min float, y_max float, y_avg float, z_min float, z_max float, z_avg float);"
+$ psql -c "CREATE INDEX log_idx_time ON log (id, time, time DESC);"
+$
+```
+
+```bash
+$ sudo comp --install ownanalytics.comp
+```
+
+### sensors
+
+```bash
+$ sudo apt-get -y install lm-sensors
+```
+
 ### JoyPad einrichten
 
 ```bash

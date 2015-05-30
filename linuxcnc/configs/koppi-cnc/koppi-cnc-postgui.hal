@@ -82,7 +82,7 @@ setp input.0.abs-rz-scale -127.5
 loadrt or2 count=3
 loadrt sum2 count=1
 
-loadusr -Wn compensation python koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
+loadusr -Wn compensation python ./koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
 
 addf or2.0 servo-thread
 addf or2.1 servo-thread
@@ -137,7 +137,7 @@ net comp => pyvcp.current-comp
 # EtherCAT Infos
 ######################################################################
 
-loadusr -W koppi-cnc-info.py
+loadusr -W ./koppi-cnc-info.py
 
 net info-temp-0 koppi-cnc-info.temp-0 => pyvcp.temp-0
 net info-temp-1 koppi-cnc-info.temp-1 => pyvcp.temp-1
@@ -175,7 +175,7 @@ net cycle-hours   time.0.hours   => pyvcp.elaps-hour
 # Data logger
 ######################################################################
 
-loadusr -W data_logger.py
+loadusr -W ./data_logger.py
 
 loadrt ownanalytics count=3
 #newinst  ownanalytics ownanalytics-0
