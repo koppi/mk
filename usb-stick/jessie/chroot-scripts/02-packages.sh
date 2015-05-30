@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Acquire::http::Proxy \"http://localhost:3142/\"" > /etc/apt/apt.conf.d/01proxy
-
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
