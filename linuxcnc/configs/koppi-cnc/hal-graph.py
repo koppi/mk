@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 #
 # Interactive HAL Graph
 #
@@ -8,7 +8,7 @@
 #
 # this version differs to the above version in the following points:
 #
-# * it auto-refreshes the HAL data every second
+# * it auto-refreshes the HAL data every five seconds
 #
 # * opens an interactive window (using a slightly modified version of xdot.py)
 #
@@ -94,7 +94,7 @@ class HALAnalyzer( object ):
 
         # Add all the pins into their sub-graphs
         for pin_g_name, pin_g_val_array in self.pin_group_dict.iteritems():
-            subg = pydot.Cluster('cluster_' + pin_g_name.replace(".","_"),
+            subg = pydot.Cluster('cluster_' + pin_g_name.replace(".","_").replace("-", "_"),
                                  label=pin_g_name, style='rounded' )
             
             #print 'GROUP: ', pin_g_name
@@ -165,7 +165,7 @@ def main():
     if len(sys.argv) == 1:
         w = HALGraphWindow()
         w.connect('destroy', gtk.main_quit)
-        gtk.timeout_add(1000, w)
+        gtk.timeout_add(5000, w.timer)
         gtk.main()
     elif len(sys.argv) == 2:
         a = HALAnalyzer()
