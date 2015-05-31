@@ -37,6 +37,24 @@
     </hbox>
   </vbox>
 </labelframe>
+<labelframe text="Spindle">
+  <vbox>
+    <hbox>
+      <rectled>
+        <halpin>"spindle-at-speed-led"</halpin>
+        <width>"28"</width>
+        <height>"28"</height>
+        <on_color>"green"</on_color>
+        <off_color>"gray"</off_color>
+      </rectled>
+      <number>
+        <halpin>"spindle-speed"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"16.0f RPM"</format>
+      </number>
+    </hbox>
+  </vbox>
+</labelframe>
 <labelframe text="Touch Probe">
  <vbox>
   <hbox>
@@ -142,33 +160,6 @@
 </labelframe>
 <labelframe text="Info">
   <vbox>
-    <vbox>
-      <bd>6</bd>
-      <label>
-        <text>"Spindle Speed"</text>
-        <font>("Helvetica",10)</font>
-      </label>
-      <bar>
-        <halpin>"spindle-speed"</halpin>
-        <max_>32000</max_>
-      </bar>
-      <label>
-        <text>"Spindle-At-Speed:"</text>
-        <font>("Helvetica",20)</font>
-      </label>
-      <hbox>
-        <label>
-          <text>"             "</text>
-          <font>("Helvetica",10)</font>
-        </label>
-        <led>
-          <halpin>"spindle-at-speed-led"</halpin>
-          <size>30</size>
-          <on_color>"green"</on_color>
-          <off_color>"red"</off_color>
-        </led>
-      </hbox>
-    </vbox>
     <hbox>
       <s32>
         <halpin>"temp-0"</halpin>

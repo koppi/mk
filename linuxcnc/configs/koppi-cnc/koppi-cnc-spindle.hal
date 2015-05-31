@@ -20,8 +20,7 @@ net coolant-on <= iocontrol.0.coolant-flood
 # add scale and lowpass, these will be used in custom_postgui.hal
 loadrt scale count=1
 loadrt lowpass count=1
-
-# add the encoder to HAL and attach it to threads.
+loadrt abs count=1# add the encoder to HAL and attach it to threads.
 loadrt encoder num_chan=1
 addf encoder.update-counters  servo-thread
 addf encoder.capture-position servo-thread

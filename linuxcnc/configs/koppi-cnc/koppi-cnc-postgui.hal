@@ -221,8 +221,10 @@ net spindle-fb-filtered-abs-rps  abs.0.out      => scale.0.in
 net spindle-fb-filtered-abs-rpm  scale.0.out    => pyvcp.spindle-speed
 
 # pindle at speed indicator
-net spindle-cmd            =>  near.6.in1
-net spindle-velocity       =>  near.6.in2
-net spindle-at-speed       <=  near.6.out
-setp near.6.scale 1.500000
+loadrt near count=1
+
+net spindle-cmd            =>  near.0.in1
+net spindle-velocity       =>  near.0.in2
+net spindle-at-speed       <=  near.0.out
+setp near.0.scale 1.500000
 net spindle-at-speed       => pyvcp.spindle-at-speed-led
