@@ -172,7 +172,7 @@ net cycle-minutes time.0.minutes => pyvcp.elaps-min
 net cycle-hours   time.0.hours   => pyvcp.elaps-hour
 
 ######################################################################
-# Data logger
+# Show data logger status
 ######################################################################
 
 loadusr -W ./data_logger.py
@@ -208,3 +208,21 @@ linksp motion-line data_logger.line
 linksp x-pos-cmd-comp ownanalytics.0.in
 linksp y-pos-cmd-comp ownanalytics.1.in
 linksp zpos-cmd       ownanalytics.2.in
+
+######################################################################
+# Show spindle RPM
+######################################################################
+
+setp scale.0.gain 60
+setp lowpass.0.gain 0.010000
+net spindle-velocity => lowpass.0.in
+net spindle-fb-filtered-rps      lowpass.0.out  => abs.0.in
+net spindle-fb-filtered-abs-rps  abs.0.out      => scale.0.in
+net spindle-fb-filtered-abs-rpm  scale.0.out    => pyvcp.spindle-speed
+
+# pindle at speed indicator
+net spindle-cmd            =>  near.6.in1
+net spindle-velocity       =>  near.6.in2
+net spindle-at-speed       <=  near.6.out
+setp near.6.scale 1.500000
+net spindle-at-speed       => pyvcp.spindle-at-speed-led
