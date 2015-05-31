@@ -548,7 +548,7 @@ $ watch -t.1 koppi-cnc-info.sh
 
 ![koppi-cnc-info.sh](pics/20150514-002.gif)
 
-### HAL-Graph Visualisieurng
+### HAL-Graph Visualisierung
 
 Siehe [linuxcnc/configs/koppi-cnc/hal-graph.py](linuxcnc/configs/koppi-cnc/hal-graph.py):
 
