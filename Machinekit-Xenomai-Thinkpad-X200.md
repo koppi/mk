@@ -550,6 +550,11 @@ $ watch -t.1 koppi-cnc-info.sh
 
 ### HAL-Graph Visualisierung
 
+```bash
+$ sudo apt-get -y install python-pydot graphviz
+$ linuxcnc/configs/koppi-cnc/hal-graph.py
+```
+
 Siehe [linuxcnc/configs/koppi-cnc/hal-graph.py](linuxcnc/configs/koppi-cnc/hal-graph.py):
 
 ![HAL Graph](pics/20150601-002.png)
