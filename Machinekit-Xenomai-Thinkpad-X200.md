@@ -548,6 +548,12 @@ $ watch -t.1 koppi-cnc-info.sh
 
 ![koppi-cnc-info.sh](pics/20150514-002.gif)
 
+### HAL-Graph Visualisieurng
+
+Siehe [linuxcnc/configs/koppi-cnc/hal-graph.py](linuxcnc/configs/koppi-cnc/hal-graph.py):
+
+![HAL Graph](pics/20150601-002.png)
+
 ## Links / Sonstiges
 
 Machinekit
