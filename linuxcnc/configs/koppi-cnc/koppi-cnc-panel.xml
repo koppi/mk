@@ -91,6 +91,24 @@
  </vbox>
 </labelframe>
 <labelframe text="Touch Off 0">
+ <vbox>
+  <hbox>
+   <button>
+    <halpin>"touchoff-x-0"</halpin>
+    <text>"X"</text>
+    <bd>2</bd>
+   </button>
+   <button>
+    <halpin>"touchoff-y-0"</halpin>
+    <text>"Y"</text>
+    <bd>2</bd>
+   </button>
+   <button>
+    <halpin>"touchoff-z-0"</halpin>
+    <text>"Z"</text>
+    <bd>2</bd>
+   </button>
+  </hbox>
  <hbox>
   <button>
    <halpin>"touchoff-xy-0"</halpin>
@@ -103,6 +121,7 @@
    <bd>2</bd>
   </button>
  </hbox>
+ </vbox>
 </labelframe>
 </vbox>
 <labelframe text="Compensation">

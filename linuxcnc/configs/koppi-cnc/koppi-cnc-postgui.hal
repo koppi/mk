@@ -56,6 +56,9 @@ net touchoff-probe-z     halui.mdi-command-03 <= pyvcp.touchoff-probe-z
 net probe-corner         halui.mdi-command-04 <= pyvcp.probe-corner
 net touchoff-mat-xy-0    halui.mdi-command-05 <= pyvcp.touchoff-xy-0
 net touchoff-mat-xyz-0   halui.mdi-command-06 <= pyvcp.touchoff-xyz-0
+net touchoff-mat-x-0     halui.mdi-command-07 <= pyvcp.touchoff-x-0
+net touchoff-mat-y-0     halui.mdi-command-08 <= pyvcp.touchoff-y-0
+net touchoff-mat-z-0     halui.mdi-command-09 <= pyvcp.touchoff-z-0
 
 ######################################################################
 # Jogging with Joypad
