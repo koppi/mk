@@ -559,7 +559,11 @@ $ linuxcnc/configs/koppi-cnc/hal-graph.py
 
 Siehe [linuxcnc/configs/koppi-cnc/hal-graph.py](linuxcnc/configs/koppi-cnc/hal-graph.py):
 
+HAL Graph Übersicht ```axis.0```:
 ![HAL Graph](pics/20150602-001.png)
+
+HAL Graph Detail:
+![HAL Graph](pics/20150602-002.png)
 
 ## Links / Sonstiges
 
