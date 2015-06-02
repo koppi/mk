@@ -1,20 +1,41 @@
 #!/usr/bin/env python2
 #
+# Copyright (C) 2015 Jakob Flierl <jakob.flierl@gmail.com>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+#
 # HAL Graph
 #
-# Copyright
-# - 2015 Jakob Flierl <jakob.flierl@gmail.com>
+#  inspired by https://github.com/MachineryScience/Rockhopper/blob/master/MakeHALGraph.py
 #
-# inspired by https://github.com/MachineryScience/Rockhopper/blob/master/MakeHALGraph.py
+#  this version differs to MakeHALGraph.py as follows:
 #
-# this version differs to MakeHALGraph.py as follows:
+#  * uses the pydot lib instead of the pygraphviz lib
+#    (pygraphviz export seems to export dot files in a non-deterministic manner)
 #
-# * uses the pydot lib instead of the pygraphviz lib
-#   (pygraphviz export seems to export dot files in a non-deterministic manner)
+#  * gtk gui (- using a slightly modified version of xdot.py)
 #
-# * gtk gui (- using a slightly modified version of xdot.py)
+#  * gui refreshes the HAL data every [interval] seconds
 #
-# * gui refreshes the HAL data every [interval] seconds
+# Related:
+#
+#  * http://emergent.unpythonic.net/01174426278
+#  * http://wiki.linuxcnc.org/cgi-bin/wiki.pl?HAL
+#  * http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Rockhopper_Web_Server
+#  * https://sites.google.com/site/manisbutareed/visualizing-emc2-configurations
+#  * https://groups.google.com/forum/?hl=en#!searchin/machinekit/editor/machinekit/cuWQtVf1qtw/ZSX53ERMKLIJ
 
 import os
 import sys
@@ -39,11 +60,15 @@ class HALAnalyzer( object ):
         self.Graph = pydot.Dot(graph_type='digraph', name="Hal graph",
                                rankdir='LR',
                                splines='spline',
+#                               splines='ortho',
+#                               splines='none',
+#                               splines='curved',
+#                               splines='polyline',
                                overlap='false',
-                               start='regular',
+                               #start='regular',
                                #pad=".05",
                                #ranksep="0.75",
-                               #nodesep="0.05"
+                               nodesep="0.0"
         )
 
     def groupname(self, pinname): # TODO check if this works with every pin name
@@ -71,8 +96,8 @@ class HALAnalyzer( object ):
                     self.sig_dict[ p.signal.name ].append( p )
                 else:
                     self.sig_dict[ p.signal.name ] = [ p ]
-                    tmp = '<<table border="0" cellspacing="0">\n  <tr><td port="signame" bgcolor="lightgray" border="1">' + p.signame + '</td></tr>' + \
-                          '\n  <tr><td port="signame" border="1">(' + str(p.get()) + ')</td></tr></table>>'
+                    tmp = '<<table border="0" cellspacing="0">\n  <tr><td port="signame" bgcolor="lightgray" border="1"><font point-size="8">' + p.signame + '</font></td></tr>' + \
+                          '\n  <tr><td port="signame" border="1">' + str(p.get()) + '</td></tr></table>>'
                     self.Graph.add_node(pydot.Node(p.signame,
                                                    label=tmp,
                                                    shape='none'
