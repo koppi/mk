@@ -74,8 +74,8 @@ class Pen:
 
     def highlighted(self):
         pen = self.copy()
-        pen.color = (1, 0, 0, 1)
-        pen.fillcolor = (1, .8, .8, 1)
+        pen.color = (0, 0, 0, 1)
+        pen.fillcolor = (1, 0, 0, 1)
         return pen
 
 

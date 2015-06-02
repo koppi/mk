@@ -143,8 +143,7 @@ class HALGraphWindow(xdot.DotWindow):
         self.analyzer.parse()
         self.set_dotcode(self.analyzer.to_string())
         self.textentry_changed(self.widget, self.textentry)
-
-        self.queue_draw()
+#        self.queue_draw()
 
     def on_reload(self, action): # reload button
         self.reload()
