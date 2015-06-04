@@ -31,9 +31,6 @@ void callback(const MQTT::Publish& pub) {
       digitalWrite(0, LOW);
     } else if (pub.payload()[0] == '1') {
       digitalWrite(0, HIGH);
-    } else {
-      MQTT::Publish newpub("esp-01/gp0", pub.payload(), pub.payload_len());
-      client.publish(newpub);
     }
   } else if (pub.topic() == "esp-01/gp2") {
     if (pub.payload()[0] == '0') {
