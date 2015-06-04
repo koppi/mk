@@ -71,6 +71,8 @@ void setup()
   sprintf(buffer, "esp-01-%d", ESP.getChipId());
   if (client.connect(buffer)) {
     client.publish("esp-01/status","connected");
+    client.publish("esp-01/gp0", "0");
+    client.publish("esp-01/gp2", "0");
     client.subscribe("esp-01/gp0");
     client.subscribe("esp-01/gp2");
   }
