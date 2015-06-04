@@ -27,15 +27,15 @@ PubSubClient client(server);
 void callback(const MQTT::Publish& pub) {
 //  Serial.write(pub.payload(), pub.payload_len());
   if (pub.topic() == "esp-01/gp0") {
-    if (pub.payload()[0] == '0') {
+    if (pub.payload_len() == 1 && pub.payload()[0] == '0') {
       digitalWrite(0, LOW);
-    } else if (pub.payload()[0] == '1') {
+    } else if (pub.payload_len() == 1 && pub.payload()[0] == '1') {
       digitalWrite(0, HIGH);
     }
   } else if (pub.topic() == "esp-01/gp2") {
-    if (pub.payload()[0] == '0') {
+    if (pub.payload_len() == 1 && pub.payload()[0] == '0') {
       digitalWrite(0, LOW);
-    } else if (pub.payload()[0] == '1') {
+    } else if (pub.payload_len() == 1 && pub.payload()[0] == '1') {
       digitalWrite(0, HIGH);
     }
   }
