@@ -7,6 +7,32 @@
   <text>"Rapid Home"</text>
   <bd>2</bd>
  </button>
+ <hbox>
+  <rectled>
+   <halpin>"esp-test1-led"</halpin>
+   <width>"28"</width>
+   <height>"28"</height>
+   <on_color>"green"</on_color>
+   <off_color>"gray"</off_color>
+ </rectled>
+  <button>
+   <halpin>"esp-test1"</halpin>
+   <text>"0"</text>
+   <bd>2</bd>
+  </button>
+  <rectled>
+   <halpin>"esp-test2-led"</halpin>
+   <width>"28"</width>
+   <height>"28"</height>
+   <on_color>"green"</on_color>
+   <off_color>"gray"</off_color>
+  </rectled>
+  <button>
+   <halpin>"esp-test2"</halpin>
+   <text>"2"</text>
+   <bd>2</bd>
+  </button>
+ </hbox>
 <labelframe text="Program">
   <vbox>
     <s32>

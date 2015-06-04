@@ -115,7 +115,7 @@ net dout-00 <= motion.digital-out-00
 net dout-00 => or2.0.in0
 net comp-enable or2.0.out compensation.enable
 
-loadrt toggle count=1
+loadrt toggle count=3
 addf toggle.0 servo-thread
 net toggle-enable toggle.0.out => or2.0.in1
 #net pyvcp-enable  toggle.0.in  <= pyvcp.enable
@@ -231,3 +231,17 @@ net spindle-velocity       =>  near.0.in2
 net spindle-at-speed       <=  near.0.out
 setp near.0.scale 1.500000
 net spindle-at-speed       => pyvcp.spindle-at-speed-led
+
+######################################################################
+# ES8266 ESP-01
+######################################################################
+
+addf toggle.1 servo-thread
+net toggle-test1-out  toggle.1.out    => esp-01-mqtt.gp0
+net toggle-test1-in   toggle.1.in     <= pyvcp.esp-test1
+linksp                toggle-test1-out   pyvcp.esp-test1-led
+
+addf toggle.2 servo-thread
+net toggle-test2-out  toggle.2.out    => esp-01-mqtt.gp2
+net toggle-test2-in   toggle.2.in     <= pyvcp.esp-test2
+linksp                toggle-test2-out   pyvcp.esp-test2-led
