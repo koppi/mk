@@ -8,9 +8,10 @@ import hal
 import logging
 import subprocess
 
-work_thread = 1.0 # update pins severy [sec]
+work_thread = 1.0 # update pins every [sec]
 
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 def ec_upload(p, t, addr, value):
         cmd = "ethercat -p %d upload --type %s %d %d" % (p, t, addr, value)
@@ -68,6 +69,7 @@ class Info :
                                         self.h['temp-%d' % (i)]         = ec_upload(i+offset, "int8",   0xF900, 0x02)
                                 self.h['fan1-rpm'] = int(sensors("fan1").split(":")[1].replace("RPM", ""))
                                 self.h['temp1'] = float(sensors("temp1").split(":")[1].replace("°C", "").replace("+", ""))
+
                                 time.sleep(work_thread)
                         except KeyboardInterrupt :
                                 raise SystemExit

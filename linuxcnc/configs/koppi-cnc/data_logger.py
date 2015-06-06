@@ -7,6 +7,7 @@ import psycopg2
 import hal
 import logging
 import getpass
+import subprocess
 
 # psql -c "create table log(id SERIAL PRIMARY KEY, time timestamp, task_mode int, file varchar(1024), line int, x_min float, x_max float, x_avg float, y_min float, y_max float, y_avg float, z_min float, z_max float, z_avg float);"
 # psql -c "CREATE INDEX log_idx_time ON log (id, time, time DESC);"
@@ -61,7 +62,6 @@ class Logger :
                 try:
                         while 1:
                                 try:
-                                        time.sleep(work_thread)
                                         self.h['beat'] = not self.h['beat']
                                         self.stat.poll()
                                         #for x in dir(self.stat):
@@ -89,6 +89,7 @@ class Logger :
                                                                            y_min, y_max, y_avg,
                                                                            z_min, z_max, z_avg))
                                         self.con.commit()
+                                        time.sleep(work_thread)
                                 except KeyboardInterrupt :
                                         self.con.close()
                                         raise SystemExit
