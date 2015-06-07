@@ -153,6 +153,8 @@ net info-motor-supply-2 koppi-cnc-info.motor-supply-2 => pyvcp.motor-supply-2
 net info-temp1    koppi-cnc-info.temp1    => pyvcp.temp1
 net info-fan1-rpm koppi-cnc-info.fan1-rpm => pyvcp.fan1-rpm
 
+linksp ec-link-up koppi-cnc-info.link-up
+
 ######################################################################
 # Show current program line number
 ######################################################################
