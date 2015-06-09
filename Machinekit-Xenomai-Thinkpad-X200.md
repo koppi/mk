@@ -565,6 +565,13 @@ HAL Graph Übersicht:
 HAL Graph Detail ```axis.0```:
 ![HAL Graph](pics/20150602-002.png)
 
+### HAL-Graph Datenlogger
+
+Siehe [linuxcnc/configs/koppi-cnc/hal-graphite.py](linuxcnc/configs/koppi-cnc/hal-graphite.py):
+
+Grafana:
+![Grafana](pics/20150607-002.png)
+
 ## Links / Sonstiges
 
 Machinekit
