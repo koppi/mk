@@ -570,7 +570,7 @@ HAL Graph Detail ```axis.0```:
 Siehe [linuxcnc/configs/koppi-cnc/hal-graphite.py](linuxcnc/configs/koppi-cnc/hal-graphite.py):
 
 Grafana:
-![Grafana](pics/20150607-002.png)
+![Grafana](pics/20150607-001.png)
 
 ## Links / Sonstiges
 
