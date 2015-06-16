@@ -40,10 +40,16 @@ net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
 # made contact: TRUE  for probe contact closed (touching),
 #               FALSE for probe contact open.
 
-linksp probe-pin-in => motion.probe-input
+loadrt debounce
+addf debounce.0 servo-thread
+setp debounce.0.delay  10
 
-# link probe-pin-in signal to pyvcp ui element
-linksp probe-pin-in => pyvcp.probe-status
+net probe-pin-in         => debounce.0.0.in
+net probe-debounce-in    <= debounce.0.0.out
+net probe-debounce-in    => motion.probe-input
+
+# link probe-debounce-in signal to pyvcp ui element
+linksp probe-debounce-in => pyvcp.probe-status
 
 ######################################################################
 # HALUI MDI Commands
