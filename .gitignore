@@ -6,3 +6,4 @@ linuxcnc/configs/koppi-cnc/koppi-cnc-history.txt
 linuxcnc/configs/koppi-cnc/koppi-cnc-tool.txt.bak
 linuxcnc/nc_files/tmpgcmc*
 linuxcnc/nc_files/*.auto.ngc
+linuxcnc/nc_files/00.ngc
