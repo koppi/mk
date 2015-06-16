@@ -8,6 +8,7 @@
     <slave idx="5" type="EL7041-1000"/>
     <slave idx="6" type="EL7041-1000"/>
     <slave idx="7" type="EL2622"/>
+    <slave idx="8" type="EL1124"/>
   </master>
 </masters>
 
