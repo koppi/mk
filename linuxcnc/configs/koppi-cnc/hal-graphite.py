@@ -14,7 +14,7 @@ from machinekit import hal
 import subprocess
 from shlex import split
 
-work_thread = 1.0 # update pins every [sec]
+work_thread = 5.0 # update pins every [sec]
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 #logging.basicConfig(stream=sys.stderr, level=logging.INFO)
@@ -33,8 +33,8 @@ def carbon(name, value, t):
 
 class Info :
         def __init__(self) :
-                logging.debug("Info.init ok")
-
+                logging.debug("ready")
+        
         def run(self) :
                 while 1:
                         try:
