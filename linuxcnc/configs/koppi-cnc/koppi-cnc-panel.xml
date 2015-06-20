@@ -76,7 +76,7 @@
       <number>
         <halpin>"spindle-speed"</halpin>
         <font>("Helvetica",12)</font>
-        <format>"16.0f RPM"</format>
+        <format>"14.0f RPM"</format>
       </number>
     </hbox>
   </vbox>
@@ -189,7 +189,7 @@
       <button>
         <halpin>"reset"</halpin>
         <width>"11"</width>
-        <text>"Reset"</text>
+        <text>"Reload"</text>
       </button>
     </hbox>
     <labelframe text="Error">
