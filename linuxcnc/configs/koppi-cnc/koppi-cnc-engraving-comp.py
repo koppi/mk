@@ -22,7 +22,7 @@ import logging
 work_thread = 0.05 # update pins every [sec]
 
 # koppi-cnc:
-# probe "o<scan_surface> call [0] [0] [220] [220] [10] [100] [10] [1.5] [-3]"
+# probe "o<koppi_cnc_comp> call [0] [0] [220] [220] [10] [10] [100] [10] [1.5] [-3]"
 
 logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
 #logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)

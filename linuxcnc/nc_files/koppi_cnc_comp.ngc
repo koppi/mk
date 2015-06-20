@@ -1,0 +1,48 @@
+;
+; o<koppi_cnc_comp> call [#<x0>] [#<y0>] [#<h>] [#<w>] [#<xstep>] [#<ystep>] [#<search_feed>] [#<latch_feed>] [#<safe_z>] [#<search_z>]
+;
+
+o<koppi_cnc_comp> sub
+  M65 P0  (turn off Z axis compensation)
+  T1 M6   (Install probe)
+
+  #<x0>          = #1 (0)
+  #<y0>          = #2 (0)
+  #<h>           = #3 (150)
+  #<w>           = #4 (150)
+  #<xstep>       = #5 (20)
+  #<ystep>       = #6 (20)
+  #<search_feed> = #7 (100)
+  #<latch_feed>  = #8 (25)
+  #<safe_z>      = #9 (5)
+  #<search_z>    = #10 (-10)
+
+  (LOGOPEN,koppi_cnc_comp.txt)
+
+  G0 Z#<safe_z>
+  #<y> = [#<y0>]
+  o101 while [#<y> LE #<h>+#<y0>]
+    #<x> = [#<x0>]
+    o102 while [#<x> LE #<w>+#<x0>]
+    G0 X#<x> Y#<y>
+    F#<search_feed>
+    G38.2 Z#<search_z>
+    F#<latch_feed>
+    ( G38.4 Z#<safe_z> )
+    #501 = [#<x>+#5221+#5211] (x, G92 and ABS coords)
+    #502 = [#<y>+#5222+#5212] (y, G92 and ABS coords)
+    (LOG,#501 #502 #5063)
+    G0 Z#<safe_z>
+    #<x> = [#<x>+#<xstep>]
+    o102 endwhile
+    #<y> = [#<y>+#<ystep>]
+  o101 endwhile
+
+  (LOGCLOSE)
+  (debug, Finished: see koppi_cnc_comp.txt)
+
+  G0Z#<safe_z>
+  G0X#<x0>Y#<y0>
+o<koppi_cnc_comp> endsub
+
+M2
