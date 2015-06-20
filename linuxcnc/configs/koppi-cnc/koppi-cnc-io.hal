@@ -30,8 +30,9 @@ net probe-pin-in <= lcec.0.3.din-1
 #net x-neg-lim-in <= lcec.0.3.din-2
 #net y-pos-lim-in <= lcec.0.3.din-3
 #net y-neg-lim-in <= lcec.0.3.din-0-not
-net z-pos-lim-in <= lcec.0.3.din-2
+#net z-pos-lim-in <= lcec.0.3.din-2
 #net z-neg-lim-in <= lcec.0.3.din-2
+net z-home-sw-in  <= lcec.0.3.din-2
 
 ###########################################################
 # digital outputs
