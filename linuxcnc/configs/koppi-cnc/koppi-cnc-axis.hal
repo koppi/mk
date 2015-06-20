@@ -109,7 +109,6 @@ net z-pos-fb => z-pid.feedback
 net z-vel-cmd <= z-pid.output
 
 # axis interface
-net z-pos-lim-in => axis.2.home-sw-in
 net z-enable <= axis.2.amp-enable-out
 net z-amp-fault => axis.2.amp-fault-in
 net z-pos-cmd <= axis.2.motor-pos-cmd
@@ -119,4 +118,4 @@ net z-homed <= axis.2.homed
 net z-homing <= axis.2.homing
 net z-neg-lim-in => axis.2.neg-lim-sw-in
 net z-pos-lim-in => axis.2.pos-lim-sw-in
-
+net z-home-sw-in => axis.2.home-sw-in
