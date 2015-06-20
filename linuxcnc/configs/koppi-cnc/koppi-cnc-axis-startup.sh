@@ -20,4 +20,4 @@ halcmd setp axisui.notifications-clear 1
 sleep .100 ;# requires a sleep that does <1
 halcmd setp axisui.notifications-clear 0
 
-axis-remote -m M600 &
+#axis-remote -m M600 &
