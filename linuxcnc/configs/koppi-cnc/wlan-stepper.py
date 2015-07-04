@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# sudo apt-get install mosquitto mosquitto-clients python-mosquitto
+# sudo apt-get install python-pip mosquitto mosquitto-clients python-mosquitto
 # sudo pip install paho-mqtt
 
 import sys
