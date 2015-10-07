@@ -470,8 +470,6 @@ $ sudo cp linuxcnc/configs/koppi-cnc/50-joypad.rules /etc/udev/rules.d/50-joypad
 $ sudo udevadm trigger
 ```
 
-![Logitech Cordless Rumblepad 2](pics/logitech-rumblepad-2.jpg)
-
 ### AXIS starten
 
 ```bash
