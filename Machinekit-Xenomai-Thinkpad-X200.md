@@ -145,7 +145,7 @@ in
 Benutzer koppi" in Gruppe "sudo" aufnehmen:
 ```bash
 $ su -
-# usermod -aG sudo koppi
+# usermod -aG sudo koppi # replace 'koppi' with your user id
 ```
 
 Danach Aus- und wieder Einloggen, damit Eintragung wirksam wird.
@@ -284,7 +284,7 @@ $ sudo update-rc.d xenomai-latency defaults
 Benutzer in die Gruppen "xenomai" und "kmem" aufnehmen:
 
 ```bash
-$ sudo usermod -aG xenomai,kmem koppi
+$ sudo usermod -aG xenomai,kmem koppi # replace 'koppi' with your user id
 ```
 
 Machinekit Latenzzeit Test:
@@ -345,7 +345,7 @@ $ sudo apt-get -y install ntp
 Benutzer in die Gruppe "ethercat" aufnehmen:
 
 ```bash
-$ sudo usermod -aG ethercat koppi
+$ sudo usermod -aG ethercat koppi # replace 'koppi' with your user id
 ```
 
 Ausloggen, wieder Einloggen, Test:
