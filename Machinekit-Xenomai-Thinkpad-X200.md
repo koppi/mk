@@ -680,16 +680,8 @@ vim vim-scripts screen wicd-curses
   * Stufe 5 25.000
   * Stufe 6 29.300
 
-### Syntax Highlighting
+### GCode Syntax Highlighting
 
-* emacs
-
-  http://pixpopuli.blogspot.de/2011/01/syntax-highlighting-for-cnc-g-code.html
-
-* vim
-
-  http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Highlighting_In_Vim
-
-* gedit
-
-  http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Highlighting_In_Gedit
+* [emacs](http://pixpopuli.blogspot.de/2011/01/syntax-highlighting-for-cnc-g-code.html)
+* [vim](http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Highlighting_In_Vim)
+* [gedit](http://wiki.linuxcnc.org/cgi-bin/wiki.pl?Highlighting_In_Gedit)
