@@ -392,26 +392,6 @@ Installation als Debian-Paket:
 $ git clone https://github.com/sittner/linuxcnc-ethercat
 $ cd linuxcnc-ethercat
 ```
-Austauschen ```linuxcnc-dev``` => ```machinekit-dev```:
-```diff
-diff --git a/debian/control b/debian/control
-index 8a627be..83d36e8 100644
---- a/debian/control
-+++ b/debian/control
-@@ -2,10 +2,10 @@ Source: linuxcnc-ethercat
- Section: unknown
- Priority: extra
- Maintainer: linuxcnc <linuxcnc@localhost.localdomain>
--Build-Depends: debhelper (>= 8.0.0), linuxcnc-dev, etherlabmaster-dev
-+Build-Depends: debhelper (>= 8.0.0), machinekit-dev, etherlabmaster-dev
- Standards-Version: 3.9.3
-
- Package: linuxcnc-ethercat
- Architecture: any
--Depends: ${shlibs:Depends}, ${misc:Depends}, linuxcnc, etherlabmaster
-+Depends: ${shlibs:Depends}, ${misc:Depends}, machinekit, etherlabmaster
- Description: LinuxCNC EtherCAT HAL driver
-```
 Debian-Paket bauen und installieren:
 ```bash
 $ sudo apt-get -y install machinekit-dev
