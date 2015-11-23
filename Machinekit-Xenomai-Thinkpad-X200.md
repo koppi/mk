@@ -35,6 +35,13 @@
  5. Eingang Tastkopf für Werkzeuglängensensor
  6. OBI LUX Maschinen Schraubstock 60x65mm - EAN: 4007871165254
 
+### Videos
+
+* https://www.youtube.com/watch?v=0LI99cNjB_c
+* https://www.youtube.com/watch?v=2nGcliWefek
+* https://www.youtube.com/watch?v=F3YbdD2OPRA
+* https://www.youtube.com/watch?v=WRgyBxaeoAo
+
 # Installation Machinekit / LinuxCNC
 
 ### Thinkpad X200 BIOS Einstellungen
