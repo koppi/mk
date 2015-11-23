@@ -535,10 +535,6 @@ $ ./koppi-cnc-engraving-comp-plot.sh
 $ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop
 ```
 
-### AXIS icons
-
-Umstellung auf [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/icons/): siehe [#3](https://github.com/koppi/mk/issues/3).
-
 ### koppi-cnc-info.sh
 
 Anzeige der Parameter der Schittmotorklemmen mittels [koppi-cnc-info.sh](linuxcnc/configs/koppi-cnc/koppi-cnc-info.sh):
