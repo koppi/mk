@@ -659,63 +659,6 @@ Nützliche Debian-Pakete
 vim vim-scripts screen wicd-curses
 ```
 
-## Machinekit HACKING
-
-Mitmachen
-
-  * http://www.machinekit.io/docs/contributing/
-
-Machinekit Debian/Jessie: Pakete für die Entwicklungsumgebung installieren:
-
-```bash
-sudo apt-get install libczmq-dev python-zmq libjansson-dev \
-    libwebsockets-dev libxenomai-dev python-pyftpdlib cython
-```
-
-### Machinekit coding style (WIP)
-
-* Please use the settings for C++ (put in your .emacs):
-
-  https://github.com/machinekit/machinekit/issues/391#issuecomment-72355100
-  
-* strahlex / coding_style.el
-
-  https://github.com/machinekit/machinekit/pull/625#issuecomment-100625726
-
-### git / GitHub fork, clone, branch, commit, push, rebase, merge
-
-TODO
-
-### Tools
-
-perf
-
-```bash
-$ sudo apt-get -y install linux-base inux-tools-3.8
-```
-
-lttng
-
-```bash
-TODO
-```
-
-libbacktrace
-
-```bash
-TODO
-```
-
-### QtQuickVcp
-
-https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
-
-### Installation Xenomai (2.6.4)
-
-* Neueres Xenomai bauen, siehe
-
-  https://xenomai.org/2014/06/building-debian-packages
-
 ## Konfiguration TODO
 
 * Tool length probe switch
@@ -726,7 +669,7 @@ https://github.com/strahlex/QtQuickVcp/wiki/QtQuick-Virtual-Control-Panel
 
   https://github.com/cnc-club/linuxcnc-engraving-comp
 
-* Spindle Feedback
+* Kress-Spindel RPM Meter / Feedback
 
   http://linuxcnc.org/docs/html/examples/spindle.html
 
