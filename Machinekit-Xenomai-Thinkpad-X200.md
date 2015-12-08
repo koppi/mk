@@ -568,6 +568,11 @@ LinuxCNC
 * http://linuxcnc.org/index.php/english/news
 * http://linuxcnc.org/index.php/english/documentation
 
+Deutsche Foren:
+
+* Peter's CNC-Ecke – http://www.cncecke.de/
+* SPS Forum – http://www.sps-forum.de/
+
 Xenomai Kalibrierung
 
 * Estimate Clock Latency
@@ -605,59 +610,6 @@ EtherCAT
 * 陳伯綸 - LinuxCNC+IgH EtherCAT Master+FR-1000+beckhoff I/O DEMO
 
   https://www.youtube.com/watch?v=e6lXfIGkCH8
-
-EtherCAT slave
-
-* Software / User Space Slave
-
-  http://comments.gmane.org/gmane.network.etherlab.user/1715
-  
-  git clone git://git.code.sf.net/p/ecslave/code ecslave
-
-* ethercat operating system. A boot-able i386 linux based distribution running etherLAB
-
-  http://sourceforge.net/projects/ecatos/ 
-
-* etherlab domain manager
-
-  This is a QT based pdo domain manager. It is a gui tool used to create a domain and slaves code based on xml provided by etherlab utility.
-
-  http://sourceforge.net/projects/elabdomainmng/
-
-* https://github.com/OpenEtherCATsociety
-
-  * SOEM - Simple Open Source EtherCAT Master
-  * SOES - Simple Open Source EtherCAT Slave
-  
-EtherCAT SOCs
-
-* [QNX Evaluation Kit phyBOARD-Wega-AM335x](http://www.ibv-augsburg.net/media/pdf/QNX_Evaluation_Kit_phyBOARD-Wega_Product_Sheet.pdf)
-
-  http://www.ibv-augsburg.net/
-
-* BeagleBone variant called BotBone with two NICs suited for EtherCAT master/slave
-
-  https://docs.google.com/document/d/1X9RrbkUpiTQ-S6Acken-5fv7yYq2DTr_1zOjf6zabn0/edit#heading=h.fxx7nvltcl7x
-
-  https://plus.google.com/109948108631535499425/posts/jLJbwwJrLgP
-
-  http://www.mapacode.tw/
-
-Deutsche Foren:
-
-* Peter's CNC-Ecke
-
-  http://www.cncecke.de/
-
-* SPS Forum
-
-  http://www.sps-forum.de/
-
-Nützliche Debian-Pakete
-
-```bash
-vim vim-scripts screen wicd-curses
-```
 
 ## Konfiguration TODO
 
