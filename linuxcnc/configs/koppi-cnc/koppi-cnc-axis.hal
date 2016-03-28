@@ -49,7 +49,6 @@ net x-pos-fb => x-pid.feedback
 net x-vel-cmd <= x-pid.output
 
 # axis interface
-net x-neg-lim-in => axis.0.home-sw-in
 net x-enable <= axis.0.amp-enable-out
 net x-amp-fault => axis.0.amp-fault-in
 net x-pos-cmd <= axis.0.motor-pos-cmd
@@ -59,6 +58,7 @@ net x-homed <= axis.0.homed
 net x-homing <= axis.0.homing
 net x-neg-lim-in => axis.0.neg-lim-sw-in
 net x-pos-lim-in => axis.0.pos-lim-sw-in
+net x-home-sw-in => axis.0.home-sw-in
 
 ###########################################################
 # Y axis
@@ -79,7 +79,6 @@ net y-pos-fb => y-pid.feedback
 net y-vel-cmd <= y-pid.output
 
 # axis interface
-net y-pos-lim-in => axis.1.home-sw-in
 net y-enable <= axis.1.amp-enable-out
 net y-amp-fault => axis.1.amp-fault-in
 net y-pos-cmd <= axis.1.motor-pos-cmd
@@ -89,6 +88,7 @@ net y-homed <= axis.1.homed
 net y-homing <= axis.1.homing
 net y-neg-lim-in => axis.1.neg-lim-sw-in
 net y-pos-lim-in => axis.1.pos-lim-sw-in
+net y-home-sw-in => axis.1.home-sw-in
 
 ###########################################################
 # Z axis
