@@ -34,7 +34,7 @@ net probe-pin-in <= lcec.0.3.din-1
 #net z-neg-lim-in <= lcec.0.3.din-2
 net x-home-sw-in  <= lcec.0.4.srv-din1
 net y-home-sw-in  <= lcec.0.5.srv-din1
-net z-home-sw-in  <= lcec.0.3.din-2
+net z-home-sw-in  <= lcec.0.6.srv-din1
 
 ###########################################################
 # digital outputs
