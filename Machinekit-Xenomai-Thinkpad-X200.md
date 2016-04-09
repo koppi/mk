@@ -161,7 +161,7 @@ Danach Aus- und wieder Einloggen, damit Eintragung wirksam wird.
 
 SSH Logins beschleunigen:
 ```bash
-$ sudo su -c 'echo -e "UseDNS no" >> /etc/ssh/sshd_config
+$ sudo su -c 'echo -e "UseDNS no" >> /etc/ssh/sshd_config'
 ```
 
 Keine Meldungen bei SSH-Login:
