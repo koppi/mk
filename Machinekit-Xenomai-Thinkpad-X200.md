@@ -177,11 +177,10 @@ Wie in http://www.machinekit.io/docs/packages-debian/ vorgehen.
 
 Paketmanager konfigurieren:
 ```bash
-$ sudo sh -c \
-    "echo 'deb http://deb.dovetail-automata.com jessie main' > \
-	    /etc/apt/sources.list.d/machinekit.list; \
-	    apt-get update ; \
-	    apt-get -y --force-yes install dovetail-automata-keyring"
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 43DDF224
+sudo sh -c \
+  "echo 'deb http://deb.machinekit.io/debian jessie main' > \
+    /etc/apt/sources.list.d/machinekit.list"
 $ sudo apt-get update
 ```
 
