@@ -195,8 +195,10 @@ $ sudo apt -y install machinekit machinekit-xenomai machinekit-posix machinekit-
 Anpassung der Kernel-Parameter in ```/etc/default/grub```:
 ```ini
 #GRUB_CMDLINE_LINUX_DEFAULT="quiet"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet xeno_hal.smi=1 lapic=notscdeadline hpet=disable i915.i915_enable_rc6=0 i915.powersave=0 intel_idle.max_cstate=1 processor.max_cstate=1 isolcpus=1 idle=poll"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet xeno_nucleus.xenomai_gid=120 xeno_hal.smi=1 lapic=notscdeadline hpet=disable i915.i915_enable_rc6=0 i915.powersave=0 intel_idle.max_cstate=1 processor.max_cstate=1 isolcpus=1 idle=poll"
 ```
+
+```xeno_nucleus.xenomai_gid=120 # xenomai group id```, siehe [http://xenomai.org/2014/06/running-a-xenomai-application-as-a-regular-user/](Running a Xenomai application as a regular user).
 
 Bootloader neu konfigurieren und neustarten:
 ```bash
