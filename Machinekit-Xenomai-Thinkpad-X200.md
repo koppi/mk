@@ -181,13 +181,13 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 43DDF224
 sudo sh -c \
   "echo 'deb http://deb.machinekit.io/debian jessie main' > \
     /etc/apt/sources.list.d/machinekit.list"
-$ sudo apt-get update
+$ sudo apt update
 ```
 
 Machinekit Pakete installieren:
 ```bash
-$ sudo apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
-$ sudo apt-get -y install machinekit machinekit-xenomai machinekit-posix machinekit-dev
+$ sudo apt -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
+$ sudo apt -y install machinekit machinekit-xenomai machinekit-posix machinekit-dev
 ```
 
 ### Konfiguration Linux / Xenomai
@@ -212,7 +212,7 @@ Linux x200 3.8-1-xenomai.x86-amd64 #1 SMP Debian 3.8.13-12~1jessie~1da x86_64 GN
 
 Anderen Kernel entfernen:
 ```bash
-$ sudo apt-get -y remove --purge linux-image-amd64 linux-headers-amd64 linux-image-3.16.*-amd64 linux-headers-3.16.*-common linux-headers-3.16.*-amd64 linux-kbuild-3.16
+$ sudo apt -y remove --purge linux-image-amd64 linux-headers-amd64 linux-image-3.16.*-amd64 linux-headers-3.16.*-common linux-headers-3.16.*-amd64 linux-kbuild-3.16
 ```
 
 Deaktivierung von SMI prüfen:
@@ -307,12 +307,12 @@ siehe https://github.com/sittner/ec-debianize
 Installation:
 
 ```bash
-$ sudo apt-get -y install git
+$ sudo apt -y install git
 $ git clone https://github.com/sittner/ec-debianize
 $ cd ec-debianize
 $ debian/configure -r
 $ dpkg-checkbuilddeps
-$ sudo apt-get -y install debhelper gettext autoconf automake libtool dpatch libxenomai-dev
+$ sudo apt -y install debhelper gettext autoconf automake libtool dpatch libxenomai-dev
 $ dpkg-buildpackage
 $ cd ..
 $ sudo dpkg -i etherlabmaster*deb
@@ -345,7 +345,7 @@ DEVICE_MODULES="e1000e"
 Installation ntp:
 
 ```bash
-$ sudo apt-get -y install ntp
+$ sudo apt -y install ntp
 ```
 
 Benutzer in die Gruppe "ethercat" aufnehmen:
@@ -393,7 +393,7 @@ $ cd linuxcnc-ethercat
 ```
 Debian-Paket bauen und installieren:
 ```bash
-$ sudo apt-get -y install machinekit-dev
+$ sudo apt -y install machinekit-dev
 $ dpkg-checkbuilddeps
 $ dpkg-buildpackage
 $ cd ..
@@ -401,7 +401,7 @@ $ sudo dpkg -i linuxcnc-ethercat*deb
 ```
 alternativ: manuelle Installation:
 ```bash
-$ sudo apt-get -y install machinekit-dev
+$ sudo apt -y install machinekit-dev
 $ git clone https://github.com/sittner/linuxcnc-ethercat
 $ make -C linuxcnc-ethercat all
 $ sudo make -C linuxcnc-ethercat install
@@ -425,8 +425,8 @@ $ ln -s mk/linuxcnc machinekit
 ### Logging via PostgreSQL
 
 ```bash
-$ sudo apt-get -y install postgresql
-$ sudo apt-get -y install python-psycopg2
+$ sudo apt -y install postgresql
+$ sudo apt -y install python-psycopg2
 $ sudo su - postgres -c "createuser koppi"
 $ sudo su - postgres -c "createdb -O koppi koppi"
 $ psql -c "create table log(id SERIAL PRIMARY KEY, time timestamp, task_mode int, file varchar(1024), line int, x_min float, x_max float, x_avg float, y_min float, y_max float, y_avg float, z_min float, z_max float, z_avg float);"
@@ -441,13 +441,13 @@ $ sudo comp --install ownanalytics.comp
 ### sensors
 
 ```bash
-$ sudo apt-get -y install lm-sensors
+$ sudo apt -y install lm-sensors
 ```
 
 ### JoyPad einrichten
 
 ```bash
-$ sudo apt-get -y install jstest-gtk joystick
+$ sudo apt -y install jstest-gtk joystick
 $ jscal -p /dev/input/jsX > jscal.sh # replace X with your joypad's number
 $ echo '#!/usr/bin/env bash' | cat - jscal.sh > /tmp/out && mv /tmp/out jscal.sh
 $ chmod +x jscal.sh
@@ -510,7 +510,7 @@ o<scan_surface> call [0][0][220][220][10][100][10][1.5][-3]
 Neue Messwerte aktivieren und Plot erstellen:
 ```bash
 $ cp engrcomp.txt koppi-cnc-engraving-comp.txt
-$ sudo apt-get -y install gnuplot-x11
+$ sudo apt -y install gnuplot-x11
 $ ./koppi-cnc-engraving-comp-plot.sh
 ```
 ![Visualisierung der Z-Achsen Korrektur](linuxcnc/configs/koppi-cnc/koppi-cnc-engraving-comp.png)
@@ -533,7 +533,7 @@ $ watch -t.1 koppi-cnc-info.sh
 ### HAL-Graph Visualisierung
 
 ```bash
-$ sudo apt-get -y install python-pydot graphviz
+$ sudo apt -y install python-pydot graphviz
 $ linuxcnc/configs/koppi-cnc/hal-graph.py
 ```
 
