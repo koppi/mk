@@ -6,17 +6,13 @@
 
   Auf Thinkpad X200: [Debian/Jessie](https://www.debian.org/releases/jessie/) mit [Machinekit](https://github.com/machinekit/machinekit), [QtQuickVcp](https://github.com/strahlex/QtQuickVcp), [Cetus](https://github.com/strahlex/Cetus) und [mklauncher](https://github.com/machinekit/machinekit/blob/master/src/machinetalk/mklauncher/mklauncher.py).
 
-  [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf Ubuntu 16.04 x64 (Thinkpad X220):
+  [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf [Ubuntu 16.04](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes) x64 ([Thinkpad X220](http://thinkwiki.de/X220)):
 
   ![cetus-x220.png](pics/cetus-x220.png)
 
-  [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf Android 5 (Nexus4):
+  [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf [Android 5.0](https://www.android.com/versions/lollipop-5-0/) ([Nexus4](https://en.wikipedia.org/wiki/Nexus_4)):
 
   ![cetus-nexus4-landscape.png](pics/cetus-nexus4-landscape.png)
-
-  [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf Android 5 (Nexus4):
-
-  ![cetus-nexus4-portrait.png](pics/cetus-nexus4-portrait.png)
 
   Config-Dateien, siehe: https://github.com/koppi/mk/commits/mklauncher
 
