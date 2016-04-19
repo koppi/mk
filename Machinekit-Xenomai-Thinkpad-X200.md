@@ -16,8 +16,8 @@
 
   Config-Dateien, siehe: https://github.com/koppi/mk/commits/mklauncher
 
-* 2015-05-30 [aktuelle Version basiert auf Debian Jessie](https://github.com/koppi/mk/blob/master/Machinekit-Xenomai-Thinkpad-X200.md)
-* 2015-05-26 [  ältere Version basiert auf Debian Wheezy](https://github.com/koppi/mk/blob/daa3fd64a0b2b61933cdda100c8679dcee8232cb/Machinekit-Xenomai-Thinkpad-X200.md)
+* 2015-05-30 [aktuelle Version basiert auf Debian/Jessie](https://github.com/koppi/mk/blob/master/Machinekit-Xenomai-Thinkpad-X200.md)
+* 2015-05-26 [  ältere Version basiert auf Debia/Wheezy](https://github.com/koppi/mk/blob/daa3fd64a0b2b61933cdda100c8679dcee8232cb/Machinekit-Xenomai-Thinkpad-X200.md)
 
 ### Übersicht
 
