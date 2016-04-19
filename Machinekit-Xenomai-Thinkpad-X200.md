@@ -2,6 +2,14 @@
 
 ### ChangeLog
 
+* 2016-04-19 Erfolgreicher Test von [MachinekitClient](https://github.com/strahlex/MachinekitClient) unter Ubuntu 16.04 x64 (auf Thinkpad X220) und Android 5 (auf Nexus4). Auf Thinkpad X200: [Machinekit](https://github.com/machinekit/machinekit) mit [QtQuickVcp](https://github.com/strahlex/QtQuickVcp), [Cetus](https://github.com/strahlex/Cetus) und [mklauncher](https://github.com/machinekit/machinekit/blob/master/src/machinetalk/mklauncher/mklauncher.py), siehe https://github.com/koppi/mk/commits/mklauncher .
+
+  ![cetus-x220.png](pics/cetus-x220.png)
+
+  ![cetus-nexus4-landscape.png](pics/cetus-nexus4-landscape.png)
+
+  ![cetus-nexus4-portrait.png](pics/cetus-nexus4-portrait.png)
+
 * 2015-05-30 [aktuelle Version basiert auf Debian Jessie](https://github.com/koppi/mk/blob/master/Machinekit-Xenomai-Thinkpad-X200.md)
 * 2015-05-26 [  ältere Version basiert auf Debian Wheezy](https://github.com/koppi/mk/blob/daa3fd64a0b2b61933cdda100c8679dcee8232cb/Machinekit-Xenomai-Thinkpad-X200.md)
 
