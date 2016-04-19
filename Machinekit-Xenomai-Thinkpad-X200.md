@@ -4,13 +4,13 @@
 
 * 2016-04-19 Erfolgreicher Test von [MachinekitClient](https://github.com/strahlex/MachinekitClient).
 
-  Auf [Thinkpad X200](http://thinkwiki.de/X200): [Debian/Jessie](https://www.debian.org/releases/jessie/) mit [Machinekit](https://github.com/machinekit/machinekit), [QtQuickVcp](https://github.com/strahlex/QtQuickVcp), [Cetus](https://github.com/strahlex/Cetus) und [mklauncher](https://github.com/machinekit/machinekit/blob/master/src/machinetalk/mklauncher/mklauncher.py).
+  [Machinekit](https://github.com/machinekit/machinekit), [QtQuickVcp](https://github.com/strahlex/QtQuickVcp), [Cetus](https://github.com/strahlex/Cetus) und [mklauncher](https://github.com/machinekit/machinekit/blob/master/src/machinetalk/mklauncher/mklauncher.py) auf [Debian/Jessie](https://www.debian.org/releases/jessie/) x64 ([Thinkpad X200](http://thinkwiki.de/X200)).
 
   [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf [Ubuntu 16.04](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes) x64 ([Thinkpad X220](http://thinkwiki.de/X220)):
 
   ![cetus-x220.png](pics/cetus-x220.png)
 
-  [MachinekitClient](https://github.com/strahlex/MachinekitClient) auf [Android 5.0](https://www.android.com/versions/lollipop-5-0/) ([Nexus4](https://en.wikipedia.org/wiki/Nexus_4)):
+  [Machinekit App](https://play.google.com/store/apps/details?id=io.machinekit.appdiscover) auf [Android 5.0](https://www.android.com/versions/lollipop-5-0/) ([Nexus4](https://en.wikipedia.org/wiki/Nexus_4)):
 
   ![cetus-nexus4-landscape.png](pics/cetus-nexus4-landscape.png)
 
