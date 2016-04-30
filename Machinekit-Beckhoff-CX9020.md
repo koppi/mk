@@ -4,7 +4,7 @@
  
 ### Overview
 
-![Google Photo Album](https://goo.gl/photos/585GqHfQPs7fCpV87)
+* Photos: [Hardware](https://goo.gl/photos/585GqHfQPs7fCpV87)
 
 ### 1 Setup Debian/Jessie
 
