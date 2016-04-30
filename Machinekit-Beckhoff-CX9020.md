@@ -1,6 +1,6 @@
 # Machinekit + Debian/Jessie on Beckhoff CX9020
 
-[Machinekit](http://www.machinekit.io/) on [Beckhoff CX9020](http://download.beckhoff.com/download/Document/Catalog/Main_Catalog/english/separate-pages/Embedded_PC/CX9020.pdf).
+[Machinekit](http://www.machinekit.io/) on [Beckhoff CX9020](http://www.beckhoff.de/english.asp?embedded_pc/cx9020.htm).
  
 ### Overview
 
