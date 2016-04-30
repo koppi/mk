@@ -22,4 +22,4 @@ WIP
 
 ### 4 Contact
 
-If you have any questions about the setup process feel free to join the [![Gitter](https://badges.gitter.im/koppi/mk.svg)](https://gitter.im/koppi/mk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) chat.
+If you have any questions about the setup process feel free to join the [![Gitter](https://badges.gitter.im/koppi/mk.svg)](https://gitter.im/koppi/mk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge).
