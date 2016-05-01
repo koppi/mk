@@ -257,17 +257,16 @@ T: 0 (25906) P:80 I:10000 C:  10000 Min:     37 Act:   45 Avg:   47 Max:      70
 ```
 
 ```bash
-root@CX9020:~# ./cyclictest_run.sh 1 > cyclictest-`uname -r`.plt
-
+root@CX9020:~# time cyclictest -n -q -p 99 -a -t -D 1000 -i 250 -h 2000 -m > cyclictest-`uname -r`.plt
 real    16m40.139s
 user    0m3.600s
 sys     0m53.870s
 ```
-plot:
+Generate histogram plot ```cx9020-cyclictest-4.1.12-rt13-CX9020-9+.pdf```:
 ```
 root@CX9020:~# ./cyclictest_plot.sh cyclictest-`uname -r`.plt 100 
 ```
-
+cyclictest result:
 ![pics/cx9020-cyclictest-4.1.12-rt13-CX9020-9+](pics/cx9020-cyclictest-4.1.12-rt13-CX9020-9+.png)
 
 For comparison see:
