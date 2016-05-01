@@ -80,13 +80,13 @@ See: https://github.com/Beckhoff/CX9020/blob/master/tools/eth0.cfg
 
 ### CX9020 post configuration tasks
 
-#### setup sshd remote login public ssh key
+#### Setup sshd remote login public ssh key
 
 On the CX9020 add to ```/root/.ssh/authorized_keys``` your ssh public key.
 
-#### configure ssh client on Laptop
+#### Configure ssh client on Laptop
 
-To ssh login as user root to the CX9020, i added to my Thinkpad's ```~/.ssh/config```:
+To ssh login as user root to the CX9020, I added to my Thinkpad's ```~/.ssh/config```:
 ```
 Host cx9020
  Hostname cx9020.local
@@ -100,7 +100,7 @@ First login:
 ```bash
 ssh cx9020.local
 ```
-Uname:
+uname:
 ```bash
 root@CX9020:~# uname -a
 Linux CX9020 4.1.12-rt13-CX9020-9+ #1 PREEMPT RT Fri Apr 29 01:09:47 CEST 2016 armv7l GNU/Linux
@@ -167,9 +167,20 @@ CmaTotal:          16384 kB
 CmaFree:           15336 kB
 ```
 
+### Benchmark RT-PREEMPT kernel with cyclictask
+
 WIP
 
 ### Setup Machinekit
+
+Copy the ```CX9020.img``` created during the optional backup step above onto a bigger microSD card. I bought a 64 GB AFGA PHOTO micro SDXC card [4250255102370](http://bfy.tw/5XsA):
+```bash
+sudo dd if=CX9020.img of=/dev/sde # /dec/sde is the device file of the microSD card reader slot
+```
+
+WIP
+
+#### Resize the root filesystem (optional)
 
 WIP
 
