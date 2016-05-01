@@ -181,9 +181,9 @@ I bought a 64 GB AFGA PHOTO micro SDXC card [4250255102370](http://bfy.tw/5XsA),
 sudo dd if=CX9020.img of=/dev/sde # /dev/sde is the device file of the microSD card reader slot
 sudo gparted /dev/sde
 ```
-After that I installed vim and emacs:
+I re-inserted the 64 GB microSD card into the CX9020 and installed some packages:
 ```bash
-apt install htop wget screen vim vim-scripts emacs apt-file
+root@CX9020:~# apt install htop wget screen vim vim-scripts emacs apt-file devscripts
 ```
 Disk space:
 ```bash
@@ -204,14 +204,17 @@ apt install rt-tests gnuplot
 ```
 
 ```bash
-$ uname -a
+root@CX9020:~# uname -a
 Linux CX9020 4.1.12-rt13-CX9020-9+ #1 PREEMPT RT Fri Apr 29 01:09:47 CEST 2016 armv7l GNU/Linux
 ```
 
 ```bash
 WIP
 ```
-For comparison see [Real-time Linux for RPi2](https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2/).
+For comparison see:
+
+* https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2
+* https://github.com/machinekit/machinekit/issues/792
 
 ### ChangeLog
 
