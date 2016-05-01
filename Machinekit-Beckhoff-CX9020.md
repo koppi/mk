@@ -167,22 +167,51 @@ CmaTotal:          16384 kB
 CmaFree:           15336 kB
 ```
 
-### Benchmark RT-PREEMPT kernel with cyclictask
+### Setup with a bigger microSD card
 
-WIP
+The 512 MB microSD card that comes with the CX9020 is a bit too small for a basic Linux development system.
 
-### Setup Machinekit
+There's several options:
 
-Copy the ```CX9020.img``` created during the optional backup step above onto a bigger microSD card. I bought a 64 GB AFGA PHOTO micro SDXC card [4250255102370](http://bfy.tw/5XsA):
+* you could mount a network filesystem to have more hdd capacity on the CX9020.
+* etc..
+
+I bought a 64 GB AFGA PHOTO micro SDXC card [4250255102370](http://bfy.tw/5XsA), copied the ```CX9020.img``` created during the backup step above onto the 64 GB microSD card and resized the root partition with GParted:
 ```bash
-sudo dd if=CX9020.img of=/dev/sde # /dec/sde is the device file of the microSD card reader slot
+sudo dd if=CX9020.img of=/dev/sde # /dev/sde is the device file of the microSD card reader slot
+sudo gparted /dev/sde
+```
+After that I installed vim and emacs:
+```bash
+apt install htop wget screen vim vim-scripts emacs apt-file
+```
+Disk space:
+```bash
+root@CX9020:~# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        54G  775M   51G   2% /
+devtmpfs        495M     0  495M   0% /dev
+tmpfs           503M     0  503M   0% /dev/shm
+tmpfs           503M   13M  490M   3% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           503M     0  503M   0% /sys/fs/cgroup
 ```
 
-WIP
+### Benchmark the RT-PREEMPT kernel with cyclictest
 
-#### Resize the root filesystem (optional)
+```bash
+apt install rt-tests gnuplot
+```
 
+```bash
+$ uname -a
+Linux CX9020 4.1.12-rt13-CX9020-9+ #1 PREEMPT RT Fri Apr 29 01:09:47 CEST 2016 armv7l GNU/Linux
+```
+
+```bash
 WIP
+```
+For comparison see [Real-time Linux for RPi2](https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2/).
 
 ### ChangeLog
 
