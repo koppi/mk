@@ -78,6 +78,95 @@ The first  ethernet interface is pre-configured with a DHCP client.
 The second ethernet interface is pre-configured with a static IP.
 See: https://github.com/Beckhoff/CX9020/blob/master/tools/eth0.cfg
 
+### CX9020 post configuration tasks
+
+#### setup sshd remote login public ssh key
+
+On the CX9020 add to ```/root/.ssh/authorized_keys``` your ssh public key.
+
+#### configure ssh client on Laptop
+
+To ssh login as user root to the CX9020, i added to my Thinkpad's ```~/.ssh/config```:
+```
+Host cx9020
+ Hostname cx9020.local
+ User root
+ IdentitiesOnly yes
+ ForwardX11 no
+ IdentityFile ~/.ssh/id_rsa.pub
+```
+
+First login:
+```bash
+ssh cx9020.local
+```
+Uname:
+```bash
+root@CX9020:~# uname -a
+Linux CX9020 4.1.12-rt13-CX9020-9+ #1 PREEMPT RT Fri Apr 29 01:09:47 CEST 2016 armv7l GNU/Linux
+```
+CPU:
+```bash
+root@CX9020:~# cat /proc/cpuinfo 
+processor	: 0
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 66.66
+Features	: half thumb fastmult vfp edsp thumbee neon vfpv3 tls vfpd32 
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x2
+CPU part	: 0xc08
+CPU revision	: 5
+
+Hardware	: Freescale i.MX53 (Device Tree Support)
+Revision	: 0000
+Serial		: 0000000000000000
+```
+Memory:
+```bash
+root@CX9020:~# cat /proc/meminfo 
+MemTotal:        1029288 kB
+MemFree:          379604 kB
+MemAvailable:     979304 kB
+Buffers:           15680 kB
+Cached:           526620 kB
+SwapCached:            0 kB
+Active:           250864 kB
+Inactive:         301416 kB
+Active(anon):      10080 kB
+Inactive(anon):    13596 kB
+Active(file):     240784 kB
+Inactive(file):   287820 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+HighTotal:        524288 kB
+HighFree:         197844 kB
+LowTotal:         505000 kB
+LowFree:          181760 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 8 kB
+Writeback:             0 kB
+AnonPages:          9996 kB
+Mapped:             8384 kB
+Shmem:             13696 kB
+Slab:              91300 kB
+SReclaimable:      85868 kB
+SUnreclaim:         5432 kB
+KernelStack:         632 kB
+PageTables:          492 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      514644 kB
+Committed_AS:      50100 kB
+VmallocTotal:     499712 kB
+VmallocUsed:        2284 kB
+VmallocChunk:     493436 kB
+CmaTotal:          16384 kB
+CmaFree:           15336 kB
+```
+
 WIP
 
 ### Setup Machinekit
