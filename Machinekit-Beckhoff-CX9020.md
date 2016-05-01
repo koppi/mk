@@ -22,7 +22,7 @@ The CX9020 is a DIN rail-mountable embedded system
 
 Beckhoff has published shell scripts and patches at [github.com/Beckhoff/CX9020](https://github.com/Beckhoff/CX9020) to build a basic Linux system image. As of 2016-05-01 the scripts require an Ubuntu 14.04 LTS installation. I've tried the installation on an Ubuntu 16.04 installation and ran into a small problem with sfdisk. So for now, the Ubuntu 14.04 LTS installation is the recommended way of building the system image.
 
-The system image build process requires about 2.65 GB hdd space available on the build system. Follow the instructions at [github.com/Beckhoff/CX9020](https://github.com/Beckhoff/CX9020):
+The system image build process requires about 2.65 GB hdd space available on the build host. Follow the instructions at [github.com/Beckhoff/CX9020](https://github.com/Beckhoff/CX9020):
 ```bash
 # prepare your machine f.e.: 64-bit Ubuntu 14.04 LTS would require
 sudo dpkg --add-architecture i386
@@ -98,7 +98,7 @@ Host cx9020
 
 First login:
 ```bash
-ssh cx9020.local
+$ ssh cx9020.local
 ```
 uname:
 ```bash
@@ -166,6 +166,27 @@ VmallocChunk:     493436 kB
 CmaTotal:          16384 kB
 CmaFree:           15336 kB
 ```
+lshw:
+```bash
+root@CX9020:~# lshw -short
+H/W path  Device  Class      Description
+========================================
+                  system     Freescale i.MX53 based Beckhoff CX9020
+/0                bus        Motherboard
+/0/0              processor  cpu
+/0/1              memory     1005MiB System memory
+/1        usb1    bus        EHCI Host Controller
+/1/1              bus        USB 2.0 Hub
+/2        eth0    network    Ethernet interface
+```
+lsmod:
+```bash
+root@CX9020:~# lsmod
+Module                  Size  Used by
+pwm_imx                 4173  0 
+uio_pdrv_genirq         3825  0 
+uio                    10220  1 uio_pdrv_genirq
+```
 
 ### Setup with a bigger microSD card
 
@@ -173,17 +194,18 @@ The 512 MB microSD card that comes with the CX9020 is a bit too small for a basi
 
 There's several options:
 
-* you could mount a network filesystem to have more hdd capacity on the CX9020.
-* etc..
+* buy a bigger card from Beckhoff (certified for industrial use),
+* mount a network filesystem to have more hdd capacity on the CX9020,
+* etc.
 
-I bought a 64 GB AFGA PHOTO micro SDXC card [4250255102370](http://bfy.tw/5XsA), copied the ```CX9020.img``` created during the backup step above onto the 64 GB microSD card and resized the root partition with GParted:
+I bought a 64 GB AFGA PHOTO micro SDXC card ([EAN 4250255102370](http://bfy.tw/5XsA)), copied the ```CX9020.img``` created during the backup step above onto the 64 GB microSD card and resized the root partition with GParted:
 ```bash
-sudo dd if=CX9020.img of=/dev/sde # /dev/sde is the device file of the microSD card reader slot
-sudo gparted /dev/sde
+$ sudo dd if=CX9020.img of=/dev/sde # /dev/sde is the device file of the microSD card reader slot
+$ sudo gparted /dev/sde
 ```
 I re-inserted the 64 GB microSD card into the CX9020 and installed some packages:
 ```bash
-root@CX9020:~# apt install htop wget screen vim vim-scripts emacs apt-file devscripts
+root@CX9020:~# apt install htop wget screen vim vim-scripts emacs apt-file devscripts git
 ```
 Disk space:
 ```bash
@@ -197,10 +219,28 @@ tmpfs           5.0M     0  5.0M   0% /run/lock
 tmpfs           503M     0  503M   0% /sys/fs/cgroup
 ```
 
+#### modify /etc/fstab
+
+From:
+```
+/dev/mmcblk0p1        /       auto             errors=remount-ro       0       1
+```
+to:
+```
+/dev/mmcblk0p1        /       auto    lazytime,errors=remount-ro       0       1
+```
+
 ### Benchmark the RT-PREEMPT kernel with cyclictest
 
 ```bash
-apt install rt-tests gnuplot
+root@CX9020:~# apt install rt-tests gnuplot
+```
+
+```bash
+git clone git://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
+cd rt-tests
+make all
+cp ./cyclictest /usr/bin/
 ```
 
 ```bash
@@ -209,15 +249,36 @@ Linux CX9020 4.1.12-rt13-CX9020-9+ #1 PREEMPT RT Fri Apr 29 01:09:47 CEST 2016 a
 ```
 
 ```bash
-WIP
+root@CX9020:~# cyclictest -t1 -p 80 -n -i 10000 -l 10000
+# /dev/cpu_dma_latency set to 0us
+policy: fifo: loadavg: 0.01 0.04 0.26 1/87 25906          
+
+T: 0 (25906) P:80 I:10000 C:  10000 Min:     37 Act:   45 Avg:   47 Max:      70
 ```
+
+```bash
+root@CX9020:~# ./cyclictest_run.sh 1 > cyclictest-`uname -r`.plt
+
+real    16m40.139s
+user    0m3.600s
+sys     0m53.870s
+```
+plot:
+```
+root@CX9020:~# ./cyclictest_plot.sh cyclictest-`uname -r`.plt 100 
+```
+
+![pics/cx9020-cyclictest-4.1.12-rt13-CX9020-9+](pics/cx9020-cyclictest-4.1.12-rt13-CX9020-9+.png)
+
 For comparison see:
 
+* https://rt.wiki.kernel.org/index.php/Cyclictest
 * https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2
 * https://github.com/machinekit/machinekit/issues/792
 
 ### ChangeLog
 
+* 2016-05-01 – 64 GB microSD card + cyclictest.
 * 2016-04-30 – First steps at running Debian/Jessie.
 
 ### Contact
