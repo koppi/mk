@@ -275,8 +275,13 @@ For comparison see:
 * https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2
 * https://github.com/machinekit/machinekit/issues/792
 
+### Machinekit Setup
+
+* 2016-05-03 – Status of the machinekit-rt-preempt Debian package on armhf ([Issue #928](https://github.com/machinekit/machinekit/issues/928)).
+
 ### ChangeLog
 
+* 2016-05-02 – Initial tests with Machinekit.
 * 2016-05-01 – 64 GB microSD card + cyclictest.
 * 2016-04-30 – First steps at running Debian/Jessie.
 
