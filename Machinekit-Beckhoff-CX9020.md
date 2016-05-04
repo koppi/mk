@@ -16,7 +16,7 @@ The CX9020 is a DIN rail-mountable embedded system
 * 4 x USB 2.0
 * 1 x optional interface
 
-* Photos: [Hardware](https://goo.gl/photos/585GqHfQPs7fCpV87)
+* Photos: [Hardware](https://goo.gl/photos/kc86sjNKajbgcdEr7)
 
 ### Cross-compile RT-PREEMPT Linux kernel and setup a Debian/Jessie rootfs
 
