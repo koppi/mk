@@ -34,4 +34,6 @@ apt-get -y install lightdm
 apt-get -y install wicd-curses vim vim-scripts screen
 apt-get -y -f install
 
+apt-get -y insall vlc-nox
+
 apt-get -y autoclean
