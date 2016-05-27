@@ -233,7 +233,7 @@ to:
 ### Benchmark the RT-PREEMPT kernel with cyclictest
 
 ```bash
-root@CX9020:~# apt install rt-tests gnuplot
+root@CX9020:~# apt install gnuplot libnuma-dev
 ```
 
 ```bash
