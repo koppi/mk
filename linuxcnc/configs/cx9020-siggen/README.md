@@ -1,6 +1,6 @@
 ### Machinekit on Beckhoff CX9020 siggen HAL component test
 
-See [Video](it commit --amend).
+See [Video](https://www.youtube.com/watch?v=Xs5yllN3u6Q).
 
 To run the test, execute:
 ```bash
