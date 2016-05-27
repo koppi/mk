@@ -13,3 +13,5 @@ sed -i "/title_vertical_pad/s/value=\"[0-9]\{1,2\}\"/value=\"0\"/g" \
     /usr/share/themes/Adwaita/metacity-1/metacity-theme-3.xml
 
 su - machinekit -c "gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 8'" 
+su - machinekit -c "gsettings set org.gnome.desktop.background show-desktop-icons true"
+su - machinekit -c "gsettings set org.gnome.nautilus.desktop volumes-visible true"
