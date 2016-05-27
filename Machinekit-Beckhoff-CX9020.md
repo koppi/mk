@@ -277,10 +277,12 @@ For comparison see:
 
 ### Machinekit Setup
 
-* 2016-05-03 – Status of the machinekit-rt-preempt Debian package on armhf ([Issue #928](https://github.com/machinekit/machinekit/issues/928)).
+To be written.
 
 ### ChangeLog
 
+* 2016-05-27 – [Video](https://www.youtube.com/watch?v=Xs5yllN3u6Q) with [siggen HAL component test](https://github.com/koppi/mk/tree/master/linuxcnc/configs/cx9020-siggen).
+* 2016-05-03 – Status of the machinekit-rt-preempt Debian package on armhf ([Issue #928](https://github.com/machinekit/machinekit/issues/928)).
 * 2016-05-02 – Initial tests with Machinekit.
 * 2016-05-01 – 64 GB microSD card + cyclictest.
 * 2016-04-30 – First steps at running Debian/Jessie.
