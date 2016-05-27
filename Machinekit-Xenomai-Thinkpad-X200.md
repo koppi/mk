@@ -385,6 +385,15 @@ $ ethercat slaves
 7  0:7  PREOP  +  EL2622 2K. Relais Ausgang, Schlie�er (230V AC / 30V DC)
 ```
 
+## Schnellere IRQ-Antwort im NIC/NAPI/Socket-Layer (optional)
+
+Schnellere IRQ-Antwort im NIC/NAPI/Socket-Layer. Für TG3 (eth0).
+
+In ```/etc/rc.local```:
+```bash
+ethtool -C eth0 rx-usecs 0 rx-frames 1 tx-usecs 0 tx-frames 1
+```
+
 ## Konfiguration EL7041-1000 Schrittmotor-Endstufen
 
 Siehe Beckhoff [BECKHOFF EL7031, EL7041-x00x, EP7041-000x: Commissioning](http://infosys.beckhoff.de/english.php?content=../content/1033/el70x1/html/bt_ecbasics_implementation210_ethport_02.htm&id=9823):
@@ -470,6 +479,7 @@ $ chmod +x jscal.sh
 $ sudo mv jscal.sh /usr/local/bin
 $ sudo cp linuxcnc/configs/koppi-cnc/50-joypad.rules /etc/udev/rules.d/50-joypad.rules
 $ sudo udevadm trigger
+$ usermod -aG koppi plugdev # replace 'koppi' with your user id
 ```
 
 ### AXIS starten
