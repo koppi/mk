@@ -1,0 +1,11 @@
+<masters>
+  <master idx="0" appTimePeriod="1000000" refClockSyncCycles="1">
+    <slave idx="0" type="EL1004"      name="din1"   />
+    <slave idx="1" type="EL7041-1000" name="x"      />
+    <slave idx="2" type="EL7041-1000" name="y"      />
+    <slave idx="3" type="EL7041-1000" name="z"      />
+    <slave idx="4" type="EL2622"      name="relais" />
+    <slave idx="5" type="EL1124"      name="din2"   />
+  </master>
+</masters>
+

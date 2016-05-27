@@ -1,0 +1,152 @@
+loadrt trivkins
+loadrt tp
+loadrt motmod servo_period_nsec=1000000 num_joints=3 kins=trivkins tp=tp
+
+loadusr -W lcec_conf koppi-cnc.xml
+loadrt lcec
+
+addf lcec.read-all  servo-thread
+
+setp lcec.0.x.srv-scale 133.333333333
+## 200 steps/rev * 64 micro steps / 3mm axis pitch
+setp lcec.0.x.enc-pos-scale 4266.666666667
+#net x-enable => lcec.0.x.srv-enable
+net x-amp-fault <= lcec.0.x.srv-error
+net x-vel-cmd => lcec.0.x.srv-cmd
+net x-pos-fb <= lcec.0.x.enc-pos
+
+setp lcec.0.y.srv-scale 133.333333333
+## 200 steps/rev * 64 micro steps / 3mm axis pitch
+setp lcec.0.y.enc-pos-scale 4266.666666667
+#net y-enable    => lcec.0.y.srv-enable
+net y-amp-fault <= lcec.0.y.srv-error
+net y-vel-cmd   => lcec.0.y.srv-cmd
+net y-pos-fb    <= lcec.0.y.enc-pos
+
+setp lcec.0.z.srv-scale -133.333333333
+setp lcec.0.z.enc-pos-scale -4266.666666667
+#net z-enable    => lcec.0.z.srv-enable
+net z-amp-fault <= lcec.0.z.srv-error
+net z-vel-cmd   => lcec.0.z.srv-cmd
+net z-pos-fb    <= lcec.0.z.enc-pos
+
+loadrt pid names=x-pid,y-pid,z-pid
+
+addf motion-command-handler servo-thread
+addf motion-controller servo-thread
+
+addf x-pid.do-pid-calcs servo-thread
+addf y-pid.do-pid-calcs servo-thread
+addf z-pid.do-pid-calcs servo-thread
+
+addf lcec.write-all servo-thread
+
+net ec-slaves-responding <= lcec.slaves-responding
+net ec-link-up <= lcec.link-up
+net ec-all-op <= lcec.all-op
+
+net voltage-on <= lcec.0.din1.din-3-not
+
+net estop-hw-button <= lcec.0.din1.din-0
+net probe-pin-in <= lcec.0.din1.din-1
+
+net x-home-sw-in  <= lcec.0.x.srv-din1
+net y-home-sw-in  <= lcec.0.y.srv-din1
+net z-home-sw-in  <= lcec.0.z.srv-din1
+
+net spindle-cw <= lcec.0.relais.dout-0
+net coolant-on => lcec.0.relais.dout-1
+
+setp x-pid.Pgain     150.0
+setp x-pid.Igain       0.0
+setp x-pid.Dgain       0.0
+setp x-pid.FF0         0.0
+setp x-pid.FF1         0.25
+setp x-pid.FF2         0.0
+setp x-pid.deadband    0.0000999
+setp x-pid.maxoutput 120.0
+
+setp y-pid.Pgain     150.0
+setp y-pid.Igain       0.0
+setp y-pid.Dgain       0.0
+setp y-pid.FF0         0.0
+setp y-pid.FF1         0.25
+setp y-pid.FF2         0.0
+setp y-pid.deadband    0.0000999
+setp y-pid.maxoutput  75.0
+
+setp z-pid.Pgain     150.0
+setp z-pid.Igain       0.0
+setp z-pid.Dgain       0.0
+setp z-pid.FF0         0.0
+setp z-pid.FF1         0.25
+setp z-pid.FF2         0.0
+setp z-pid.deadband    0.0000999
+setp z-pid.maxoutput  50.0
+
+#net x-enable   => x-pid.enable
+setp x-pid.enable 1
+net x-pos-cmd  => x-pid.command
+net x-pos-fb   => x-pid.feedback
+net x-vel-cmd  <= x-pid.output
+
+#net y-enable => y-pid.enable
+setp y-pid.enable 1
+net y-pos-cmd => y-pid.command
+net y-pos-fb => y-pid.feedback
+net y-vel-cmd <= y-pid.output
+
+#net z-enable => z-pid.enable
+setp z-pid.enable 1
+net z-pos-cmd => z-pid.command
+net z-pos-fb => z-pid.feedback
+net z-vel-cmd <= z-pid.output
+
+setp lcec.0.x.srv-enable 1
+setp lcec.0.y.srv-enable 1
+setp lcec.0.z.srv-enable 1
+
+## axis interface
+#net x-enable     <= axis.0.amp-enable-out
+net x-amp-fault  => axis.0.amp-fault-in
+#net x-pos-cmd    <= axis.0.motor-pos-cmd
+net x-pos-fb     => axis.0.motor-pos-fb
+net x-pos-joint  <= axis.0.joint-pos-fb
+net x-homed      <= axis.0.homed
+net x-homing     <= axis.0.homing
+net x-neg-lim-in => axis.0.neg-lim-sw-in
+net x-pos-lim-in => axis.0.pos-lim-sw-in
+net x-home-sw-in => axis.0.home-sw-in
+
+#net y-enable     <= axis.1.amp-enable-out
+net y-amp-fault  => axis.1.amp-fault-in
+#net y-pos-cmd    <= axis.1.motor-pos-cmd
+net y-pos-fb     => axis.1.motor-pos-fb
+net y-pos-joint  <= axis.1.joint-pos-fb
+net y-homed      <= axis.1.homed
+net y-homing     <= axis.1.homing
+net y-neg-lim-in => axis.1.neg-lim-sw-in
+net y-pos-lim-in => axis.1.pos-lim-sw-in
+net y-home-sw-in => axis.1.home-sw-in
+
+#net z-enable     <= axis.2.amp-enable-out
+net z-amp-fault  => axis.2.amp-fault-in
+#net z-pos-cmd    <= axis.2.motor-pos-cmd
+net z-pos-fb     => axis.2.motor-pos-fb
+net z-pos-joint  <= axis.2.joint-pos-fb
+net z-homed      <= axis.2.homed
+net z-homing     <= axis.2.homing
+net z-neg-lim-in => axis.2.neg-lim-sw-in
+net z-pos-lim-in => axis.2.pos-lim-sw-in
+net z-home-sw-in => axis.2.home-sw-in
+
+loadrt siggen
+setp siggen.0.amplitude 2
+
+net x-pos-cmd    <= siggen.0.sine
+net y-pos-cmd    <= siggen.0.cosine
+net z-pos-cmd    <= siggen.0.square
+
+addf siggen.0.update servo-thread
+
+start
