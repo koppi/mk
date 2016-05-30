@@ -58,7 +58,7 @@ sudo modprobe configs
 zcat /proc/config.gz > .config
 ```
 
-Next, prepeare the system for kernel building:
+Next, prepare the system for kernel building:
 ```bash
 sudo apt -y install bc libncurses-dev
 ```
