@@ -172,6 +172,7 @@ For comparison see:
 git clone https://github.com/koppi/ec-debianize
 cd ec-debianize
 debian/configure -r
+dpkg-checkbuilddeps
 debuild -uc -us
 sudo dpkg -i ../ethercat*deb
 ```
