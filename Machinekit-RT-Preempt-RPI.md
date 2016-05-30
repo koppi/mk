@@ -171,6 +171,7 @@ For comparison see:
 ```bash
 git clone https://github.com/koppi/ec-debianize
 cd ec-debianize
+git checkout -b for-sittner
 debian/configure -r
 dpkg-checkbuilddeps
 debuild -uc -us
