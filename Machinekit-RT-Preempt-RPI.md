@@ -141,7 +141,7 @@ sudo cp ./cyclictest /usr/bin/
 
 On a Raspberry Pi 3 model B, I got the following results:
 
-With Linux 4.4.11-rt17v7+:
+With Linux 4.4.11-rt17v7+ (my custom built kernel as described above):
 
 ```bash
 $ uname -a
@@ -153,7 +153,7 @@ policy: fifo: loadavg: 0.46 0.31 0.19 1/190 8964
 T: 0 ( 8600) P:80 I:10000 C:  10000 Min:     15 Act:   17 Avg:   21 Max:      86
 ```
 
-With Linux 4.4.4-rt9-v7+:
+With Linux 4.4.4-rt9-v7+ from [linux-image-rpi2-rt](http://www.machinekit.io/docs/index-getting-started/#rt-preempt-realtime-kernel-raspberry-pi):
 
 ```bash
 $ uname -a
