@@ -17,6 +17,7 @@ The following steps are required to get a basic Machinekit / EtherCAT system on 
 
 ```bash
 cd /opt
+git ls-remote --heads https://github.com/raspberrypi/linux.git # show the branches
 git clone -b 'rpi-4.4.y' --single-branch --depth 1 https://github.com/raspberrypi/linux.git
 ```
 
