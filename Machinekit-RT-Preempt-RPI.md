@@ -58,8 +58,6 @@ sudo modprobe configs
 zcat /proc/config.gz > .config
 ```
 
-#### Configure and build the Kernel
-
 Next, prepeare the system for kernel building:
 ```bash
 sudo apt -y install bc libncurses-dev
@@ -79,6 +77,8 @@ In the kernel configuration, enable the following settings:
   * Enable ```HIGH_RES_TIMERS```: General setup → Timers subsystem → High Resolution Timer Support (Actually, this should already be enabled in the standard configuration.)
 
   ![kernel-config-rt-preempt-02.png](pics/kernel-config-rt-preempt-02.png)
+
+#### Build the Kernel
 
 ```bash
 cd /opt/linux
