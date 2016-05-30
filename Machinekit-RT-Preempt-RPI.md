@@ -4,7 +4,7 @@ The following steps are required to get a basic Machinekit / EtherCAT system on 
 
 * Download and boot into a Raspbian 8.0 system
 * Build and install a Raspberry Pi RT Preempt Linux Kernel
-* Build and install IGH EtherCAT master
+* Build and install IgH EtherCAT master
 * Setup Machinekit
 
 ### Download and boot into a Raspbian 8.0 system
@@ -160,7 +160,7 @@ For comparison see:
 * https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2
 * https://github.com/machinekit/machinekit/issues/792
 
-### Build and install IGH EtherCAT master
+### Build and install IgH EtherCAT master
 
 ```bash
 git clone https://github.com/koppi/ec-debianize
@@ -179,7 +179,7 @@ sudo vi /etc/default/sysconfig/ethercat
 Add your ethX MAC address, given by ```ifconfig eth0```:
 ```
 MASTER0_DEVICE="b8:27:XX:XX:XX:XX" # your MAC address
-DEVICE_MODULES="generic" #  the IGH EtherCAT master generic driver
+DEVICE_MODULES="generic" #  the IgH EtherCAT master generic driver
 ```
 
 Start the EtherCAT master:
