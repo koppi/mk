@@ -141,15 +141,28 @@ sudo cp ./cyclictest /usr/bin/
 
 On a Raspberry Pi 3 model B, I got the following results:
 
-```bash
-uname -a
-Linux raspberrypi 4.4.11-rt17-v7+ #1 SMP PREEMPT RT Sun May 29 12:59:15 UTC 2016 armv7l GNU/Linux
+With Linux 4.4.11-rt17v7+:
 
-sudo cyclictest -t1 -p 80 -n -i 10000 -l 10000
+```bash
+$ uname -a
+Linux raspberrypi 4.4.11-rt17-v7+ #1 SMP PREEMPT RT Sun May 29 12:59:15 UTC 2016 armv7l GNU/Linux
+$ sudo cyclictest -t1 -p 80 -n -i 10000 -l 10000
 # /dev/cpu_dma_latency set to 0us
 policy: fifo: loadavg: 0.46 0.31 0.19 1/190 8964
 
 T: 0 ( 8600) P:80 I:10000 C:  10000 Min:     15 Act:   17 Avg:   21 Max:      86
+```
+
+With Linux 4.4.4-rt9-v7+:
+
+```bash
+$ uname -a
+Linux raspberrypi 4.4.4-rt9-v7+ #7 SMP PREEMPT RT Mon Mar 7 14:53:11 UTC 2016 armv7l GNU/Linux
+$ sudo cyclictest -t1 -p 80 -n -i 10000 -l 10000
+# /dev/cpu_dma_latency set to 0us
+policy: fifo: loadavg: 1.50 1.01 0.71 3/197 5368           
+
+T: 0 ( 3112) P:80 I:10000 C:  10000 Min:     13 Act:   17 Avg:   25 Max:      86
 ```
 
 With some more tests, the worst case latency sometimes reached about 127 microseconds. Adding a safety margin, this should be safe for cycletimes of 1 ms.
