@@ -166,15 +166,15 @@ For comparison see:
 git clone https://github.com/koppi/ec-debianize
 cd ec-debianize
 git checkout for-sittner
-debian/configure -r
+debian/configure `uname -r`
 dpkg-checkbuilddeps
-debuild -uc -us
-sudo dpkg -i ../ethercat*deb
+debuild -uc -us -nc -d
+sudo dpkg -i ../etherlabmaster*deb
 ```
 
 Next, edit:
 ```bash
-sudo vi /etc/sysconfig/ethercat
+sudo vi /etc/default/sysconfig/ethercat
 ```
 Add your ethX MAC address, given by ```ifconfig eth0```:
 ```
@@ -184,16 +184,27 @@ DEVICE_MODULES="generic" #  the IGH EtherCAT master generic driver
 
 Start the EtherCAT master:
 ```bash
-sudo /etc/init.d/ethercat start
-Starting EtherCAT master 1.5.2  done
+sudo systemctl start ethercat.service
+sudo systemctl status ethercat.service
+● ethercat.service - EtherCAT Master Kernel Modules
+   Loaded: loaded (/usr/lib/systemd/system/ethercat.service; enabled)
+   Active: active (exited) since Mon 2016-05-30 18:53:20 UTC; 4s ago
+  Process: 10020 ExecStop=/usr/sbin/ethercatctl stop (code=exited, status=0/SUCCESS)
+  Process: 10030 ExecStart=/usr/sbin/ethercatctl start (code=exited, status=0/SUCCESS)
+ Main PID: 10030 (code=exited, status=0/SUCCESS)
 ```
 
-List of slaves connected to the Raspberry PI 3:
+List the EtherCAT devices connected to the Raspberry PI 3:
 ```bash
 ethercat slaves
 0  0:0  PREOP  +  EK1100 EtherCAT-Koppler (2A E-Bus)
 1  0:1  PREOP  +  EL2004 4K. Dig. Ausgang 24V, 0.5A
 2  0:2  PREOP  +  EL2004 4K. Dig. Ausgang 24V, 0.5A
+```
+
+If the above worked, enable the service during system boot:
+```bash
+sudo systemctl enable ethercat.service
 ```
 
 ### Setup Machinekit
