@@ -138,9 +138,11 @@ user@host ~$ sudo ping -i 0.01 raspberrypi
 * Process priority 80
 
 ```bash
-git clone git://git.kernel.org/pub/scm/linux/kernel/git/clrkwllms/rt-tests.git
+cd /opt
+git clone git://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
 cd rt-tests/
 make all
+sudo cp ./cyclictest /usr/bin/
 ```
 
 On a Raspberry Pi 3 model B, I got the following results:
@@ -149,14 +151,20 @@ On a Raspberry Pi 3 model B, I got the following results:
 uname -a
 Linux raspberrypi 4.4.11-rt17-v7+ #1 SMP PREEMPT RT Sun May 29 12:59:15 UTC 2016 armv7l GNU/Linux
 
-sudo ./cyclictest -m -t1 -p 80 -n -i 500 -l 100000
+sudo cyclictest -t1 -p 80 -n -i 10000 -l 10000
 # /dev/cpu_dma_latency set to 0us
-policy: fifo: loadavg: 1.02 0.81 0.43 3/247 5242
+policy: fifo: loadavg: 0.46 0.31 0.19 1/190 8964           
 
-T: 0 ( 4692) P:80 I:500 C: 100000 Min:     12 Act:   22 Avg:   16 Max:     117
+T: 0 ( 8600) P:80 I:10000 C:  10000 Min:     15 Act:   17 Avg:   21 Max:      86
 ```
 
 With some more tests, the worst case latency sometimes reached about 127 microseconds. Adding a safety margin, this should be safe for cycletimes of 1 ms.
+
+For comparison see:
+
+* https://rt.wiki.kernel.org/index.php/Cyclictest
+* https://docs.emlid.com/navio/Downloads/Real-time-Linux-RPi2
+* https://github.com/machinekit/machinekit/issues/792
 
 ### Build and install IGH EtherCAT master
 
