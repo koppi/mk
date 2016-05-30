@@ -73,7 +73,12 @@ make -j$(nproc) menuconfig
 In the kernel configuration, enable the following settings:
 
   * ```CONFIG_PREEMPT_RT_FULL```: Kernel Features → Preemption Model (Fully Preemptible Kernel (RT)) → Fully Preemptible Kernel (RT)
+
+  ![kernel-config-rt-preempt-01.png](pics/kernel-config-rt-preempt-01.png)
+
   * Enable ```HIGH_RES_TIMERS```: General setup → Timers subsystem → High Resolution Timer Support (Actually, this should already be enabled in the standard configuration.)
+
+  ![kernel-config-rt-preempt-02.png](pics/kernel-config-rt-preempt-02.png)
 
 ```bash
 cd /opt/linux
