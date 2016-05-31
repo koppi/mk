@@ -184,7 +184,7 @@ debian/configure `uname -r`
 dpkg-checkbuilddeps
 debuild -uc -us
 ```
-In case you see an [error](https://github.com/sittner/ec-debianize/issues/2) during the package build process an error, do as a workaround:
+In case you see an [error](https://github.com/sittner/ec-debianize/issues/2) during the package build process, do as a workaround:
 ```bash
 touch master/soe_errors.c
 debuild -uc -us -nc
