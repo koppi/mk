@@ -188,6 +188,7 @@ In case you see an [error](https://github.com/sittner/ec-debianize/issues/2) dur
 ```bash
 touch master/soe_errors.c
 debuild -uc -us -nc
+```
 
 Install the etherlabmaster Debian package:
 ```bash
