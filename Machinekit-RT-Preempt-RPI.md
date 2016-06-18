@@ -224,8 +224,10 @@ sudo systemctl enable ethercat.service
 
 ### Setup Machinekit
 
-To be written.
+The Machinekit setup is pretty straight forward – just compile Machinekit from source or install the armhf Debian packages provided by http://deb.machinekit.io/debian/dists/raspbian/ .
 
 ### ChangeLog
 
 * 2016-05-30 Initial version.
+* 2016-06-16 Add info about Machinekit setup.
+
