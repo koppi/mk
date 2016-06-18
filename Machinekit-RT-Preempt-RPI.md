@@ -226,6 +226,8 @@ sudo systemctl enable ethercat.service
 
 The Machinekit setup is pretty straight forward – just compile Machinekit from source or install the armhf Debian packages provided by http://deb.machinekit.io/debian/dists/raspbian/ .
 
+A quick [Video](https://www.youtube.com/watch?v=uFbr7xBjItE) shows Machinekit + EtherCAT on the Raspberry Pi 3 with some MQTT broker latency testing. Note that due to the way eth0 is connected internally on the Raspberry Pi 3, the EtherCAT frames sending and receiving may interfere with potential USB devices connected to the RPi (- for my setup this is not so relevant, because I'm not planning to connect any USB devices to the RPi3. – You have been warned).
+
 ### ChangeLog
 
 * 2016-05-30 Initial version.
