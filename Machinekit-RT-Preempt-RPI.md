@@ -40,13 +40,6 @@ find -iname "*.rej" # check for rejected patches
 
 Next, configure the kernel for using RT Preempt.
 
-For Raspberry Pi Model A(+), B(+), Zero, execute the following commands:
-
-```bash
-export KERNEL=kernel
-make bcmrpi_defconfig
-```
-
 For Raspberry Pi 2/3 Model B, execute these commands:
 ```bash
 export KERNEL=kernel7
@@ -95,7 +88,6 @@ sudo make modules_install
 sudo su -
 cp -rpv /boot /boot.bak
 cd /opt/linux
-export KERNEL=kernel  # For Raspberry Pi Model A(+), B(+), Zero
 export KERNEL=kernel7 # For Raspberry Pi 2/3 Model B
 ./scripts/mkknlimg ./arch/arm/boot/zImage /boot/$KERNEL.img
 cp -pv  ./arch/arm/boot/dts/*.dtb /boot
