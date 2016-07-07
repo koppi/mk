@@ -406,6 +406,8 @@ Ausgangsleistung (– hier: 2000mA) anpassen:
 $ for i in 4 5 6; do ethercat -p $i download --type uint16 0x8010 0x01 2000; done
 ```
 
+Update: 2016-07-07: [@narogon](https://github.com/narogon) has integrated writing of SDO parameters into the EL7041 HAL driver: https://github.com/sittner/linuxcnc-ethercat/pull/27
+
 ## LinuxCNC / EtherCAT HAL-Module
 
 Installation als Debian-Paket:
