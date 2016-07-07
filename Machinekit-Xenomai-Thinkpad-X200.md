@@ -384,7 +384,7 @@ $ ethercat slaves
 
 ## Schnellere IRQ-Antwort im NIC/NAPI/Socket-Layer (optional)
 
-Schnellere IRQ-Antwort im NIC/NAPI/Socket-Layer. Für TG3 (eth0).
+Schnellere IRQ-Antwort im NIC/NAPI/Socket-Layer. Für den e1000e-Treiber (eth0):
 
 In ```/etc/rc.local```:
 ```bash
