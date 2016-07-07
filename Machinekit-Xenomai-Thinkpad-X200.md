@@ -391,6 +391,11 @@ In ```/etc/rc.local```:
 ethtool -C eth0 rx-usecs 0 rx-frames 1 tx-usecs 0 tx-frames 1
 ```
 
+Siehe auch: 
+
+* http://comments.gmane.org/gmane.network.etherlab.user/1181
+* https://www.kernel.org/doc/Documentation/networking/e1000.txt
+
 ## Konfiguration EL7041-1000 Schrittmotor-Endstufen
 
 Siehe Beckhoff [BECKHOFF EL7031, EL7041-x00x, EP7041-000x: Commissioning](http://infosys.beckhoff.de/english.php?content=../content/1033/el70x1/html/bt_ecbasics_implementation210_ethport_02.htm&id=9823):
