@@ -17,11 +17,10 @@
   Config-Dateien, siehe: https://github.com/koppi/mk/commits/mklauncher
 
 * 2015-05-30 [aktuelle Version basiert auf Debian/Jessie](https://github.com/koppi/mk/blob/master/Machinekit-Xenomai-Thinkpad-X200.md)
-* 2015-05-26 [  ältere Version basiert auf Debia/Wheezy](https://github.com/koppi/mk/blob/daa3fd64a0b2b61933cdda100c8679dcee8232cb/Machinekit-Xenomai-Thinkpad-X200.md)
+* 2015-05-26 [  ältere Version basiert auf Debian/Wheezy](https://github.com/koppi/mk/blob/daa3fd64a0b2b61933cdda100c8679dcee8232cb/Machinekit-Xenomai-Thinkpad-X200.md)
 
 ### Übersicht
 
-Übersicht Steuerung:
 ![Übersicht Steuerung](pics/IMG_20150515_172113.jpg)
  1. IBM Thinkpad X200 mit Debian Jessie / Linux 3.8.1 / Machinekit 0.1 / Xenomai 2.6.4
  2. 24VDC 50W Netzteil
@@ -29,8 +28,7 @@
  4. SSR-40 DA Solid State Relay Modul (– wird momentan nicht verwendet, stattdessen die EL2622-Klemme)
  5. Stromversorgung Kress / Staubsauger
 
-Übersicht Steuerungselektronik:
-![Übersicht Steuerungselektronik](pics/IMG_20150515_172220.jpg)
+![Steuerungselektronik](pics/IMG_20150515_172220.jpg)
  1. Stromversorgung 24V von Netzteil
  2. Ethernet-Kabel vom Thinkpad zum EK1100 (EtherCAT-Koppler)
  3. Ausgang 1 vom EL2004 zum Solid State Relay Modul
@@ -40,8 +38,7 @@
  7. 24V Versorgung Schrittmotorendstufen EL7041-1000
  8. Ausgänge Schrittmotoren
 
-Übersicht Fräsmaschine:
-![Übersicht Fräsmaschine](pics/IMG_20150515_172548.jpg)
+![Fräsmaschine](pics/IMG_20150515_172548.jpg)
  1. Kleine CNC Fräsmaschine Portal 210 x 230 x 70 - [www.flohmarkt4u.de](http://www.flohmarkt4u.de/)
  2. Nema23 Stepper Motor 57BYGH627 - Wantai
  3. Kress 1050 FME-1 Fräsmotor - EAN: 4000649061895
