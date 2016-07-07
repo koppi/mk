@@ -277,7 +277,11 @@ For comparison see:
 
 ### Machinekit Setup
 
-To be written.
+The Machinekit setup is pretty straight forward – just compile Machinekit from source or install the armhf Debian packages provided by http://deb.machinekit.io/debian/dists/jessie/ .
+
+The config files for my CNC mill are hosted in the cx9020 branch at: https://github.com/koppi/mk/tree/cx9020/linuxcnc/configs/koppi-cnc .
+
+With https://github.com/koppi/mk/blob/cx9020/linuxcnc/configs/koppi-cnc/systemd-register.py the mklauncher.service gets registered with systemd, which takes care to start mklauncher at bootup. Simply connect to the CX9020 via MachinekitClient. You should then be able to start / stop the CNC and interact with the CNC via the the Cetus GUI.
 
 ### ChangeLog
 
