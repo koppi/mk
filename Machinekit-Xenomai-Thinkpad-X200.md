@@ -184,7 +184,7 @@ $ touch .hushlogin
 
 Wir verwenden die Varianten Machinekit-Xenomai und -Posix.
 
-Wie in http://www.machinekit.io/docs/packages-debian/ vorgehen.
+Wie in http://www.machinekit.io/docs/getting-started/installing-packages/ vorgehen.
 
 Paketmanager konfigurieren:
 ```bash
