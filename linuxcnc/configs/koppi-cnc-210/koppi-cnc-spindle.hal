@@ -1,0 +1,46 @@
+######################################################################
+#
+# Spindle HAL file for koppi's CNC
+#
+# Created 2015/05/09 by Jakob Flierl <jakob.flierl@gmail.com>
+#
+# Spindle Interface
+#
+######################################################################
+
+# motion interface
+#net spindle-on <= motion.spindle-on
+#net spindle-cw <= motion.spindle-forward
+#net spindle-ccw <= motion.spindle-reverse
+
+# coolant
+#net coolant-on <= iocontrol.0.coolant-flood
+
+# spindle encoder
+# add scale and lowpass, these will be used in custom_postgui.hal
+#loadrt scale count=1
+#loadrt lowpass count=1
+#loadrt abs count=1# add the encoder to HAL and attach it to threads.
+#loadrt encoder num_chan=1
+#addf scale.0 servo-thread
+#addf lowpass.0 servo-thread
+#addf abs.0 servo-thread
+#addf encoder.update-counters  servo-thread
+#addf encoder.capture-position servo-thread
+
+# set the HAL encoder to 1 pulse per revolution.
+#setp encoder.0.position-scale 1
+
+# set the HAL encoder to non-quadrature simple counting using A only.
+#setp encoder.0.counter-mode 1
+
+# connect the HAL encoder outputs to LinuxCNC.
+#net spindle-position encoder.0.position => motion.spindle-revs
+#net spindle-velocity encoder.0.velocity => motion.spindle-speed-in
+#net spindle-index-enable encoder.0.index-enable <=> motion.spindle-index-enable
+
+# connect the HAL encoder inputs to the real encoder.
+#net spindle-phase-a encoder.0.phase-A <= lcec.0.8.din-0
+
+# net for the spindle speed out
+#net spindle-cmd <= motion.spindle-speed-out-abs

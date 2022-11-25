@@ -1,0 +1,283 @@
+######################################################################
+#
+# postgui HAL file for koppi's CNC
+#
+# Created 2015/05/14 by Jakob Flierl <jakob.flierl@gmail.com>
+#
+# This file connects hardware E-Stop button and software E-Stop button
+# as well as the EtherCAT bus link status to the classicladder.
+#
+# See: file "koppi-cnc-estop.clp" for more details.
+#
+
+######################################################################
+# E-Stop Inputs
+######################################################################
+
+# link EtherCAT link up signal to classicladder input pin 0
+#linkps classicladder.0.in-00 => ec-link-up
+
+# link estop-hw-button signal  to classicladder input pin 1
+#linkps classicladder.0.in-01 => estop-hw-button
+
+# link software E-Stop button  to classicladder input pin 2
+#net emc-estop iocontrol.0.user-enable-out => classicladder.0.in-02
+
+######################################################################
+# E-Stop Output
+######################################################################
+
+# Request E-Stop Enable from EMC
+#net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
+
+# estop loopback
+# net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
+
+#net estop-out <= iocontrol.0.user-enable-out
+#net estop-out => iocontrol.0.emc-enable-in
+
+#loadrt estop_latch
+#addf estop-latch.0 servo-thread
+#net estop-loopout iocontrol.0.emc-enable-in <= estop-latch.0.ok-out
+#net estop-loopin iocontrol.0.user-enable-out => estop-latch.0.ok-in
+#net estop-reset iocontrol.0.user-request-enable => estop-latch.0.reset
+#net remote-estp estop-latch.0.fault-in <= lcec.0.din1.din-0-not
+
+######################################################################
+# Probe Pin Inputs
+######################################################################
+
+# link probe-pin-in signal to motion.probe-input pin
+
+# G38.x uses the value on this pin to determine when the probe has
+# made contact: TRUE  for probe contact closed (touching),
+#               FALSE for probe contact open.
+
+#loadrt debounce
+#addf debounce.0 servo-thread
+#setp debounce.0.delay  10
+
+#net probe-pin-in         => debounce.0.0.in
+#net probe-debounce-in    <= debounce.0.0.out
+#net probe-debounce-in    => motion.probe-input
+
+# link probe-debounce-in signal to pyvcp ui element
+#linksp probe-debounce-in => pyvcp.probe-status
+
+######################################################################
+# HALUI MDI Commands
+######################################################################
+
+net remote-rapid-to-home halui.mdi-command-00 <= pyvcp.rapid-to-home
+net touchoff-probe-x     halui.mdi-command-01 <= pyvcp.touchoff-probe-x
+net touchoff-probe-y     halui.mdi-command-02 <= pyvcp.touchoff-probe-y
+net touchoff-probe-z     halui.mdi-command-03 <= pyvcp.touchoff-probe-z
+net probe-corner         halui.mdi-command-04 <= pyvcp.probe-corner
+net touchoff-mat-xy-0    halui.mdi-command-05 <= pyvcp.touchoff-xy-0
+net touchoff-mat-xyz-0   halui.mdi-command-06 <= pyvcp.touchoff-xyz-0
+net touchoff-mat-x-0     halui.mdi-command-07 <= pyvcp.touchoff-x-0
+net touchoff-mat-y-0     halui.mdi-command-08 <= pyvcp.touchoff-y-0
+net touchoff-mat-z-0     halui.mdi-command-09 <= pyvcp.touchoff-z-0
+
+######################################################################
+# Jogging with Joypad
+######################################################################
+
+#setp halui.jog-speed 900
+
+#net joy-x-jog halui.jog.0.analog <= input.0.abs-x-position
+#net joy-y-jog halui.jog.1.analog <= input.0.abs-y-position
+#net joy-z-jog halui.jog.2.analog <= input.0.abs-rz-position
+
+# I needed to reverse the direction of Y and Z axes.
+#setp input.0.abs-y-scale -127.5
+#setp input.0.abs-rz-scale -127.5
+
+# TODO http://www.microcopters.de/artikel/emc2-game-controller-zur-manuellen-cnc-steuerung
+
+######################################################################
+# Add compensation to Z axis to eliminate surface inflattness
+#
+# See https://github.com/cnc-club/linuxcnc-engraving-comp
+#
+######################################################################
+#loadrt or2 count=3
+#loadrt sum2 count=1
+
+#loadusr -Wn compensation python ./koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
+
+#addf or2.0 servo-thread
+#addf or2.1 servo-thread
+#addf or2.2 servo-thread
+#addf sum2.0 servo-thread
+
+#unlinkp z-pid.command
+#unlinkp axis.z.motor-pos-cmd
+#unlinkp axis.z.motor-pos-fb
+
+# for machine coordinate compensation values
+#net x-pos-cmd-comp axis.x.joint-pos-cmd compensation.x-map
+#net y-pos-cmd-comp axis.y.joint-pos-cmd compensation.y-map
+
+# for relative coordinate compensation values
+##net x-pos-cmd => compensation.x-map
+##net y-pos-cmd => compensation.y-map
+
+#net zpos-cmd <= axis.z.motor-pos-cmd
+#net zpos-cmd => axis.z.motor-pos-fb
+
+#net zpos-cmd => sum2.0.in0
+#net comp compensation.out => sum2.0.in1
+#net zpos-cmd-comp sum2.0.out => z-pid.command
+
+#net dout-00 <= motion.digital-out-00
+#net dout-00 => or2.0.in0
+#net comp-enable or2.0.out compensation.enable
+
+#loadrt toggle count=3
+#addf toggle.0 servo-thread
+#net toggle-enable toggle.0.out => or2.0.in1
+##net pyvcp-enable  toggle.0.in  <= pyvcp.enable
+
+#net comp-toggle    => or2.2.in0
+#net pyvcp-enable      or2.2.in1 <= pyvcp.enable
+#net toggle-or-out   toggle.0.in <= or2.2.out
+
+#net dout-01 <= motion.digital-out-01
+#net dout-01 => or2.1.in0
+#net pyvcp-reset pyvcp.reset => or2.1.in1
+#net comp-reset or2.1.out compensation.reset
+
+#net comp-enable => pyvcp.enable-led
+#net comp-reset => pyvcp.reset-led
+#net comp-error compensation.error => pyvcp.error-led
+
+##net zpos-cmd-comp => pyvcp.current-z
+#net comp => pyvcp.current-comp
+
+######################################################################
+# EtherCAT Infos
+######################################################################
+
+#loadusr -W ./koppi-cnc-info.py
+
+#net info-temp-0 koppi-cnc-info.temp-0 => pyvcp.temp-0
+#net info-temp-1 koppi-cnc-info.temp-1 => pyvcp.temp-1
+#net info-temp-2 koppi-cnc-info.temp-2 => pyvcp.temp-2
+
+#net info-motor-supply-0 koppi-cnc-info.motor-supply-0 => pyvcp.motor-supply-0
+#net info-motor-supply-1 koppi-cnc-info.motor-supply-1 => pyvcp.motor-supply-1
+#net info-motor-supply-2 koppi-cnc-info.motor-supply-2 => pyvcp.motor-supply-2
+
+#net info-temp1    koppi-cnc-info.temp1    => pyvcp.temp1
+#net info-fan1-rpm koppi-cnc-info.fan1-rpm => pyvcp.fan1-rpm
+
+#linksp ec-link-up koppi-cnc-info.link-up
+
+######################################################################
+# Show current program line number
+######################################################################
+
+#net motion-line motion.program-line => pyvcp.program-line
+
+######################################################################
+# Show elapsed time
+######################################################################
+
+#loadrt time
+
+#addf time.0 servo-thread
+
+#net prog-is-running <= halui.program.is-running
+#net prog-is-running => time.0.start
+
+#net cycle-seconds time.0.seconds => pyvcp.elaps-sec
+#net cycle-minutes time.0.minutes => pyvcp.elaps-min
+#net cycle-hours   time.0.hours   => pyvcp.elaps-hour
+
+######################################################################
+# Show data logger status
+######################################################################
+
+#loadusr -W ./data_logger.py
+
+#loadrt ownanalytics count=3
+#newinst  ownanalytics ownanalytics-0
+#newinst  ownanalytics ownanalytics-1
+#newinst  ownanalytics ownanalytics-2
+
+#addf ownanalytics.0 servo-thread
+#addf ownanalytics.1 servo-thread
+#addf ownanalytics.2 servo-thread
+
+#net rt2log data_logger.beat => ownanalytics.0.beat
+#net rt2log_0_min ownanalytics.0.min => data_logger.i11
+#net rt2log_0_max ownanalytics.0.max => data_logger.i12
+#net rt2log_0_avg ownanalytics.0.avg => data_logger.i13
+
+#net rt2log data_logger.beat => ownanalytics.1.beat
+#net rt2log_1_min ownanalytics.1.min => data_logger.i21
+#net rt2log_1_max ownanalytics.1.max => data_logger.i22
+#net rt2log_1_avg ownanalytics.1.avg => data_logger.i23
+
+#net rt2log data_logger.beat => ownanalytics.2.beat
+#net rt2log_2_min ownanalytics.2.min => data_logger.i31
+#net rt2log_2_max ownanalytics.2.max => data_logger.i32
+#net rt2log_2_avg ownanalytics.2.avg => data_logger.i33
+
+#net rt2log data_logger.beat => pyvcp.datalogger-beat
+
+#linksp motion-line data_logger.line
+
+#linksp x-pos-cmd-comp ownanalytics.0.in
+#linksp y-pos-cmd-comp ownanalytics.1.in
+#linksp zpos-cmd       ownanalytics.2.in
+
+######################################################################
+# Show spindle RPM
+######################################################################
+
+#setp scale.0.gain 60
+#setp lowpass.0.gain 0.010000
+#net spindle-velocity => lowpass.0.in
+#net spindle-fb-filtered-rps      lowpass.0.out  => abs.0.in
+#net spindle-fb-filtered-abs-rps  abs.0.out      => scale.0.in
+#net spindle-fb-filtered-abs-rpm  scale.0.out    => pyvcp.spindle-speed
+
+# pindle at speed indicator
+#loadrt near count=1
+#addf near.0 servo-thread
+
+#net spindle-cmd                 =>  near.0.in1
+#net spindle-velocity           =>  near.0.in2
+#net spindle-fb-filtered-abs-rpm =>  near.0.in2
+#net spindle-at-speed            <=  near.0.out
+#setp near.0.scale 1.500000
+#net spindle-at-speed            => pyvcp.spindle-at-speed-led
+
+######################################################################
+# ES8266 ESP-01
+######################################################################
+
+#addf toggle.1 servo-thread
+#net toggle-test1-out  toggle.1.out    => esp-01-mqtt.gp0
+#net toggle-test1-in   toggle.1.in     <= pyvcp.esp-test1
+#linksp                toggle-test1-out   pyvcp.esp-test1-led
+
+#addf toggle.2 servo-thread
+#net toggle-test2-out  toggle.2.out    => esp-01-mqtt.gp2
+#net toggle-test2-in   toggle.2.in     <= pyvcp.esp-test2
+#linksp                toggle-test2-out   pyvcp.esp-test2-led
+
+######################################################################
+# ALSA FFT spectrum logger
+######################################################################
+
+#loadusr -W ./alsa-fft.py
+
+######################################################################
+# Graphite Data Logger
+######################################################################
+
+#loadusr ./hal-graphite.py
+

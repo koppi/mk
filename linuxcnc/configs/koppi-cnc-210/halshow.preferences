@@ -1,0 +1,27 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 700x506+656+123
+placeFrames 0.40406976744186046
+set ::ratio 0.40406976744186046
+set ::old_w_leftf 278
+set ::watchlist {
+    pin+joint.0.f-error
+    pin+joint.0.error
+    pin+joint.0.motor-pos-cmd
+    pin+joint.0.motor-pos-fb
+    pin+joint.0.pos-cmd
+    pin+joint.0.pos-fb
+    pin+joint.2.f-error
+    pin+joint.2.error
+    pin+joint.2.motor-pos-cmd
+    pin+joint.2.motor-pos-fb
+    pin+joint.2.pos-cmd
+    pin+joint.2.pos-fb
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 1
+set ::autoSaveWatchlist 1

@@ -1,0 +1,100 @@
+###########################################################
+#
+# IO HAL file for koppi's CNC
+#
+# Created 2015/05/09 by Jakob Flierl <jakob.flierl@gmail.com>
+#
+# This file connects internal LCNC HAL signals with
+# external Haldware on the EtherCAT bus.
+#
+###########################################################
+
+###########################################################
+# Signals for monitorting of the connection state
+# and slave state
+###########################################################
+net ec-slaves-responding <= lcec.slaves-responding
+net ec-link-up <= lcec.link-up
+net ec-all-op <= lcec.all-op
+
+###########################################################
+# digital inputs
+###########################################################
+
+net voltage-on <= lcec.0.din1.din-0-not
+
+net estop-hw-button <= lcec.0.din1.din-0
+#net probe-pin-in <= lcec.0.3.din-1
+
+#net x-pos-lim-in <= lcec.0.3.din-1
+#net x-neg-lim-in <= lcec.0.3.din-2
+#net y-pos-lim-in <= lcec.0.3.din-3
+#net y-neg-lim-in <= lcec.0.3.din-0-not
+#net z-pos-lim-in <= lcec.0.3.din-2
+#net z-neg-lim-in <= lcec.0.3.din-2
+net x-home-sw-in  <= lcec.0.x.srv-din1
+net y-home-sw-in  <= lcec.0.y.srv-din1
+net z-home-sw-in  <= lcec.0.z.srv-din1
+
+###########################################################
+# digital outputs
+###########################################################
+
+#net coolant-on => lcec.0.2.dout-0
+#XXXnet spindle-cw <= lcec.0.7.dout-0
+#net spindle-ccw <= lcec.0.2.dout-2
+#net z-brake => lcec.0.2.dout-3
+
+###########################################################
+# servo controllers
+###########################################################
+
+# X axis
+#
+# set motor position scale (default 1 motor revolution)
+setp lcec.0.x.srv-scale [AXIS_X]SCALE
+setp lcec.0.x.enc-pos-scale [AXIS_X]ENC_SCALE
+
+# switch on if joint is enabled
+# this signal is used for the fault autoreset feature, too
+net x-enable => lcec.0.x.srv-enable
+
+# enable operation if joint is enabled
+# The delta driver internally delay this signal
+# till switched-on feedback is set to 1
+#net x-enable => lcec.0.3A1.srv-enable
+
+# check driver fault status
+net x-amp-fault <= lcec.0.x.srv-error
+
+# output velocity command from position control
+# the scale of this value respects the setting
+# of srv-pos-scale. if scale is set to 1.0 this
+# means 1 motor revolution per second.
+net x-vel-cmd => lcec.0.x.srv-cmd
+
+# motor encoder position is used as joint
+# position feedback
+net x-pos-fb <= lcec.0.x.enc-pos
+
+# Y axis - same logic as X axis
+
+setp lcec.0.y.srv-scale [AXIS_Y]SCALE
+setp lcec.0.y.enc-pos-scale [AXIS_Y]ENC_SCALE
+
+net y-enable    => lcec.0.y.srv-enable
+net y-amp-fault <= lcec.0.y.srv-error
+net y-vel-cmd   => lcec.0.y.srv-cmd
+net y-pos-fb    <= lcec.0.y.enc-pos
+
+# Z axis - same logic as X axis
+
+setp lcec.0.z.srv-scale [AXIS_Z]SCALE
+setp lcec.0.z.enc-pos-scale [AXIS_Z]ENC_SCALE
+
+net z-enable    => lcec.0.z.srv-enable
+net z-amp-fault <= lcec.0.z.srv-error
+net z-vel-cmd   => lcec.0.z.srv-cmd
+net z-pos-fb    <= lcec.0.z.enc-pos
+
+#net z-brake    <= lcec.0.4A3.srv-oper-enabled

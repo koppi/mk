@@ -1,0 +1,2 @@
+T1 P1 Z0 D2 ;2mm 
+T2 P2 Z0 D1 ;1mm 

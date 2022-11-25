@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pyvcp>
+<vbox>
+<bd>2</bd>
+ <button>
+  <halpin>"rapid-to-home"</halpin>
+  <text>"Rapid Home"</text>
+  <bd>2</bd>
+ </button>
+ <hbox>
+  <rectled>
+   <halpin>"esp-test1-led"</halpin>
+   <width>"28"</width>
+   <height>"28"</height>
+   <on_color>"green"</on_color>
+   <off_color>"gray"</off_color>
+ </rectled>
+  <button>
+   <halpin>"esp-test1"</halpin>
+   <text>"0"</text>
+   <bd>2</bd>
+  </button>
+  <rectled>
+   <halpin>"esp-test2-led"</halpin>
+   <width>"28"</width>
+   <height>"28"</height>
+   <on_color>"green"</on_color>
+   <off_color>"gray"</off_color>
+  </rectled>
+  <button>
+   <halpin>"esp-test2"</halpin>
+   <text>"2"</text>
+   <bd>2</bd>
+  </button>
+ </hbox>
+<labelframe text="Program">
+  <vbox>
+    <s32>
+      <halpin>"program-line"</halpin>
+      <font>("Helvetica",12)</font>
+      <format>"14d"</format>
+    </s32>
+    <hbox>
+      <label>
+        <text>"        "</text>
+        <font>("Helvetica",12)</font>
+      </label>
+      <u32>
+        <halpin>"elaps-hour"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"02d:"</format>
+      </u32>
+      <u32>
+        <halpin>"elaps-min"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"02d:"</format>
+      </u32>
+      <u32>
+        <halpin>"elaps-sec"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"02d"</format>
+      </u32>
+    </hbox>
+  </vbox>
+</labelframe>
+<labelframe text="Spindle">
+  <vbox>
+    <hbox>
+      <rectled>
+        <halpin>"spindle-at-speed-led"</halpin>
+        <width>"28"</width>
+        <height>"28"</height>
+        <on_color>"green"</on_color>
+        <off_color>"gray"</off_color>
+      </rectled>
+      <number>
+        <halpin>"spindle-speed"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"14.0f RPM"</format>
+      </number>
+    </hbox>
+  </vbox>
+</labelframe>
+<labelframe text="Touch Probe">
+ <vbox>
+  <hbox>
+   <rectled>
+    <width>"145"</width>
+    <height>"28"</height>
+    <halpin>"probe-status"</halpin>
+    <on_color>"green"</on_color>
+    <off_color>"grey"</off_color>
+   </rectled>
+  </hbox>
+  <hbox>
+   <button>
+    <bd>2</bd>
+    <halpin>"touchoff-probe-x"</halpin>
+    <text>"X"</text>
+   </button>
+   <button>
+    <bd>2</bd>
+    <halpin>"touchoff-probe-y"</halpin>
+    <text>"Y"</text>
+   </button>
+   <button>
+    <bd>2</bd>
+    <halpin>"touchoff-probe-z"</halpin>
+    <text>"Z"</text>
+   </button>
+   <button>
+    <bd>2</bd>
+    <halpin>"probe-corner"</halpin>
+    <text>"C"</text>
+   </button>
+  </hbox>
+ </vbox>
+</labelframe>
+<labelframe text="Touch Off 0">
+ <vbox>
+  <hbox>
+   <button>
+    <halpin>"touchoff-x-0"</halpin>
+    <text>"X"</text>
+    <bd>2</bd>
+   </button>
+   <button>
+    <halpin>"touchoff-y-0"</halpin>
+    <text>"Y"</text>
+    <bd>2</bd>
+   </button>
+   <button>
+    <halpin>"touchoff-z-0"</halpin>
+    <text>"Z"</text>
+    <bd>2</bd>
+   </button>
+  </hbox>
+ <hbox>
+  <button>
+   <halpin>"touchoff-xy-0"</halpin>
+   <text>" XY"</text>
+   <bd>2</bd>
+  </button>
+  <button>
+   <halpin>"touchoff-xyz-0"</halpin>
+   <text>"XYZ"</text>
+   <bd>2</bd>
+  </button>
+ </hbox>
+ </vbox>
+</labelframe>
+</vbox>
+<labelframe text="Compensation">
+  <vbox>
+    <number>
+      <halpin>"current-comp"</halpin>
+      <font>("Helvetica",12)</font>
+      <format>"8.4f"</format>
+    </number>
+<!--
+    <number>
+      <halpin>"current-z"</halpin>
+      <font>("Helvetica",12)</font>
+      <format>"8.4f"</format>
+    </number>
+-->
+    <hbox>
+      <rectled>
+        <halpin>"enable-led"</halpin>
+        <width>"28"</width>
+        <height>"28"</height>
+        <on_color>"green"</on_color>
+        <off_color>"grey"</off_color>
+      </rectled>
+      <button>
+        <halpin>"enable"</halpin>
+        <width>"11"</width>
+        <text>"On / Off"</text>
+      </button>
+    </hbox>
+    <hbox>
+      <rectled>
+        <halpin>"reset-led"</halpin>
+        <width>"28"</width>
+        <height>"28"</height>
+        <on_color>"green"</on_color>
+        <off_color>"gray"</off_color>
+      </rectled>
+      <button>
+        <halpin>"reset"</halpin>
+        <width>"11"</width>
+        <text>"Reload"</text>
+      </button>
+    </hbox>
+    <labelframe text="Error">
+      <rectled>
+        <halpin>"error-led"</halpin>
+        <width>"145"</width>
+        <height>"28"</height>
+        <on_color>"gray"</on_color>
+        <off_color>"red"</off_color>
+      </rectled>
+    </labelframe>
+  </vbox>
+</labelframe>
+<labelframe text="Info">
+  <vbox>
+    <hbox>
+      <s32>
+        <halpin>"temp-0"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6d°C"</format>
+      </s32>
+      <number>
+        <halpin>"motor-supply-0"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6.2f V"</format>
+      </number>
+    </hbox>
+    <hbox>
+      <s32>
+        <halpin>"temp-1"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6d°C"</format>
+      </s32>
+      <number>
+        <halpin>"motor-supply-1"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6.2f V"</format>
+      </number>
+    </hbox>
+    <hbox>
+      <s32>
+        <halpin>"temp-2"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6d°C"</format>
+      </s32>
+      <number>
+        <halpin>"motor-supply-2"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6.2f V"</format>
+      </number>
+    </hbox>
+    <hbox>
+      <number>
+        <halpin>"temp1"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6.0f°C"</format>
+      </number>
+      <s32>
+        <halpin>"fan1-rpm"</halpin>
+        <font>("Helvetica",12)</font>
+        <format>"6d RPM"</format>
+      </s32>
+    </hbox>
+  </vbox>
+</labelframe>
+<labelframe text="Data Logger">
+ <hbox>
+  <rectled>
+   <width>"145"</width>
+   <height>"28"</height>
+   <halpin>"datalogger-beat"</halpin>
+   <on_color>"green"</on_color>
+   <off_color>"grey"</off_color>
+  </rectled>
+ </hbox>
+</labelframe>
+</pyvcp>
