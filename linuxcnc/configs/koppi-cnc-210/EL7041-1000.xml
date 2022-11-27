@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<EtherCATMailbox><CoE><InitCmds>
+  <InitCmd>
+    <Transition>PS</Transition>
+    <Comment><![CDATA[Max current]]></Comment>
+    <Timeout>0</Timeout>
+    <Ccs>1</Ccs>
+    <Index>0x8010</Index>
+    <SubIndex>0x01</SubIndex>
+    <Data>D007</Data>
+  </InitCmd>
+</InitCmds></CoE></EtherCATMailbox>
