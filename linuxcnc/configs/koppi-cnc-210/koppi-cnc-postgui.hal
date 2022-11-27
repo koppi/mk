@@ -159,41 +159,41 @@ net touchoff-mat-z-0     halui.mdi-command-09 <= pyvcp.touchoff-z-0
 # EtherCAT Infos
 ######################################################################
 
-#loadusr -W ./koppi-cnc-info.py
+loadusr -W ./koppi-cnc-info.py
 
-#net info-temp-0 koppi-cnc-info.temp-0 => pyvcp.temp-0
-#net info-temp-1 koppi-cnc-info.temp-1 => pyvcp.temp-1
-#net info-temp-2 koppi-cnc-info.temp-2 => pyvcp.temp-2
+net info-temp-0 koppi-cnc-info.temp-0 => pyvcp.temp-0
+net info-temp-1 koppi-cnc-info.temp-1 => pyvcp.temp-1
+net info-temp-2 koppi-cnc-info.temp-2 => pyvcp.temp-2
 
-#net info-motor-supply-0 koppi-cnc-info.motor-supply-0 => pyvcp.motor-supply-0
-#net info-motor-supply-1 koppi-cnc-info.motor-supply-1 => pyvcp.motor-supply-1
-#net info-motor-supply-2 koppi-cnc-info.motor-supply-2 => pyvcp.motor-supply-2
+net info-motor-supply-0 koppi-cnc-info.motor-supply-0 => pyvcp.motor-supply-0
+net info-motor-supply-1 koppi-cnc-info.motor-supply-1 => pyvcp.motor-supply-1
+net info-motor-supply-2 koppi-cnc-info.motor-supply-2 => pyvcp.motor-supply-2
 
 #net info-temp1    koppi-cnc-info.temp1    => pyvcp.temp1
 #net info-fan1-rpm koppi-cnc-info.fan1-rpm => pyvcp.fan1-rpm
 
-#linksp ec-link-up koppi-cnc-info.link-up
+linksp ec-link-up koppi-cnc-info.link-up
 
 ######################################################################
 # Show current program line number
 ######################################################################
 
-#net motion-line motion.program-line => pyvcp.program-line
+net motion-line motion.program-line => pyvcp.program-line
 
 ######################################################################
 # Show elapsed time
 ######################################################################
 
-#loadrt time
+loadrt time
 
-#addf time.0 servo-thread
+addf time.0 servo-thread
 
-#net prog-is-running <= halui.program.is-running
-#net prog-is-running => time.0.start
+net prog-is-running <= halui.program.is-running
+net prog-is-running => time.0.start
 
-#net cycle-seconds time.0.seconds => pyvcp.elaps-sec
-#net cycle-minutes time.0.minutes => pyvcp.elaps-min
-#net cycle-hours   time.0.hours   => pyvcp.elaps-hour
+net cycle-seconds time.0.seconds => pyvcp.elaps-sec
+net cycle-minutes time.0.minutes => pyvcp.elaps-min
+net cycle-hours   time.0.hours   => pyvcp.elaps-hour
 
 ######################################################################
 # Show data logger status
@@ -254,20 +254,6 @@ net touchoff-mat-z-0     halui.mdi-command-09 <= pyvcp.touchoff-z-0
 #net spindle-at-speed            <=  near.0.out
 #setp near.0.scale 1.500000
 #net spindle-at-speed            => pyvcp.spindle-at-speed-led
-
-######################################################################
-# ES8266 ESP-01
-######################################################################
-
-#addf toggle.1 servo-thread
-#net toggle-test1-out  toggle.1.out    => esp-01-mqtt.gp0
-#net toggle-test1-in   toggle.1.in     <= pyvcp.esp-test1
-#linksp                toggle-test1-out   pyvcp.esp-test1-led
-
-#addf toggle.2 servo-thread
-#net toggle-test2-out  toggle.2.out    => esp-01-mqtt.gp2
-#net toggle-test2-in   toggle.2.in     <= pyvcp.esp-test2
-#linksp                toggle-test2-out   pyvcp.esp-test2-led
 
 ######################################################################
 # ALSA FFT spectrum logger

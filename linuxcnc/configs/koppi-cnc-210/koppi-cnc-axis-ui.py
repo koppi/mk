@@ -21,5 +21,5 @@ subprocess.Popen(["./koppi-cnc-axis-startup.sh"])
 # home all axes at startup  ( not working at all )
 #ensure_mode(linuxcnc.MODE_MANUAL)
 #c.wait_complete()
-#commands.home_all_axes()
+#commands.home_all_joints()
 

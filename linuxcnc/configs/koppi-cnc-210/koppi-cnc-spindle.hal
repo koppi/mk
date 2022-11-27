@@ -9,12 +9,12 @@
 ######################################################################
 
 # motion interface
-#net spindle-on <= motion.spindle-on
-#net spindle-cw <= motion.spindle-forward
+net spindle-on <= spindle.0.on
+net spindle-cw <= spindle.0.forward
 #net spindle-ccw <= motion.spindle-reverse
 
 # coolant
-#net coolant-on <= iocontrol.0.coolant-flood
+net coolant-on <= iocontrol.0.coolant-flood
 
 # spindle encoder
 # add scale and lowpass, these will be used in custom_postgui.hal
@@ -43,4 +43,4 @@
 #net spindle-phase-a encoder.0.phase-A <= lcec.0.8.din-0
 
 # net for the spindle speed out
-#net spindle-cmd <= motion.spindle-speed-out-abs
+net spindle-cmd <= spindle.0.speed-out-abs

@@ -7,32 +7,6 @@
   <text>"Rapid Home"</text>
   <bd>2</bd>
  </button>
- <hbox>
-  <rectled>
-   <halpin>"esp-test1-led"</halpin>
-   <width>"28"</width>
-   <height>"28"</height>
-   <on_color>"green"</on_color>
-   <off_color>"gray"</off_color>
- </rectled>
-  <button>
-   <halpin>"esp-test1"</halpin>
-   <text>"0"</text>
-   <bd>2</bd>
-  </button>
-  <rectled>
-   <halpin>"esp-test2-led"</halpin>
-   <width>"28"</width>
-   <height>"28"</height>
-   <on_color>"green"</on_color>
-   <off_color>"gray"</off_color>
-  </rectled>
-  <button>
-   <halpin>"esp-test2"</halpin>
-   <text>"2"</text>
-   <bd>2</bd>
-  </button>
- </hbox>
 <labelframe text="Program">
   <vbox>
     <s32>
@@ -240,18 +214,6 @@
         <font>("Helvetica",12)</font>
         <format>"6.2f V"</format>
       </number>
-    </hbox>
-    <hbox>
-      <number>
-        <halpin>"temp1"</halpin>
-        <font>("Helvetica",12)</font>
-        <format>"6.0f°C"</format>
-      </number>
-      <s32>
-        <halpin>"fan1-rpm"</halpin>
-        <font>("Helvetica",12)</font>
-        <format>"6d RPM"</format>
-      </s32>
     </hbox>
   </vbox>
 </labelframe>

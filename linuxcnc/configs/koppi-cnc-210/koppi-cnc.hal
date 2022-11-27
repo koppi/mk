@@ -95,8 +95,4 @@ net tool-changed iocontrol.0.tool-changed <= hal_manualtoolchange.changed
 net tool-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number
 net tool-prepare-loopback iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
 
-###########################################################
-# ES8266 esp-01 test
-###########################################################
-
-#loadusr ./esp-01-mqtt.py
+# EOF
