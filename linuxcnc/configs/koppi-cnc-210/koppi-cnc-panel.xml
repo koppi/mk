@@ -217,15 +217,4 @@
     </hbox>
   </vbox>
 </labelframe>
-<labelframe text="Data Logger">
- <hbox>
-  <rectled>
-   <width>"145"</width>
-   <height>"28"</height>
-   <halpin>"datalogger-beat"</halpin>
-   <on_color>"green"</on_color>
-   <off_color>"grey"</off_color>
-  </rectled>
- </hbox>
-</labelframe>
 </pyvcp>

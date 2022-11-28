@@ -196,44 +196,6 @@ net cycle-minutes time.0.minutes => pyvcp.elaps-min
 net cycle-hours   time.0.hours   => pyvcp.elaps-hour
 
 ######################################################################
-# Show data logger status
-######################################################################
-
-#loadusr -W ./data_logger.py
-
-#loadrt ownanalytics count=3
-#newinst  ownanalytics ownanalytics-0
-#newinst  ownanalytics ownanalytics-1
-#newinst  ownanalytics ownanalytics-2
-
-#addf ownanalytics.0 servo-thread
-#addf ownanalytics.1 servo-thread
-#addf ownanalytics.2 servo-thread
-
-#net rt2log data_logger.beat => ownanalytics.0.beat
-#net rt2log_0_min ownanalytics.0.min => data_logger.i11
-#net rt2log_0_max ownanalytics.0.max => data_logger.i12
-#net rt2log_0_avg ownanalytics.0.avg => data_logger.i13
-
-#net rt2log data_logger.beat => ownanalytics.1.beat
-#net rt2log_1_min ownanalytics.1.min => data_logger.i21
-#net rt2log_1_max ownanalytics.1.max => data_logger.i22
-#net rt2log_1_avg ownanalytics.1.avg => data_logger.i23
-
-#net rt2log data_logger.beat => ownanalytics.2.beat
-#net rt2log_2_min ownanalytics.2.min => data_logger.i31
-#net rt2log_2_max ownanalytics.2.max => data_logger.i32
-#net rt2log_2_avg ownanalytics.2.avg => data_logger.i33
-
-#net rt2log data_logger.beat => pyvcp.datalogger-beat
-
-#linksp motion-line data_logger.line
-
-#linksp x-pos-cmd-comp ownanalytics.0.in
-#linksp y-pos-cmd-comp ownanalytics.1.in
-#linksp zpos-cmd       ownanalytics.2.in
-
-######################################################################
 # Show spindle RPM
 ######################################################################
 
@@ -255,15 +217,4 @@ net cycle-hours   time.0.hours   => pyvcp.elaps-hour
 #setp near.0.scale 1.500000
 #net spindle-at-speed            => pyvcp.spindle-at-speed-led
 
-######################################################################
-# ALSA FFT spectrum logger
-######################################################################
-
-#loadusr -W ./alsa-fft.py
-
-######################################################################
-# Graphite Data Logger
-######################################################################
-
-#loadusr ./hal-graphite.py
-
+# EOF
