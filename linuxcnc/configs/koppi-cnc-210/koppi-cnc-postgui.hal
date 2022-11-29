@@ -53,16 +53,16 @@
 # made contact: TRUE  for probe contact closed (touching),
 #               FALSE for probe contact open.
 
-#loadrt debounce
-#addf debounce.0 servo-thread
-#setp debounce.0.delay  10
+loadrt debounce cfg=1
+addf debounce.0 servo-thread
+setp debounce.0.delay  10
 
-#net probe-pin-in         => debounce.0.0.in
-#net probe-debounce-in    <= debounce.0.0.out
-#net probe-debounce-in    => motion.probe-input
+net probe-pin-in         => debounce.0.0.in
+net probe-debounce-in    <= debounce.0.0.out
+net probe-debounce-in    => motion.probe-input
 
 # link probe-debounce-in signal to pyvcp ui element
-#linksp probe-debounce-in => pyvcp.probe-status
+linksp probe-debounce-in => pyvcp.probe-status
 
 ######################################################################
 # HALUI MDI Commands
@@ -101,59 +101,59 @@ net touchoff-mat-z-0     halui.mdi-command-09 <= pyvcp.touchoff-z-0
 # See https://github.com/cnc-club/linuxcnc-engraving-comp
 #
 ######################################################################
-#loadrt or2 count=3
-#loadrt sum2 count=1
+loadrt or2 count=3
+loadrt sum2 count=1
 
-#loadusr -Wn compensation python ./koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
+loadusr -Wn compensation python3 ./koppi-cnc-engraving-comp.py koppi-cnc-engraving-comp.txt
 
-#addf or2.0 servo-thread
-#addf or2.1 servo-thread
-#addf or2.2 servo-thread
-#addf sum2.0 servo-thread
+addf or2.0 servo-thread
+addf or2.1 servo-thread
+addf or2.2 servo-thread
+addf sum2.0 servo-thread
 
-#unlinkp z-pid.command
-#unlinkp axis.z.motor-pos-cmd
-#unlinkp axis.z.motor-pos-fb
+unlinkp z-pid.command
+unlinkp joint.2.motor-pos-cmd
+unlinkp joint.2.motor-pos-fb
 
 # for machine coordinate compensation values
-#net x-pos-cmd-comp axis.x.joint-pos-cmd compensation.x-map
-#net y-pos-cmd-comp axis.y.joint-pos-cmd compensation.y-map
+net x-pos-cmd-comp joint.0.pos-cmd compensation.x-map
+net y-pos-cmd-comp joint.1.pos-cmd compensation.y-map
 
 # for relative coordinate compensation values
-##net x-pos-cmd => compensation.x-map
-##net y-pos-cmd => compensation.y-map
+#net x-pos-cmd => compensation.x-map
+#net y-pos-cmd => compensation.y-map
 
-#net zpos-cmd <= axis.z.motor-pos-cmd
-#net zpos-cmd => axis.z.motor-pos-fb
+net zpos-cmd <= joint.2.motor-pos-cmd
+net zpos-cmd => joint.2.motor-pos-fb
 
-#net zpos-cmd => sum2.0.in0
-#net comp compensation.out => sum2.0.in1
-#net zpos-cmd-comp sum2.0.out => z-pid.command
+net zpos-cmd => sum2.0.in0
+net comp compensation.out => sum2.0.in1
+net zpos-cmd-comp sum2.0.out => z-pid.command
 
-#net dout-00 <= motion.digital-out-00
-#net dout-00 => or2.0.in0
-#net comp-enable or2.0.out compensation.enable
+net dout-00 <= motion.digital-out-00
+net dout-00 => or2.0.in0
+net comp-enable or2.0.out compensation.enable
 
-#loadrt toggle count=3
-#addf toggle.0 servo-thread
-#net toggle-enable toggle.0.out => or2.0.in1
-##net pyvcp-enable  toggle.0.in  <= pyvcp.enable
+loadrt toggle count=3
+addf toggle.0 servo-thread
+net toggle-enable toggle.0.out => or2.0.in1
+#net pyvcp-enable  toggle.0.in  <= pyvcp.enable
 
-#net comp-toggle    => or2.2.in0
-#net pyvcp-enable      or2.2.in1 <= pyvcp.enable
-#net toggle-or-out   toggle.0.in <= or2.2.out
+net comp-toggle    => or2.2.in0
+net pyvcp-enable      or2.2.in1 <= pyvcp.enable
+net toggle-or-out   toggle.0.in <= or2.2.out
 
-#net dout-01 <= motion.digital-out-01
-#net dout-01 => or2.1.in0
-#net pyvcp-reset pyvcp.reset => or2.1.in1
-#net comp-reset or2.1.out compensation.reset
+net dout-01 <= motion.digital-out-01
+net dout-01 => or2.1.in0
+net pyvcp-reset pyvcp.reset => or2.1.in1
+net comp-reset or2.1.out compensation.reset
 
-#net comp-enable => pyvcp.enable-led
-#net comp-reset => pyvcp.reset-led
-#net comp-error compensation.error => pyvcp.error-led
+net comp-enable => pyvcp.enable-led
+net comp-reset => pyvcp.reset-led
+net comp-error compensation.error => pyvcp.error-led
 
-##net zpos-cmd-comp => pyvcp.current-z
-#net comp => pyvcp.current-comp
+#net zpos-cmd-comp => pyvcp.current-z
+net comp => pyvcp.current-comp
 
 ######################################################################
 # EtherCAT Infos
