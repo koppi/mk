@@ -76,11 +76,11 @@ addf lcec.write-all servo-thread
 #
 ###########################################################
 
-net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
+#net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
 
-#loadrt classicladder_rt
-#addf classicladder.0.refresh servo-thread
-#loadusr classicladder --nogui koppi-cnc-estop.clp
+loadrt classicladder_rt
+addf classicladder.0.refresh servo-thread
+loadusr classicladder --nogui koppi-cnc-estop.clp
 
 ###########################################################
 # Toolchange

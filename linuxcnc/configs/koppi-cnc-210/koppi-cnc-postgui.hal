@@ -15,33 +15,20 @@
 ######################################################################
 
 # link EtherCAT link up signal to classicladder input pin 0
-#linkps classicladder.0.in-00 => ec-link-up
+linkps classicladder.0.in-00 => ec-link-up
 
 # link estop-hw-button signal  to classicladder input pin 1
-#linkps classicladder.0.in-01 => estop-hw-button
+linkps classicladder.0.in-01 => estop-hw-button
 
 # link software E-Stop button  to classicladder input pin 2
-#net emc-estop iocontrol.0.user-enable-out => classicladder.0.in-02
+net emc-estop iocontrol.0.user-enable-out => classicladder.0.in-02
 
 ######################################################################
 # E-Stop Output
 ######################################################################
 
 # Request E-Stop Enable from EMC
-#net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
-
-# estop loopback
-# net estop-loop iocontrol.0.user-enable-out iocontrol.0.emc-enable-in
-
-#net estop-out <= iocontrol.0.user-enable-out
-#net estop-out => iocontrol.0.emc-enable-in
-
-#loadrt estop_latch
-#addf estop-latch.0 servo-thread
-#net estop-loopout iocontrol.0.emc-enable-in <= estop-latch.0.ok-out
-#net estop-loopin iocontrol.0.user-enable-out => estop-latch.0.ok-in
-#net estop-reset iocontrol.0.user-request-enable => estop-latch.0.reset
-#net remote-estp estop-latch.0.fault-in <= lcec.0.din1.din-0-not
+net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
 
 ######################################################################
 # Probe Pin Inputs
