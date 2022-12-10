@@ -40,8 +40,8 @@ net z-home-sw-in  <= lcec.0.z.srv-din1
 # digital outputs
 ###########################################################
 
-net coolant-on => lcec.0.relais.dout-0
-net spindle-cw <= lcec.0.relais.dout-1
+net coolant-on => lcec.0.relais.dout-1
+net spindle-cw <= lcec.0.relais.dout-0
 #net spindle-ccw <= lcec.0.2.dout-2
 #net z-brake => lcec.0.2.dout-3
 
