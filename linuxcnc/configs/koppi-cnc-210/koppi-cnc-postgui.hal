@@ -34,6 +34,8 @@ net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
 # Probe Pin Inputs
 ######################################################################
 
+# see:http://web.archive.org/web/20190720111218/http://7xcnc.com/software/probing/z-touch-plate/
+
 # link probe-pin-in signal to motion.probe-input pin
 
 # G38.x uses the value on this pin to determine when the probe has
@@ -42,7 +44,7 @@ net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
 
 loadrt debounce cfg=1
 addf debounce.0 servo-thread
-setp debounce.0.delay  10
+setp debounce.0.delay  100 # sets the delay 100 iterations of the base thread
 
 net probe-pin-in         => debounce.0.0.in
 net probe-debounce-in    <= debounce.0.0.out
