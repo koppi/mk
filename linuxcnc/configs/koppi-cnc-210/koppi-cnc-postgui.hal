@@ -44,7 +44,7 @@ net estop-all-ok iocontrol.0.emc-enable-in <= classicladder.0.out-00
 
 loadrt debounce cfg=1
 addf debounce.0 servo-thread
-setp debounce.0.delay  100 # sets the delay 100 iterations of the base thread
+setp debounce.0.delay  10 # sets the delay 10 iterations of the base thread
 
 net probe-pin-in         => debounce.0.0.in
 net probe-debounce-in    <= debounce.0.0.out
