@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-RELEASE=jessie
+RELEASE=buster
         
 sudo http_proxy=http://localhost:3142/ \
      grml-debootstrap \
