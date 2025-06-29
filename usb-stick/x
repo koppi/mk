@@ -6,11 +6,10 @@ sudo http_proxy=http://localhost:3142/ \
      grml-debootstrap \
      --release $RELEASE \
      --hostname linuxcnc \
-     --mirror http://ftp.de.debian.org/debian \
      --vmfile --target linuxcnc-$RELEASE.img \
      --vmsize 7927234560 \
      --scripts $RELEASE/scripts \
      --chroot-scripts $RELEASE/chroot-scripts \
      --force \
-     --password root \
-     --defaultinterfaces
+     --non-free \
+     --nopassword
