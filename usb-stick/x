@@ -8,7 +8,7 @@ sudo http_proxy=http://localhost:3142/ \
      --hostname linuxcnc \
      --vmfile --target linuxcnc-$RELEASE.img \
      --vmsize 7927234560 \
-     --scripts $RELEASE/scripts \
+     --post-scripts $RELEASE/scripts \
      --chroot-scripts $RELEASE/chroot-scripts \
      --force \
      --non-free \

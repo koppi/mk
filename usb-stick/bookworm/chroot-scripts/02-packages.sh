@@ -9,4 +9,4 @@ apt -qqq -y install linuxcnc linuxcnc-dev linuxcnc-doc-en
 apt -qqq -y install ethercat-master linuxcnc-ethercat
 apt -qqq -y install jstest-gtk joystick gedit
 apt -qqq -y install xfce4 xfdesktop4 xfce4-goodies xfce4-power-manager xfce4-session xfce4-terminal lxdm
-apt -qqq -y install emacs-nox vim vim-scripts screen mutt
+apt -qqq -y install emacs-nox vim vim-scripts screen mutt chromium
