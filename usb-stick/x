@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 
-RELEASE=buster
+RELEASE=bookworm
         
 sudo http_proxy=http://localhost:3142/ \
      grml-debootstrap \
      --release $RELEASE \
-     --hostname machinekit \
-     --bootappend "xeno_hal.smi=1 lapic=notscdeadline hpet=disable i915.i915_enable_rc6=0 i915.powersave=0 intel_idle.max_cstate=1 processor.max_cstate=1 isolcpus=1 idle=poll" \
+     --hostname linuxcnc \
      --mirror http://ftp.de.debian.org/debian \
-     --vmfile --target machinekit-$RELEASE.img \
-     --vmsize 4G \
+     --vmfile --target linuxcnc-$RELEASE.img \
+     --vmsize 7927234560 \
      --scripts $RELEASE/scripts \
      --chroot-scripts $RELEASE/chroot-scripts \
      --force \
-     --password mk \
-     --nokernel \
+     --password root \
      --defaultinterfaces
