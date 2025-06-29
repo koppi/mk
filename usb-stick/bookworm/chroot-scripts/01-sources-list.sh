@@ -12,11 +12,11 @@ echo 'deleting temp files'
 rm -rf $GPGTMP
 
 echo 'Updating apt repository list'
-echo deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/linuxcnc.gpg] http://www.linuxcnc.org/ bookworm base 2.9-uspace 2.9-rt |  tee /etc/apt/sources.list.d/linuxcnc.list > /dev/null
+echo deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/linuxcnc.gpg] http://www.linuxcnc.org/ bookworm base 2.9-uspace 2.9-rt |  tee /etc/apt/sources.list.d/linuxcnc.list
 
-echo deb-src [arch=amd64,arm64 signed-by=/usr/share/keyrings/linuxcnc.gpg] http://www.linuxcnc.org/ bookworm base 2.9-uspace 2.9-rt |  tee -a /etc/apt/sources.list.d/linuxcnc.list > /dev/null
+echo deb-src [arch=amd64,arm64 signed-by=/usr/share/keyrings/linuxcnc.gpg] http://www.linuxcnc.org/ bookworm base 2.9-uspace 2.9-rt |  tee -a /etc/apt/sources.list.d/linuxcnc.list
 
-mkdir -p /usr/local/share/keyrings/
+mkdir -p /usr/local/share/keyrings
 wget -O- "https://build.opensuse.org/projects/science:EtherLab/signing_keys/download?kind=gpg" | gpg --dearmor | dd of=/etc/apt/trusted.gpg.d/science_EtherLab.gpg
 tee -a /etc/apt/sources.list.d/ighvh.sources > /dev/null <<EOT
 Types: deb
