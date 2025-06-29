@@ -1,4 +1,4 @@
-## build a LinuxCNC Debian/GNU Linux bookworm 8GB image
+## Build a LinuxCNC Debian/GNU Linux bookworm 8GB image
 
 ```bash
 sudo apt -y install grml-debootstrap apt-cacher
@@ -17,5 +17,5 @@ sudo /etc/init.d/apt-cacher restart
 next, build and run linuxcnc-bookworm.img:
 ```bash
 $ time sh x &> linuxcnc-bookworm.log
-$ sh y # run in QEMU
+$ sh y # run the image in QEMU
 ```
