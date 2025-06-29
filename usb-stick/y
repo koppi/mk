@@ -1,4 +1,10 @@
 
-# https://www.spad.uk/posts/really-simple-network-bridging-with-qemu
+# https://www.spad.uk/posts/really-simple-network-bridging-with-qemu :
+
+#  sudo brctl addbr virtbr0
+#  sudo ip link set virtbr0 up
+#  sudo brctl addif virtbr0 enp2s0
+#  sudo ip addr add 192.168.0.20/24 dev virtbr0
+#  sudo iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
 
 sudo qemu-system-x86_64 -enable-kvm  -m 4G -net nic,model=e1000,macaddr=52:54:00:00:00:01 -net nic,model=e1000,macaddr=52:54:00:00:00:02 -net bridge,br=virtbr0 -drive file=linuxcnc-bookworm.img,format=raw
