@@ -14,8 +14,8 @@ and restart apt-cacher
 ```bash
 sudo /etc/init.d/apt-cacher restart
 ```
-next, build and run machinekit-bookworm.img:
+next, build and run linuxcnc-bookworm.img:
 ```bash
-$ time sh x &> machinekit-bookworm.log
+$ time sh x &> linuxcnc-bookworm.log
 $ sh y # run in QEMU
 ```
