@@ -19,3 +19,5 @@ next, build and run linuxcnc-bookworm.img:
 $ time sh x &> linuxcnc-bookworm.log
 $ sh y # run the image in QEMU
 ```
+
+Demo video, see: https://youtu.be/p2XF-iWrrYM
