@@ -70,23 +70,23 @@ Download the Debian Jessie 8.0.0 live ISO with non-free firmware.
 
 ```bash
 # Primary URL
-$ wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/8.0.0-live+nonfree/amd64/iso-hybrid/debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
+wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/8.0.0-live+nonfree/amd64/iso-hybrid/debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
 
 # Archive URL if the primary fails
-$ wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/8.0.0-live+nonfree/amd64/iso-hybrid/debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
+wget -c http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/archive/8.0.0-live+nonfree/amd64/iso-hybrid/debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
 ```
 
 Verify the checksum against the official [MD5SUMS](http://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/8.0.0-live+nonfree/amd64/iso-hybrid/MD5SUMS).
 
 ```bash
-$ md5sum debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso 
+md5sum debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso 
 7a56cc2f78f8ea90d0c78fc462f95b95  debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso
 ```
 
 Write the ISO to a USB stick. **Warning: This will erase all data on the target device (`/dev/sdX`)**.
 
 ```bash
-$ sudo dd if=debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso of=/dev/sdX bs=4M status=progress
+sudo dd if=debian-live-8.0.0-amd64-gnome-desktop+nonfree.iso of=/dev/sdX bs=4M status=progress
 ```
 
 Install Debian from the USB stick and reboot.
@@ -99,8 +99,8 @@ To enable automatic login for your user, edit the GDM3 configuration.
 
 ```bash
 # Replace 'koppi' with your username
-$ sudo sed -i "s|^#\?.*AutomaticLoginEnable.*|AutomaticLoginEnable = true|" /etc/gdm3/daemon.conf
-$ sudo sed -i "s|^#\?.*AutomaticLogin .*=.*|AutomaticLogin = koppi\nTimedLoginEnable = true\nTimedLogin = koppi\nTimedLoginDelay = 0|" /etc/gdm3/daemon.conf
+sudo sed -i "s|^#\?.*AutomaticLoginEnable.*|AutomaticLoginEnable = true|" /etc/gdm3/daemon.conf
+sudo sed -i "s|^#\?.*AutomaticLogin .*=.*|AutomaticLogin = koppi\nTimedLoginEnable = true\nTimedLogin = koppi\nTimedLoginDelay = 0|" /etc/gdm3/daemon.conf
 ```
 
 ### Gnome Desktop Tweaks
@@ -108,18 +108,18 @@ $ sudo sed -i "s|^#\?.*AutomaticLogin .*=.*|AutomaticLogin = koppi\nTimedLoginEn
 These settings optimize the Gnome desktop for a CNC controller environment.
 
 ```bash
-$ gsettings set org.gnome.desktop.background primary-color '#000000'
-$ gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 8'
-$ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
-$ gsettings set org.gnome.desktop.lockdown disable-lock-screen true
-$ gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
-$ gsettings set org.gnome.SessionManager logout-prompt false
-$ gsettings set org.gnome.desktop.interface cursor-blink false
-$ gsettings set org.gnome.settings-daemon.peripherals.mouse middle-button-enabled true
-$ gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
-$ gsettings set org.gnome.desktop.interface enable-animations false
-$ gsettings set org.gnome.settings-daemon.plugins.cursor active false
-$ sudo sed -i "/title_vertical_pad/s/value=\"[0-9]\\{1,2\\}\"/value=\"0\"/g" \
+gsettings set org.gnome.desktop.background primary-color '#000000'
+gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 8'
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+gsettings set org.gnome.desktop.lockdown disable-lock-screen true
+gsettings set org.gnome.settings-daemon.plugins.xrandr default-monitors-setup do-nothing
+gsettings set org.gnome.SessionManager logout-prompt false
+gsettings set org.gnome.desktop.interface cursor-blink false
+gsettings set org.gnome.settings-daemon.peripherals.mouse middle-button-enabled true
+gsettings set org.gnome.Terminal.Legacy.Settings confirm-close false
+gsettings set org.gnome.desktop.interface enable-animations false
+gsettings set org.gnome.settings-daemon.plugins.cursor active false
+sudo sed -i "/title_vertical_pad/s/value=\"[0-9]\\{1,2\\}\"/value=\"0\"/g" \
     /usr/share/themes/Adwaita/metacity-1/metacity-theme-3.xml
 ```
 
@@ -128,7 +128,7 @@ $ sudo sed -i "/title_vertical_pad/s/value=\"[0-9]\\{1,2\\}\"/value=\"0\"/g" \
 Edit the systemd logind configuration to ignore the lid switch.
 
 ```bash
-$ sudo vi /etc/systemd/logind.conf
+sudo vi /etc/systemd/logind.conf
 ```
 
 Change `#HandleLidSwitch=suspend` to:
@@ -138,7 +138,7 @@ HandleLidSwitch=ignore
 
 Restart the service to apply the change.
 ```bash
-$ sudo systemctl restart systemd-logind
+sudo systemctl restart systemd-logind
 ```
 
 ### WLAN Configuration
@@ -158,8 +158,8 @@ iface wlan0 inet static
 
 Bring the interface up.
 ```bash
-$ sudo ifup wlan0
-$ /sbin/ifconfig wlan0
+sudo ifup wlan0
+/sbin/ifconfig wlan0
 ```
 
 ### Sudo without Password
@@ -167,7 +167,7 @@ $ /sbin/ifconfig wlan0
 Configure sudo to not require a password for your user group.
 
 ```bash
-$ su -
+su -
 # visudo
 ```
 
@@ -190,12 +190,12 @@ Log out and log back in for the group change to take effect.
 
 To speed up SSH logins, disable DNS lookups on the server.
 ```bash
-$ sudo sh -c 'echo "UseDNS no" >> /etc/ssh/sshd_config'
+sudo sh -c 'echo "UseDNS no" >> /etc/ssh/sshd_config'
 ```
 
 To suppress the "last login" message, create a `.hushlogin` file in your home directory.
 ```bash
-$ touch ~/.hushlogin
+touch ~/.hushlogin
 ```
 
 ## 4. Machinekit Installation
@@ -206,19 +206,19 @@ Follow the instructions from the [official Machinekit documentation](http://www.
 
 Add the Machinekit package repository key and source list.
 ```bash
-$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 43DDF224
-$ sudo sh -c \
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 43DDF224
+sudo sh -c \
   "echo 'deb http://deb.machinekit.io/debian jessie main' > \
     /etc/apt/sources.list.d/machinekit.list"
-$ sudo apt-get update
+sudo apt-get update
 ```
 
 ### Install Machinekit Packages
 
 Install the Xenomai kernel and the Machinekit packages.
 ```bash
-$ sudo apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
-$ sudo apt-get -y install machinekit machinekit-xenomai machinekit-posix machinekit-dev
+sudo apt-get -y install linux-image-xenomai.x86-amd64 linux-headers-xenomai.x86-amd64
+sudo apt-get -y install machinekit machinekit-xenomai machinekit-posix machinekit-dev
 ```
 
 ## 5. Linux / Xenomai Configuration
@@ -238,8 +238,8 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet xeno_nucleus.xenomai_gid=120 xeno_hal.smi=1 la
 
 Update the bootloader and reboot.
 ```bash
-$ sudo update-grub
-$ sudo reboot
+sudo update-grub
+sudo reboot
 ```
 
 During reboot, select the Xenomai kernel from the "Advanced Options" in the GRUB menu.
@@ -248,20 +248,20 @@ During reboot, select the Xenomai kernel from the "Advanced Options" in the GRUB
 
 After rebooting, verify that the Xenomai kernel is running.
 ```bash
-$ uname -a
+uname -a
 Linux x200 3.8-1-xenomai.x86-amd64 #1 SMP Debian 3.8.13-12~1jessie~1da x86_64 GNU/Linux
 ```
 
 Once confirmed, you can remove the standard Debian kernel.
 ```bash
-$ sudo apt-get -y remove --purge linux-image-amd64 linux-headers-amd64 linux-image-3.16.*-amd64 linux-headers-3.16.*-common linux-headers-3.16.*-amd64 linux-kbuild-3.16
+sudo apt-get -y remove --purge linux-image-amd64 linux-headers-amd64 linux-image-3.16.*-amd64 linux-headers-3.16.*-common linux-headers-3.16.*-amd64 linux-kbuild-3.16
 ```
 
 ### Check SMI Workaround
 
 Check if the Xenomai SMI (System Management Interrupt) workaround is enabled.
 ```bash
-$ dmesg | grep Xeno
+dmesg | grep Xeno
 [    0.632334] Xenomai: SMI-enabled chipset found
 [    0.632346] Xenomai: SMI workaround enabled
 ...
@@ -271,13 +271,13 @@ $ dmesg | grep Xeno
 
 Run the latency test for at least 10 minutes (24 hours is recommended for production systems).
 ```bash
-$ sudo sh -c 'echo 0 > /proc/xenomai/latency'
-$ timeout 600 xeno latency
+sudo sh -c 'echo 0 > /proc/xenomai/latency'
+timeout 600 xeno latency
 ```
 Note the worst-case latency (`lat min` from the output, which is actually the max latency). Create an init script to set this value on boot. Multiply the value by 1000 (ns).
 
 ```bash
-$ sudo nano /etc/init.d/xenomai-latency
+sudo nano /etc/init.d/xenomai-latency
 ```
 
 Paste the following content, replacing `825` with your measured latency value.
@@ -320,19 +320,19 @@ exit 0
 
 Make the script executable and enable it.
 ```bash
-$ sudo chmod +x /etc/init.d/xenomai-latency
-$ sudo update-rc.d xenomai-latency defaults
+sudo chmod +x /etc/init.d/xenomai-latency
+sudo update-rc.d xenomai-latency defaults
 ```
 
 ## 6. Machinekit User Configuration
 
 Add your user to the `xenomai` and `kmem` groups.
 ```bash
-$ sudo usermod -aG xenomai,kmem koppi # replace 'koppi' with your user id
+sudo usermod -aG xenomai,kmem koppi # replace 'koppi' with your user id
 ```
 Log out and log back in. Then run the Machinekit latency test.
 ```bash
-$ latency-test
+latency-test
 ```
 
 ## 7. EtherCAT Master Installation
@@ -340,22 +340,22 @@ $ latency-test
 We will use the `ec-debianize` tool to build a Debian package for the IgH EtherCAT Master.
 
 ```bash
-$ sudo apt-get -y install git debhelper gettext autoconf automake libtool dpatch libxenomai-dev
-$ git clone https://github.com/sittner/ec-debianize
-$ cd ec-debianize
-$ ./debian/configure -r xenomai # Specify xenomai build
-$ dpkg-checkbuilddeps
-$ dpkg-buildpackage -b -uc
-$ cd ..
-$ sudo dpkg -i etherlabmaster_*.deb
-$ sudo cp ec-debianize/debian/etherlabmaster/etc/init.d/ethercat /etc/init.d/ethercat
+sudo apt-get -y install git debhelper gettext autoconf automake libtool dpatch libxenomai-dev
+git clone https://github.com/sittner/ec-debianize
+cd ec-debianize
+./debian/configure -r xenomai # Specify xenomai build
+dpkg-checkbuilddeps
+dpkg-buildpackage -b -uc
+cd ..
+sudo dpkg -i etherlabmaster_*.deb
+sudo cp ec-debianize/debian/etherlabmaster/etc/init.d/ethercat /etc/init.d/ethercat
 ```
 
 In `/etc/init.d/ethercat`, you may need to change the config file path from `/etc/sysconfig/ethercat` to `/etc/default/ethercat`.
 
 Enable the service:
 ```bash
-$ sudo update-rc.d ethercat defaults
+sudo update-rc.d ethercat defaults
 ```
 
 Configure the master to use your Ethernet interface (`eth0`). Edit `/etc/default/ethercat`:
@@ -368,18 +368,18 @@ DEVICE_MODULES="e1000e"
 
 Install NTP for time synchronization.
 ```bash
-$ sudo apt-get -y install ntp
+sudo apt-get -y install ntp
 ```
 
 Add your user to the `ethercat` group.
 ```bash
-$ sudo usermod -aG ethercat koppi # replace 'koppi' with your user id
+sudo usermod -aG ethercat koppi # replace 'koppi' with your user id
 ```
 
 Log out, log back in, and test the EtherCAT master.
 ```bash
-$ sudo /etc/init.d/ethercat start
-$ ethercat slaves
+sudo /etc/init.d/ethercat start
+ethercat slaves
 0  0:0  PREOP  +  EK1100 EtherCAT-Koppler (2A E-Bus)
 1  0:1  PREOP  +  EL2004 4K. Dig. Ausgang 24V, 0.5A
 2  0:2  PREOP  +  EL2004 4K. Dig. Ausgang 24V, 0.5A
@@ -395,29 +395,29 @@ $ ethercat slaves
 Install the `lcec` HAL driver for Machinekit.
 
 ```bash
-$ sudo apt-get -y install machinekit-dev
-$ git clone https://github.com/sittner/linuxcnc-ethercat
-$ cd linuxcnc-ethercat
-$ dpkg-checkbuilddeps
-$ dpkg-buildpackage -b -uc
-$ cd ..
-$ sudo dpkg -i linuxcnc-ethercat*.deb
+sudo apt-get -y install machinekit-dev
+git clone https://github.com/sittner/linuxcnc-ethercat
+cd linuxcnc-ethercat
+dpkg-checkbuilddeps
+dpkg-buildpackage -b -uc
+cd ..
+sudo dpkg -i linuxcnc-ethercat*.deb
 ```
 
 ## 9. Machinekit Configuration
 
 Clone the configuration repository and link it.
 ```bash
-$ cd ~
-$ git clone https://github.com/koppi/mk
-$ ln -s ~/mk/linuxcnc ~/linuxcnc
-$ ln -s ~/mk/linuxcnc ~/machinekit
+cd ~
+git clone https://github.com/koppi/mk
+ln -s ~/mk/linuxcnc ~/linuxcnc
+ln -s ~/mk/linuxcnc ~/machinekit
 ```
 
 ### Start AXIS UI
 
 ```bash
-$ linuxcnc ~/linuxcnc/configs/koppi-cnc/koppi-cnc.ini
+linuxcnc ~/linuxcnc/configs/koppi-cnc/koppi-cnc.ini
 ```
 
 ![LinuxCNC / Machinekit AXIS](pics/20150530-001.png)
@@ -425,7 +425,7 @@ $ linuxcnc ~/linuxcnc/configs/koppi-cnc/koppi-cnc.ini
 ### Desktop Shortcut
 
 ```bash
-$ ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop
+ln -s ~/linuxcnc/configs/koppi-cnc/koppi-cnc.desktop ~/Desktop/koppi-cnc.desktop
 ```
 
 ## 10. Advanced Configuration & Tools
@@ -442,10 +442,10 @@ This setup uses a component to compensate for non-flat surfaces.
     ```
 3.  Activate the new measurements and create a plot.
     ```bash
-    $ cd ~/linuxcnc/configs/koppi-cnc/
-    $ cp engrcomp.txt koppi-cnc-engraving-comp.txt
-    $ sudo apt-get -y install gnuplot-x11
-    $ ./koppi-cnc-engraving-comp-plot.sh
+    cd ~/linuxcnc/configs/koppi-cnc/
+    cp engrcomp.txt koppi-cnc-engraving-comp.txt
+    sudo apt-get -y install gnuplot-x11
+    ./koppi-cnc-engraving-comp-plot.sh
     ```
     ![Z-Axis Compensation Visualization](linuxcnc/configs/koppi-cnc/koppi-cnc-engraving-comp.png)
 
@@ -453,7 +453,7 @@ This setup uses a component to compensate for non-flat surfaces.
 
 This script displays real-time parameters from the stepper motor terminals.
 ```bash
-$ watch -n 0.1 ~/linuxcnc/configs/koppi-cnc/koppi-cnc-info.sh
+watch -n 0.1 ~/linuxcnc/configs/koppi-cnc/koppi-cnc-info.sh
 ```
 ![koppi-cnc-info.sh](pics/20150514-002.gif)
 
@@ -461,8 +461,8 @@ $ watch -n 0.1 ~/linuxcnc/configs/koppi-cnc/koppi-cnc-info.sh
 
 Generate a graph of the HAL connections.
 ```bash
-$ sudo apt-get -y install python-pydot graphviz
-$ ~/linuxcnc/configs/koppi-cnc/hal-graph.py
+sudo apt-get -y install python-pydot graphviz
+~/linuxcnc/configs/koppi-cnc/hal-graph.py
 ```
 ![HAL Graph Overview](pics/20150602-001.png)
 ![HAL Graph Detail](pics/20150602-002.png)
