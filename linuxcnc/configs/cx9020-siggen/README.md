@@ -23,4 +23,4 @@ halcmd stop
 realtime stop
 ```
 
-More details at https://github.com/koppi/mk/blob/master/Machinekit-Beckhoff-CX9020.md
+More details at https://github.com/koppi/mk/blob/main/Machinekit-Beckhoff-CX9020.md
